@@ -60,8 +60,6 @@ public class UserController {
         } catch (InvalidRoleException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
-
-
     }
 
     @DeleteMapping("/delete/{id}")
