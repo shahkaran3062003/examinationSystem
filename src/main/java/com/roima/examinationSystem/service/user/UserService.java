@@ -1,19 +1,17 @@
 package com.roima.examinationSystem.service.user;
 
 import com.roima.examinationSystem.exception.InvalidRoleException;
-import com.roima.examinationSystem.exception.UserExistsException;
-import com.roima.examinationSystem.exception.UserNotFoundException;
+import com.roima.examinationSystem.exception.ResourceExistsException;
+import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.model.Role;
 import com.roima.examinationSystem.model.User;
 import com.roima.examinationSystem.repository.UserRepository;
 import com.roima.examinationSystem.request.AddUserRequest;
 import com.roima.examinationSystem.request.UpdateUserRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.InvalidDataAccessResourceUsageException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,13 +25,12 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public void addUser(AddUserRequest request) throws InvalidRoleException, UserExistsException {
+    public void addUser(AddUserRequest request) throws InvalidRoleException,ResourceExistsException {
 
         try {
-
-            User user = getUserByEmail(request.getEmail());
-            if (user != null) {
-                throw new UserExistsException("User already exists!");
+            boolean isUserPresent = userRepository.existsByEmail(request.getEmail());
+            if (isUserPresent) {
+                throw new ResourceExistsException("User already exists!");
             }
             User newUser = new User(
                     request.getUsername(),
@@ -43,14 +40,12 @@ public class UserService implements IUserService{
             userRepository.save(newUser);
         }catch (IllegalArgumentException e){
             throw new InvalidRoleException("Invalid user role!");
-        } catch (UserExistsException e) {
-            throw new UserExistsException("User already exists!");
         }
 
     }
 
     @Override
-    public void updateUser(UpdateUserRequest request, int userId) throws InvalidRoleException {
+    public void updateUser(UpdateUserRequest request, int userId) throws InvalidRoleException, ResourceNotFoundException {
 
 
         try {
@@ -63,31 +58,36 @@ public class UserService implements IUserService{
             user.setPassword(request.getPassword());
             user.setRole(role);
             userRepository.save(user);
-        } catch (UserNotFoundException e) {
-            throw new UserNotFoundException("User not found!");
-        } catch (IllegalArgumentException e) {
+        } catch (ResourceNotFoundException  e) {
+            throw e;
+        } catch(IllegalArgumentException e){
             throw new InvalidRoleException("Invalid user role!");
         }
 
     }
 
     @Override
-    public void deleteUserById(int id) {
+    public void deleteUserById(int id) throws ResourceNotFoundException {
 
-        userRepository.findById(id).ifPresentOrElse(userRepository::delete,()-> {
-            throw new UserNotFoundException("User not found!");});
+        try
+        {
+            User user = getUserById(id);
+            userRepository.delete(user);
+        } catch (ResourceNotFoundException e) {
+            throw e;
+        }
     }
 
     @Override
-    public User getUserById(int id) {
-        return userRepository.findById(id).orElseThrow(()->new UserNotFoundException("User not found!"));
+    public User getUserById(int id) throws ResourceNotFoundException {
+        return userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User not found!"));
     }
 
     @Override
-    public User getUserByEmail(String email) {
+    public User getUserByEmail(String email) throws ResourceNotFoundException {
         User user = userRepository.findByEmail(email);
         if(user == null){
-            throw new UserNotFoundException("User not found!");
+            throw new ResourceNotFoundException("User not found!");
         }else {
             return userRepository.findByEmail(email);
         }
@@ -99,7 +99,7 @@ public class UserService implements IUserService{
         try {
             Role erole = Role.valueOf(role);
             return userRepository.findByRole(erole);
-        }catch (Exception e){
+        }catch (IllegalArgumentException e){
             throw new InvalidRoleException("Invalid user role!");
         }
     }

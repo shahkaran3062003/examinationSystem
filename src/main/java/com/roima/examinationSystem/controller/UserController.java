@@ -1,18 +1,16 @@
 package com.roima.examinationSystem.controller;
 
 import com.roima.examinationSystem.exception.InvalidRoleException;
-import com.roima.examinationSystem.exception.UserExistsException;
-import com.roima.examinationSystem.exception.UserNotFoundException;
-import com.roima.examinationSystem.model.Role;
+import com.roima.examinationSystem.exception.ResourceExistsException;
+import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.model.User;
 import com.roima.examinationSystem.request.AddUserRequest;
 import com.roima.examinationSystem.request.UpdateUserRequest;
 import com.roima.examinationSystem.response.ApiResponse;
 import com.roima.examinationSystem.service.user.IUserService;
-import com.roima.examinationSystem.service.user.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,7 +32,7 @@ public class UserController {
         try {
             User user = userService.getUserById(id);
             return ResponseEntity.ok(new ApiResponse("success", user));
-        }catch (UserNotFoundException e){
+        }catch (ResourceNotFoundException e){
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
 
@@ -46,7 +44,7 @@ public class UserController {
         try {
             User user = userService.getUserByEmail(email);
             return ResponseEntity.ok(new ApiResponse("success", user));
-        }catch (UserNotFoundException e){
+        }catch (ResourceNotFoundException e){
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
 
@@ -67,29 +65,29 @@ public class UserController {
         try {
             userService.deleteUserById(id);
             return ResponseEntity.ok(new ApiResponse("success", "User deleted successfully!"));
-        }catch (Exception e){
+        }catch (Exception | ResourceNotFoundException e){
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
 
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ApiResponse> addUser(@RequestBody AddUserRequest request) {
+    public ResponseEntity<ApiResponse> addUser(@RequestBody @Valid AddUserRequest request) {
         try {
             userService.addUser(request);
             return ResponseEntity.ok(new ApiResponse("success", "User added successfully!"));
-        }catch (Exception | InvalidRoleException | UserExistsException e){
+        }catch (Exception | InvalidRoleException | ResourceExistsException e){
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
 
     }
 
     @PutMapping("/update/{userId}")
-    public ResponseEntity<ApiResponse> updateUser(@RequestBody UpdateUserRequest request, @PathVariable int userId) {
+    public ResponseEntity<ApiResponse> updateUser(@RequestBody @Valid UpdateUserRequest request, @PathVariable int userId) {
         try {
             userService.updateUser(request,userId);
             return ResponseEntity.ok(new ApiResponse("success", "User updated successfully!"));
-        }  catch (InvalidRoleException | UserNotFoundException e) {
+        }  catch (InvalidRoleException | ResourceNotFoundException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
 

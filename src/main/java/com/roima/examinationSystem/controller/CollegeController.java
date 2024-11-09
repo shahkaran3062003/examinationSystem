@@ -1,18 +1,15 @@
 package com.roima.examinationSystem.controller;
 
 import com.roima.examinationSystem.dto.CollegeDto;
-import com.roima.examinationSystem.exception.CollegeExistsException;
-import com.roima.examinationSystem.exception.CollegeNotFoundException;
-import com.roima.examinationSystem.exception.InvalidParametersException;
+import com.roima.examinationSystem.exception.ResourceExistsException;
+import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.model.College;
 import com.roima.examinationSystem.request.AddCollegeRequest;
 import com.roima.examinationSystem.request.UpdateCollegeRequest;
 import com.roima.examinationSystem.response.ApiResponse;
 import com.roima.examinationSystem.service.college.CollegeService;
-import lombok.Getter;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,7 +32,7 @@ public class CollegeController {
             College college = collegeService.getCollegeById(id);
             CollegeDto collegeDto = collegeService.convertToDto(college);
             return ResponseEntity.ok(new ApiResponse("Success", collegeDto));
-        } catch (CollegeNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("Error", e.getMessage()));
         }
     }
@@ -46,30 +43,31 @@ public class CollegeController {
             College college = collegeService.getCollegeByName(name);
             CollegeDto collegeDto = collegeService.convertToDto(college);
             return ResponseEntity.ok(new ApiResponse("Success", collegeDto));
-        } catch (CollegeNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("Error", e.getMessage()));
         }
     }
 
 
     @PostMapping("/add")
-    public ResponseEntity<ApiResponse> addCollege(@RequestBody AddCollegeRequest request) {
+    public ResponseEntity<ApiResponse> addCollege(@RequestBody @Valid AddCollegeRequest request) {
         try{
             collegeService.addCollege(request);
             return ResponseEntity.ok(new ApiResponse("Success", "College added successfully!"));
-        } catch ( CollegeExistsException | InvalidParametersException e) {
+        } catch (ResourceExistsException  e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("Error", e.getMessage()));
         }
+
     }
 
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse> updateCollege(@RequestBody UpdateCollegeRequest request, @PathVariable int id) {
+    public ResponseEntity<ApiResponse> updateCollege(@RequestBody @Valid UpdateCollegeRequest request, @PathVariable int id) {
         try{
             collegeService.updateCollege(request, id);
             return ResponseEntity.ok(new ApiResponse("Success", "College updated successfully!"));
 
-        } catch (CollegeExistsException | InvalidParametersException | CollegeNotFoundException e) {
+        } catch (ResourceExistsException | ResourceNotFoundException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("Error", e.getMessage()));
         }
     }
@@ -79,7 +77,7 @@ public class CollegeController {
         try{
             collegeService.deleteCollegeById(id);
             return ResponseEntity.ok(new ApiResponse("Success", "College deleted successfully!"));
-        } catch (CollegeNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("Error", e.getMessage()));
         }
     }

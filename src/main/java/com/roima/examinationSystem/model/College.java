@@ -1,5 +1,6 @@
 package com.roima.examinationSystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,9 +32,11 @@ public class College {
 
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "college",orphanRemoval = true)
+    @JsonBackReference
     private Set<Student> students;
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "college",orphanRemoval = true)
+    @JsonBackReference
     private List<Exam> exams;
 
     public College(String name, String email, String address) {

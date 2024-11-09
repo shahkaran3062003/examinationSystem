@@ -4,32 +4,67 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e770141f-7dc6-4504-9665-05e67707c434" name="Changes" comment="created all model class and implemented user service and controller with all necessary endpoints.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/config/ApplicationConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/CollegeController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/dto/CollegeDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/exception/CollegeExistsException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/exception/CollegeNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/exception/InvalidParametersException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/repository/CollegeRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/AddCollegeRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/UpdateCollegeRequest.java" afterDir="false" />
+    <list default="true" id="e770141f-7dc6-4504-9665-05e67707c434" name="Changes" comment="created all college endpoints.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/StudentController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/dto/StudentDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/exception/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/repository/StudentRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/AddStudentRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/UpdateStudentRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/CollegeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/CollegeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/exception/CollegeExistsException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/exception/ResourceExistsException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/exception/CollegeNotFoundException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/exception/ResourceNotFoundException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/exception/InvalidParametersException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/exception/UserExistsException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/exception/UserNotFoundException.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/College.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/College.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/Student.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/AddCollegeRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/AddCollegeRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/AddUserRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/AddUserRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/UpdateCollegeRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/UpdateCollegeRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/UpdateUserRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/UpdateUserRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/college/CollegeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/college/CollegeService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/college/ICollegeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/college/ICollegeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/student/IStudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/student/IStudentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/student/StudentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/student/StudentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/user/IUserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/user/IUserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/user/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/user/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/CollegeController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/CollegeController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/exception/CollegeExistsException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/exception/CollegeNotFoundException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/exception/InvalidParametersException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/exception/UserExistsException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/exception/UserNotFoundException.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/College.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/College.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/Student.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/Student.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/User.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/UserRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/UserRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/AddCollegeRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/AddCollegeRequest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/AddUserRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/AddUserRequest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/UpdateCollegeRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/UpdateCollegeRequest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/UpdateUserRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/UpdateUserRequest.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/college/CollegeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/college/CollegeService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/college/ICollegeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/college/ICollegeService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/student/IStudentService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/student/IStudentService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/student/StudentService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/student/StudentService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/user/IUserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/user/IUserService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/user/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/user/UserService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CompilerWorkspaceConfiguration">
+    <option name="MAKE_PROJECT_ON_SAVE" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -95,22 +130,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.ExaminationSystemApplication.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/roima/ExaminationSystem/examinationSystem&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.ExaminationSystemApplication.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "com.codeium.enabled": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/roima/ExaminationSystem/examinationSystem",
+    "settings.editor.selected.configurable": "advanced.settings"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
-      <recent name="com.roima.examinationSystem.exception" />
       <recent name="com.roima.examinationSystem.repository" />
+      <recent name="com.roima.examinationSystem.request" />
+      <recent name="com.roima.examinationSystem.exception" />
       <recent name="com.roima.examinationSystem.model" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -150,7 +186,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731079988000</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="created all college endpoints.">
+      <option name="closed" value="true" />
+      <created>1731159527422</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1731159527422</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -169,6 +213,7 @@
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
     <MESSAGE value="created all model class and implemented user service and controller with all necessary endpoints." />
-    <option name="LAST_COMMIT_MESSAGE" value="created all model class and implemented user service and controller with all necessary endpoints." />
+    <MESSAGE value="created all college endpoints." />
+    <option name="LAST_COMMIT_MESSAGE" value="created all college endpoints." />
   </component>
 </project>

@@ -1,10 +1,14 @@
 package com.roima.examinationSystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.roima.examinationSystem.dto.StudentDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
@@ -25,6 +29,10 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    @JsonBackReference
+    private Student student;
 
     public User(String username, String email, String password, Role role) {
         this.username = username;
