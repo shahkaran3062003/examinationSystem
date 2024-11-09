@@ -63,27 +63,12 @@ public class UserService implements IUserService{
             user.setPassword(request.getPassword());
             user.setRole(role);
             userRepository.save(user);
-        }catch (UserNotFoundException e){
+        } catch (UserNotFoundException e) {
             throw new UserNotFoundException("User not found!");
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             throw new InvalidRoleException("Invalid user role!");
         }
 
-
-
-//        try {
-//            Optional.ofNullable(getUserById(userId)).map(oldUser -> {
-//
-//                oldUser.setUsername(request.getUsername());
-//                oldUser.setEmail(request.getEmail());
-//                oldUser.setPassword(request.getPassword());
-//                oldUser.setRole(Role.valueOf(request.getRole()));
-//                return oldUser;
-//            }).map(userRepository::save).orElseThrow(() -> new RuntimeException("Internal server error!"));
-//
-//        }catch (InvalidRoleException e){
-//            throw new InvalidRoleException("Invalid user role!");
-//        }
     }
 
     @Override

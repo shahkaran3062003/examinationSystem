@@ -12,7 +12,7 @@ import java.util.Set;
 
 @Getter
 @Setter
-    @AllArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class College {
@@ -21,13 +21,12 @@ public class College {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String name;
 
-    @Column(nullable = false)
     private String address;
 
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private String email;
 
 
@@ -36,4 +35,16 @@ public class College {
 
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "college",orphanRemoval = true)
     private List<Exam> exams;
+
+    public College(String name, String email, String address) {
+        this.name = name;
+        this.email = email;
+        this.address = address;
+    }
+
+    public College(String name, String email) {
+        this.name = name;
+        this.email = email;
+        this.address="";
+    }
 }

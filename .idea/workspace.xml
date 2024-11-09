@@ -5,9 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e770141f-7dc6-4504-9665-05e67707c434" name="Changes" comment="created all model class and implemented user service and controller with all necessary endpoints.">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/config/ApplicationConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/CollegeController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/dto/CollegeDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/exception/CollegeExistsException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/exception/CollegeNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/exception/InvalidParametersException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/repository/CollegeRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/AddCollegeRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/UpdateCollegeRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/College.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/College.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/college/CollegeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/college/CollegeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/college/ICollegeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/college/ICollegeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/user/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/user/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/College.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/College.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/college/CollegeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/college/CollegeService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/college/ICollegeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/college/ICollegeService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/user/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/user/UserService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,6 +41,19 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <excluded-from-favorite>
+      <branch-storage>
+        <map>
+          <entry type="REMOTE">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="origin/master" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </excluded-from-favorite>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -32,12 +62,12 @@
     &quot;assignee&quot;: &quot;shahkaran3062003&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/shahkaran3062003/examinationSystem.git",
-    "accountId": "f9cf7f38-1156-4fc6-8f0e-e3f3a55dc301"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/shahkaran3062003/examinationSystem.git&quot;,
+    &quot;accountId&quot;: &quot;f9cf7f38-1156-4fc6-8f0e-e3f3a55dc301&quot;
   }
-}]]></component>
+}</component>
   <component name="LLMProjectSettings">
     <option name="turned_on" value="false" />
   </component>
@@ -58,26 +88,29 @@
   &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="2oUb9Pq10gEtKM8HtqxWUJa37KL" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.ExaminationSystemApplication.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "com.codeium.enabled": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/roima/ExaminationSystem/examinationSystem",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.ExaminationSystemApplication.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/roima/ExaminationSystem/examinationSystem&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.DirectoryMappings&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.roima.examinationSystem.exception" />
+      <recent name="com.roima.examinationSystem.repository" />
       <recent name="com.roima.examinationSystem.model" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -109,7 +142,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731078706985</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="created all model class and implemented user service and controller with all necessary endpoints.">
+      <option name="closed" value="true" />
+      <created>1731079988000</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1731079988000</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
