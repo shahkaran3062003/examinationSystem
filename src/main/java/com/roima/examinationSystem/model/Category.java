@@ -1,5 +1,7 @@
 package com.roima.examinationSystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,10 +23,16 @@ public class  Category {
     private String name;
 
 
-    @OneToMany(cascade = {CascadeType.REFRESH,CascadeType.DETACH,CascadeType.PERSIST,CascadeType.MERGE},mappedBy = "category", fetch = FetchType.EAGER)
+    @OneToMany(cascade = {CascadeType.REFRESH,CascadeType.DETACH,CascadeType.PERSIST,CascadeType.MERGE},mappedBy = "category", fetch = FetchType.LAZY)
+    @JsonBackReference
     private List<McqQuestions> mcqQuestions;
 
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "category",fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "category",fetch = FetchType.LAZY)
+    @JsonBackReference
     private List<ExamMcqCategory> examMcqCategory;
+
+    public Category(String name) {
+        this.name = name;
+    }
 }

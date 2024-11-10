@@ -34,6 +34,11 @@ public class StudentService implements IStudentService{
     }
 
     @Override
+    public List<Student> getStudentsByCollegeId(int collegeId) {
+        return studentRepository.findAllByCollegeId(collegeId);
+    }
+
+    @Override
     public Student getStudentById(int id) throws ResourceNotFoundException {
         return studentRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Student not found!"));
     }

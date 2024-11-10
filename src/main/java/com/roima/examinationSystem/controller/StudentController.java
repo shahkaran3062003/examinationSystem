@@ -36,6 +36,15 @@ public class StudentController {
     }
 
 
+    @GetMapping("/get/all/college/{id}")
+    public ResponseEntity<ApiResponse> getAllStudentsByCollegeId(@PathVariable int id) {
+
+        List<Student> students = studentService.getStudentsByCollegeId(id);
+        List<StudentDto> studentDtos = studentService.getConvertedDtoList(students);
+        return ResponseEntity.ok(new ApiResponse("success", studentDtos));
+    }
+
+
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse> getStudentById(@PathVariable int id) {
 

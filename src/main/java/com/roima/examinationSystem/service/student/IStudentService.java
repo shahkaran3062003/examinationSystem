@@ -11,11 +11,11 @@ import java.util.List;
 public interface IStudentService {
 
     List<Student> getAllStudents();
+    List<Student> getStudentsByCollegeId(int id);
     Student getStudentById(int id) throws ResourceNotFoundException;
     void addStudent(AddStudentRequest student) throws ResourceNotFoundException, ResourceExistsException;
     void updateStudent(UpdateStudentRequest request, int id) throws ResourceNotFoundException, ResourceExistsException;
     void deleteStudentById(int id) throws ResourceNotFoundException;
     Student getStudentByEmail(String email) throws ResourceNotFoundException;
-
 
 }
