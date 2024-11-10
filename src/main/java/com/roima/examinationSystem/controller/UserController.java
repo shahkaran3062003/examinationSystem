@@ -1,6 +1,6 @@
 package com.roima.examinationSystem.controller;
 
-import com.roima.examinationSystem.exception.InvalidRoleException;
+import com.roima.examinationSystem.exception.InvalidENUMException;
 import com.roima.examinationSystem.exception.ResourceExistsException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.model.User;
@@ -55,7 +55,7 @@ public class UserController {
         try{
             List<User> users = userService.getUsersByRole(role);
             return ResponseEntity.ok(new ApiResponse("success", users));
-        } catch (InvalidRoleException e) {
+        } catch (InvalidENUMException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
     }
@@ -76,7 +76,7 @@ public class UserController {
         try {
             userService.addUser(request);
             return ResponseEntity.ok(new ApiResponse("success", "User added successfully!"));
-        }catch (Exception | InvalidRoleException | ResourceExistsException e){
+        }catch (Exception | InvalidENUMException | ResourceExistsException e){
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
 
@@ -87,7 +87,7 @@ public class UserController {
         try {
             userService.updateUser(request,userId);
             return ResponseEntity.ok(new ApiResponse("success", "User updated successfully!"));
-        }  catch (InvalidRoleException | ResourceNotFoundException e) {
+        }  catch (InvalidENUMException | ResourceNotFoundException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
 

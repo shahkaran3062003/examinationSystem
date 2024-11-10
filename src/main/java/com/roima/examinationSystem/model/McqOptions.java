@@ -29,4 +29,8 @@ public class McqOptions {
     private McqQuestions mcqQuestions;
 
 
+    public McqOptions(int optionNumber, String text) {
+        this.option_number = optionNumber;
+        this.text = text;
+    }
 }

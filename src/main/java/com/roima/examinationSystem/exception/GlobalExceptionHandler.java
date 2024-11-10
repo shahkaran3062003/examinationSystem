@@ -4,6 +4,7 @@ package com.roima.examinationSystem.exception;
 import com.roima.examinationSystem.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -39,6 +40,11 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse("Error", "Missing Request Parameter"));
 
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiResponse> handleHttpMessageNotReadableException(Exception e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse("Error", "Invalid Request Body"));
     }
 }
 

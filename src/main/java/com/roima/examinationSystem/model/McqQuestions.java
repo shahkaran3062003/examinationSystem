@@ -2,6 +2,9 @@ package com.roima.examinationSystem.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +39,7 @@ public class McqQuestions {
     @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
 
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "mcqQuestions", fetch = FetchType.EAGER,orphanRemoval = true)
+    @OneToMany(cascade = {CascadeType.REFRESH,CascadeType.DETACH,CascadeType.REMOVE,CascadeType.MERGE},mappedBy = "mcqQuestions", fetch = FetchType.EAGER,orphanRemoval = true)
     private List<McqOptions> mcqOptions;
 
 
@@ -47,4 +50,21 @@ public class McqQuestions {
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonBackReference
     private List<Exam> exam;
+
+    public McqQuestions(String question, Difficulty difficulty, int correctOption,  Category category) {
+        this.question = question;
+        this.difficulty = difficulty;
+        this.correct_option = correctOption;
+        this.category = category;
+    }
+
+    public McqQuestions(String question, Difficulty difficulty, int correctOption,  Category category, String image) {
+        this.question = question;
+        this.difficulty = difficulty;
+        this.correct_option = correctOption;
+        this.category = category;
+        this.image = image;
+    }
+
+
 }
