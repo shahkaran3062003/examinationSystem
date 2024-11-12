@@ -26,6 +26,16 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
+    public List<Category> getAllCategoriesByQuestionType(String questionType) throws InvalidENUMException {
+        try{
+            QuestionType questionTypeE = QuestionType.valueOf(questionType);
+            return categoryRepository.findAllByQuestionType(questionTypeE);
+        }catch (IllegalArgumentException e){
+            throw new InvalidENUMException("Invalid question type!");
+        }
+    }
+
+    @Override
     public Category getCategoryById(int id) throws ResourceNotFoundException {
         return categoryRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Category not found!"));
     }

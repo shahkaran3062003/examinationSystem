@@ -45,6 +45,11 @@ public class McqQuestionsController {
         }
     }
 
+    @GetMapping("/get/category/questionType")
+    public ResponseEntity<ApiResponse> getMcqQuestionsByCategoryAndQuestionType() {
+            return ResponseEntity.ok(new ApiResponse("success", mcqQuestionsService.getAllMcqQuestionsByCategoryQuestionType()));
+    }
+
     @GetMapping("/get/difficulty")
     public ResponseEntity<ApiResponse> getMcqQuestionsByDifficulty(@RequestParam("difficulty") String difficulty) {
         try {

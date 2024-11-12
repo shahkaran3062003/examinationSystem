@@ -4,67 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e770141f-7dc6-4504-9665-05e67707c434" name="Changes" comment="add endpoints to enter mcq questions and their options and tested with postman.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/ProgrammingQuestionsController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/ProgrammingTestCaseController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/customValidators/CustomValidationFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/QuestionType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/repository/ProgrammingQuestionsRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/repository/ProgrammingTestCaseRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/AddProgrammingQuestionsRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/AddProgrammingTestCaseRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/AddProgrammingTestRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/UpdateMcqOptionRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/UpdateMcqQuestionRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/UpdateProgrammingQuestionsRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/UpdateProgrammingTestCaseRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/UpdateProgrammingTestRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/Category/CategoryService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/Category/ICategoryService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/examMcqDetails/ExamMcqDetailsService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/examMcqDetails/IExamMcqDetailsService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/programmingQuestions/IProgrammingQuestionsService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/programmingQuestions/ProgrammingQuestionsService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/programmingTestCase/IProgrammingTestCaseService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/programmingTestCase/ProgrammingTestCaseService.java" afterDir="false" />
+    <list default="true" id="e770141f-7dc6-4504-9665-05e67707c434" name="Changes" comment="add questionType field in category model to differentiate between mcq question and programming question. modify category endpoints and add endpoint to add MCQ questions with their multiple options, add endpoint to add Programming questions with their testcases also added individual endpoints of mcq options and programming testcases.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/config/ApplicationConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/config/ApplicationConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/CategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/CategoryController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/McqQuestionsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/McqQuestionsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/customValidators/ListValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/customValidators/ListValidator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/Category.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/Exam.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/Exam.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/ExamMcqCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/ExamCategoryDetails.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/McqQuestions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/McqQuestions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/ProgrammingQuestions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/ProgrammingQuestions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/ProgrammingTestCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/ProgrammingTestCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/StudentProgramTestCaseAnswer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/StudentProgramTestCaseAnswer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/ProgrammingQuestionsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/ProgrammingQuestionsController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/repository/CategoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/repository/CategoryRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/AddCategoryRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/AddCategoryRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/AddMcqQuestionRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/AddMcqQuestionRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/category/CategoryService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/category/ICategoryService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/repository/McqQuestionsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/repository/McqQuestionsRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/repository/ProgrammingQuestionsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/repository/ProgrammingQuestionsRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/Category/CategoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/Category/CategoryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/Category/ICategoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/Category/ICategoryService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/mcqQuestions/IMcqQuestionsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/mcqQuestions/IMcqQuestionsService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/mcqQuestions/McqQuestionsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/mcqQuestions/McqQuestionsService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/config/ApplicationConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/config/ApplicationConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/programmingQuestions/IProgrammingQuestionsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/programmingQuestions/IProgrammingQuestionsService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/programmingQuestions/ProgrammingQuestionsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/programmingQuestions/ProgrammingQuestionsService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/CategoryController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/CategoryController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/McqQuestionsController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/McqQuestionsController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/exception/GlobalExceptionHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/exception/GlobalExceptionHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/Category.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/Category.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/Exam.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/Exam.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/ExamMcqCategory.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/McqQuestions.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/McqQuestions.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/ProgrammingQuestions.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/ProgrammingQuestions.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/ProgrammingTestCase.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/ProgrammingTestCase.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/StudentProgramTestCaseAnswer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/StudentProgramTestCaseAnswer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/ProgrammingQuestionsController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/ProgrammingQuestionsController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/CategoryRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/CategoryRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/AddCategoryRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/AddCategoryRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/AddMcqQuestionRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/AddMcqQuestionRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/category/CategoryService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/category/CategoryService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/category/ICategoryService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/category/ICategoryService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/McqQuestionsRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/McqQuestionsRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/ProgrammingQuestionsRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/ProgrammingQuestionsRepository.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/mcqQuestions/IMcqQuestionsService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/mcqQuestions/IMcqQuestionsService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/mcqQuestions/McqQuestionsService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/mcqQuestions/McqQuestionsService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/programmingQuestions/IProgrammingQuestionsService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/programmingQuestions/IProgrammingQuestionsService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/programmingQuestions/ProgrammingQuestionsService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/programmingQuestions/ProgrammingQuestionsService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -230,7 +193,23 @@
       <option name="project" value="LOCAL" />
       <updated>1731276834166</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="add questionType field in category model to differentiate between mcq question and programming question. modify category endpoints and add endpoint to add MCQ questions with their multiple options, add endpoint to add Programming questions with their testcases also added individual endpoints of mcq options and programming testcases.">
+      <option name="closed" value="true" />
+      <created>1731439282635</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1731439282635</updated>
+    </task>
+    <task id="LOCAL-00009" summary="add questionType field in category model to differentiate between mcq question and programming question. modify category endpoints and add endpoint to add MCQ questions with their multiple options, add endpoint to add Programming questions with their testcases also added individual endpoints of mcq options and programming testcases.">
+      <option name="closed" value="true" />
+      <created>1731439340911</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1731439340911</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -253,6 +232,7 @@
     <MESSAGE value="add backend side validation to all incoming request and improve exception handling. create basic student api endpoints and tested with postman." />
     <MESSAGE value="added Category endpoints,CategoryService, CategoryController and tested endpoints with postman." />
     <MESSAGE value="add endpoints to enter mcq questions and their options and tested with postman." />
-    <option name="LAST_COMMIT_MESSAGE" value="add endpoints to enter mcq questions and their options and tested with postman." />
+    <MESSAGE value="add questionType field in category model to differentiate between mcq question and programming question. modify category endpoints and add endpoint to add MCQ questions with their multiple options, add endpoint to add Programming questions with their testcases also added individual endpoints of mcq options and programming testcases." />
+    <option name="LAST_COMMIT_MESSAGE" value="add questionType field in category model to differentiate between mcq question and programming question. modify category endpoints and add endpoint to add MCQ questions with their multiple options, add endpoint to add Programming questions with their testcases also added individual endpoints of mcq options and programming testcases." />
   </component>
 </project>

@@ -4,6 +4,7 @@ import com.roima.examinationSystem.exception.InvalidENUMException;
 import com.roima.examinationSystem.exception.InvalidNumberException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.model.McqQuestions;
+import com.roima.examinationSystem.model.QuestionType;
 import com.roima.examinationSystem.request.AddMcqQuestionRequest;
 import com.roima.examinationSystem.request.UpdateMcqQuestionRequest;
 
@@ -19,6 +20,7 @@ public interface IMcqQuestionsService {
     McqQuestions getMcqQuestionsById(int id) throws ResourceNotFoundException;
 
     List<McqQuestions> getAllMcqQuestionsByCategory(int category_id) throws ResourceNotFoundException;
+    List<McqQuestions> getAllMcqQuestionsByCategoryQuestionType();
 
     List<McqQuestions> getAllMcqQuestionsByDifficulty(String difficulty) throws InvalidENUMException;
 

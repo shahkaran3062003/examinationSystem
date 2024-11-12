@@ -146,6 +146,11 @@ public class McqQuestionsService implements IMcqQuestionsService {
     }
 
     @Override
+    public List<McqQuestions> getAllMcqQuestionsByCategoryQuestionType() {
+            return mcqQuestionsRepository.findAllByCategoryQuestionType(QuestionType.MCQ);
+    }
+
+    @Override
     public List<McqQuestions> getAllMcqQuestionsByDifficulty(String difficulty) throws InvalidENUMException {
         try {
             Difficulty difficultyE = Difficulty.valueOf(difficulty);

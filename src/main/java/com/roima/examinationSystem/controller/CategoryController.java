@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("${api.prefix}/mcq-category")
+@RequestMapping("${api.prefix}/category")
 public class CategoryController {
     private final CategoryService CategoryService;
 
@@ -22,6 +22,15 @@ public class CategoryController {
     @GetMapping("/get/all")
     public ResponseEntity<ApiResponse> getAllCategories() {
         return ResponseEntity.ok(new ApiResponse("success", CategoryService.getAllCategories()));
+    }
+
+    @GetMapping("/get/all/questionType")
+    public ResponseEntity<ApiResponse> getAllQuestionTypes(@RequestParam("questionType") String questionType) {
+        try {
+            return ResponseEntity.ok(new ApiResponse("success", CategoryService.getAllCategoriesByQuestionType(questionType)));
+        }catch(InvalidENUMException e){
+            return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
+        }
     }
 
 
