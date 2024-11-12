@@ -1,11 +1,12 @@
 package com.roima.examinationSystem.controller;
 
 
+import com.roima.examinationSystem.exception.InvalidENUMException;
 import com.roima.examinationSystem.exception.ResourceExistsException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.request.AddCategoryRequest;
 import com.roima.examinationSystem.response.ApiResponse;
-import com.roima.examinationSystem.service.category.CategoryService;
+import com.roima.examinationSystem.service.Category.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,21 +14,21 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("${api.prefix}/category")
+@RequestMapping("${api.prefix}/mcq-category")
 public class CategoryController {
-    private final CategoryService categoryService;
+    private final CategoryService CategoryService;
 
 
     @GetMapping("/get/all")
     public ResponseEntity<ApiResponse> getAllCategories() {
-        return ResponseEntity.ok(new ApiResponse("success", categoryService.getAllCategories()));
+        return ResponseEntity.ok(new ApiResponse("success", CategoryService.getAllCategories()));
     }
 
 
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse> getCategoryById(@PathVariable int id) {
         try {
-            return ResponseEntity.ok(new ApiResponse("success", categoryService.getCategoryById(id)));
+            return ResponseEntity.ok(new ApiResponse("success", CategoryService.getCategoryById(id)));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
@@ -36,19 +37,19 @@ public class CategoryController {
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addCategory(@RequestBody @Valid AddCategoryRequest request) {
         try{
-            categoryService.addCategory(request.getName());
+            CategoryService.addCategory(request);
             return ResponseEntity.ok(new ApiResponse("success", "Category added successfully!"));
-        } catch (ResourceExistsException e) {
+        } catch (ResourceExistsException | InvalidENUMException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse> updateCategory(@RequestBody @Valid AddCategoryRequest request,@PathVariable int id) {
+    public ResponseEntity<ApiResponse> updateCategory(@RequestBody @Valid AddCategoryRequest request, @PathVariable int id) {
         try{
-            categoryService.updateCategory(request.getName(), id);
+            CategoryService.updateCategory(request, id);
             return ResponseEntity.ok(new ApiResponse("success", "Category updated successfully!"));
-        } catch (ResourceNotFoundException | ResourceExistsException e) {
+        } catch (ResourceNotFoundException | ResourceExistsException | InvalidENUMException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
     }
@@ -56,7 +57,7 @@ public class CategoryController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> deleteCategory(@PathVariable int id) {
         try{
-            categoryService.deleteCategoryById(id);
+            CategoryService.deleteCategoryById(id);
             return ResponseEntity.ok(new ApiResponse("success", "Category deleted successfully!"));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));

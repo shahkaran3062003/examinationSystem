@@ -6,16 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddCategoryRequest {
+public class AddProgrammingTestRequest {
+    @NotNull
+    @NotNull
+    private String input;
 
     @NotNull
     @NotBlank
-    private String name;
-
-    @NotNull
-    @NotBlank
-    private String questionType;
+    private String output;
 }

@@ -13,8 +13,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddMcqQuestionRequest {
-
+public class UpdateMcqQuestionRequest {
     @NotNull
     @NotBlank
     private String question;
@@ -28,21 +27,21 @@ public class AddMcqQuestionRequest {
     private int correct_option;
 
     @NotNull
-    @NotBlank
-    private String category;
+    @Min(1)
+    private int category_id;
 
     private String image;
 
     @NotNull
     @ValidList
-    private List<String> options;
+    private List<UpdateMcqOptionRequest> options;
 
 
-    public AddMcqQuestionRequest(String question, String difficulty, int correct_option, List<String> options,String category) {
+    public UpdateMcqQuestionRequest(String question, String difficulty, int correct_option, List<UpdateMcqOptionRequest> options,int category_id) {
         this.question = question;
         this.difficulty = difficulty;
         this.correct_option = correct_option;
         this.options = options;
-        this.category = category;
+        this.category_id = category_id;
     }
 }

@@ -1,5 +1,6 @@
 package com.roima.examinationSystem.request;
 
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -9,13 +10,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddCategoryRequest {
+public class UpdateProgrammingTestRequest {
 
     @NotNull
     @NotBlank
-    private String name;
+    private String input;
 
     @NotNull
     @NotBlank
-    private String questionType;
+    private String output;
 }

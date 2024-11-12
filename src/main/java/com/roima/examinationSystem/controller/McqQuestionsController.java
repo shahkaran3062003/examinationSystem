@@ -3,9 +3,9 @@ package com.roima.examinationSystem.controller;
 
 import com.roima.examinationSystem.exception.InvalidENUMException;
 import com.roima.examinationSystem.exception.InvalidNumberException;
-import com.roima.examinationSystem.exception.ResourceExistsException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.request.AddMcqQuestionRequest;
+import com.roima.examinationSystem.request.UpdateMcqQuestionRequest;
 import com.roima.examinationSystem.response.ApiResponse;
 import com.roima.examinationSystem.service.mcqQuestions.McqQuestionsService;
 import jakarta.validation.Valid;
@@ -75,7 +75,7 @@ public class McqQuestionsController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse> updateMcqQuestion(@RequestBody @Valid AddMcqQuestionRequest request, @PathVariable int id) {
+    public ResponseEntity<ApiResponse> updateMcqQuestion(@RequestBody @Valid UpdateMcqQuestionRequest request, @PathVariable int id) {
         try {
             mcqQuestionsService.updateMcqQuestions(request, id);
             return ResponseEntity.ok(new ApiResponse("success", "Mcq Question updated successfully!"));

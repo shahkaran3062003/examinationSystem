@@ -34,12 +34,12 @@ public class Exam {
     private College college;
 
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "exam",orphanRemoval = true)
-    private List<ExamMcqCategory> examMcqCategory;
+    private List<ExamCategoryDetails> examCategoryDetails;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "exam")
     private List<McqQuestions> mcqQuestions;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "exam")
     private List<ProgrammingQuestions> programmingQuestions;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "exam", orphanRemoval = true)
