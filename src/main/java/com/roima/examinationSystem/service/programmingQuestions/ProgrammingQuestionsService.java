@@ -1,7 +1,6 @@
 package com.roima.examinationSystem.service.programmingQuestions;
 
-import com.roima.examinationSystem.exception.InvalidENUMException;
-import com.roima.examinationSystem.exception.InvalidNumberException;
+import com.roima.examinationSystem.exception.InvalidValueException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.model.*;
 import com.roima.examinationSystem.repository.CategoryRepository;
@@ -24,7 +23,7 @@ public class ProgrammingQuestionsService implements IProgrammingQuestionsService
     private final CategoryRepository categoryRepository;
 
     @Override
-    public void addProgrammingQuestions(AddProgrammingQuestionsRequest request) throws InvalidENUMException, ResourceNotFoundException {
+    public void addProgrammingQuestions(AddProgrammingQuestionsRequest request) throws InvalidValueException, ResourceNotFoundException {
         try{
             Difficulty difficultyE = Difficulty.valueOf(request.getDifficulty());
 
@@ -44,12 +43,12 @@ public class ProgrammingQuestionsService implements IProgrammingQuestionsService
             }
 
         }catch (IllegalArgumentException e){
-            throw new InvalidENUMException("Invalid difficulty!");
+            throw new InvalidValueException("Invalid difficulty!");
         }
     }
 
     @Override
-    public void updateProgrammingQuestions(UpdateProgrammingQuestionsRequest request, int id) throws ResourceNotFoundException, InvalidENUMException {
+    public void updateProgrammingQuestions(UpdateProgrammingQuestionsRequest request, int id) throws ResourceNotFoundException, InvalidValueException {
         try{
             ProgrammingQuestions programmingQuestions = programmingQuestionsRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Programming Questions not found!"));
 
@@ -71,7 +70,7 @@ public class ProgrammingQuestionsService implements IProgrammingQuestionsService
             programmingQuestionsRepository.save(programmingQuestions);
 
         }catch (IllegalArgumentException e){
-            throw new InvalidENUMException("Invalid difficulty!");
+            throw new InvalidValueException("Invalid difficulty!");
         }
     }
 
@@ -103,36 +102,36 @@ public class ProgrammingQuestionsService implements IProgrammingQuestionsService
     }
 
     @Override
-    public List<ProgrammingQuestions> getAllProgrammingQuestionsByDifficulty(String difficulty) throws InvalidENUMException {
+    public List<ProgrammingQuestions> getAllProgrammingQuestionsByDifficulty(String difficulty) throws InvalidValueException {
 
         try {
             Difficulty difficultyE = Difficulty.valueOf(difficulty);
             return programmingQuestionsRepository.findAllByDifficulty(difficultyE);
         }catch (IllegalArgumentException e){
-            throw new InvalidENUMException("Invalid difficulty!");
+            throw new InvalidValueException("Invalid difficulty!");
         }
     }
 
     @Override
-    public List<ProgrammingQuestions> getAllProgrammingQuestionsByDifficultyAndCategory(String difficulty, int category_id) throws InvalidENUMException, ResourceNotFoundException {
+    public List<ProgrammingQuestions> getAllProgrammingQuestionsByDifficultyAndCategory(String difficulty, int category_id) throws InvalidValueException, ResourceNotFoundException {
         try{
             Difficulty difficultyE = Difficulty.valueOf(difficulty);
             Category category = categoryRepository.findById(category_id).orElseThrow(()-> new ResourceNotFoundException("Category not found!"));
             return programmingQuestionsRepository.findAllByDifficultyAndCategory(difficultyE, category);
         }catch (IllegalArgumentException e){
-            throw new InvalidENUMException("Invalid difficulty!");
+            throw new InvalidValueException("Invalid difficulty!");
         }
     }
 
     @Override
-    public List<ProgrammingQuestions> getRandomProgrammingQuestionsByDifficultyAndCategory(String difficulty, int category_id, int number) throws InvalidENUMException, ResourceNotFoundException, InvalidNumberException {
+    public List<ProgrammingQuestions> getRandomProgrammingQuestionsByDifficultyAndCategory(String difficulty, int category_id, int number) throws InvalidValueException, ResourceNotFoundException {
         try {
             Category category = categoryRepository.findById(category_id).orElseThrow(() -> new ResourceNotFoundException("Category not found!"));
             Difficulty difficultyE = Difficulty.valueOf(difficulty);
             int total_count = programmingQuestionsRepository.countAllByDifficultyAndCategory(difficultyE, category);
 
             if (number > total_count) {
-                throw new InvalidNumberException("Number is greater than the total number of questions!");
+                throw new InvalidValueException("Number is greater than the total number of questions!");
             }
 
             List<ProgrammingQuestions> programmingQuestions = programmingQuestionsRepository.findAllByDifficultyAndCategory(difficultyE, category);
@@ -144,9 +143,9 @@ public class ProgrammingQuestionsService implements IProgrammingQuestionsService
 
 
         }catch (IllegalArgumentException e){
-            throw new InvalidENUMException("Invalid difficulty!");
+            throw new InvalidValueException("Invalid difficulty!");
         }catch (IndexOutOfBoundsException e){
-            throw new InvalidNumberException("Number is greater than the total number of programming questions!");
+            throw new InvalidValueException("Number is greater than the total number of programming questions!");
         }
     }
 }

@@ -19,4 +19,6 @@ public interface McqQuestionsRepository extends JpaRepository<McqQuestions,Integ
     int countAllByDifficultyAndCategory(Difficulty difficulty, Category category);
 
     List<McqQuestions> findAllByCategoryQuestionType(QuestionType questionType);
+
+    boolean existsById(int id);
 }

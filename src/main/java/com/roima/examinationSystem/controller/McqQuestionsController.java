@@ -1,8 +1,7 @@
 package com.roima.examinationSystem.controller;
 
 
-import com.roima.examinationSystem.exception.InvalidENUMException;
-import com.roima.examinationSystem.exception.InvalidNumberException;
+import com.roima.examinationSystem.exception.InvalidValueException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.request.AddMcqQuestionRequest;
 import com.roima.examinationSystem.request.UpdateMcqQuestionRequest;
@@ -54,7 +53,7 @@ public class McqQuestionsController {
     public ResponseEntity<ApiResponse> getMcqQuestionsByDifficulty(@RequestParam("difficulty") String difficulty) {
         try {
             return ResponseEntity.ok(new ApiResponse("success", mcqQuestionsService.getAllMcqQuestionsByDifficulty(difficulty)));
-        }catch (InvalidENUMException e) {
+        }catch (InvalidValueException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
     }
@@ -63,7 +62,7 @@ public class McqQuestionsController {
     public ResponseEntity<ApiResponse> getMcqQuestionsByCategoryAndDifficulty(@RequestParam("category") int category, @RequestParam("difficulty") String difficulty) {
         try {
             return ResponseEntity.ok(new ApiResponse("success", mcqQuestionsService.getAllMcqQuestionsByDifficultyAndCategory(difficulty,category)));
-        }catch (ResourceNotFoundException | InvalidENUMException e) {
+        }catch (ResourceNotFoundException | InvalidValueException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
     }
@@ -74,7 +73,7 @@ public class McqQuestionsController {
         try{
             mcqQuestionsService.addMcqQuestions(request);
             return ResponseEntity.ok(new ApiResponse("success", "Mcq Question added successfully!"));
-        } catch (ResourceNotFoundException | InvalidENUMException | InvalidNumberException e) {
+        } catch (ResourceNotFoundException | InvalidValueException  e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
     }
@@ -84,7 +83,7 @@ public class McqQuestionsController {
         try {
             mcqQuestionsService.updateMcqQuestions(request, id);
             return ResponseEntity.ok(new ApiResponse("success", "Mcq Question updated successfully!"));
-        } catch (ResourceNotFoundException | InvalidENUMException | InvalidNumberException e) {
+        } catch (ResourceNotFoundException | InvalidValueException  e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
     }

@@ -39,12 +39,7 @@ public class ProgrammingQuestions {
     private List<ProgrammingTestCase> programmingTestCase;
 
 
-    @ManyToMany
-    @JoinTable(
-            name = "programming_questions_exams",
-            joinColumns = @JoinColumn(name = "programming_questions_id"),
-            inverseJoinColumns = @JoinColumn(name = "exam_id")
-    )
+    @ManyToMany(mappedBy = "programmingQuestions")
     @JsonBackReference
     private List<Exam> exam;
 

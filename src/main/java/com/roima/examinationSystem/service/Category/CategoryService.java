@@ -1,12 +1,12 @@
 package com.roima.examinationSystem.service.Category;
 
-import com.roima.examinationSystem.exception.InvalidENUMException;
+import com.roima.examinationSystem.exception.InvalidValueException;
 import com.roima.examinationSystem.exception.ResourceExistsException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.model.Category;
 import com.roima.examinationSystem.model.QuestionType;
 import com.roima.examinationSystem.repository.CategoryRepository;
-import com.roima.examinationSystem.request.AddCategoryRequest;
+import com.roima.examinationSystem.request.AddUpdateCategoryRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,12 +26,12 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public List<Category> getAllCategoriesByQuestionType(String questionType) throws InvalidENUMException {
+    public List<Category> getAllCategoriesByQuestionType(String questionType) throws InvalidValueException {
         try{
             QuestionType questionTypeE = QuestionType.valueOf(questionType);
             return categoryRepository.findAllByQuestionType(questionTypeE);
         }catch (IllegalArgumentException e){
-            throw new InvalidENUMException("Invalid question type!");
+            throw new InvalidValueException("Invalid question type!");
         }
     }
 
@@ -41,7 +41,7 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public void addCategory(AddCategoryRequest request) throws ResourceExistsException, InvalidENUMException {
+    public void addCategory(AddUpdateCategoryRequest request) throws ResourceExistsException, InvalidValueException {
 
         try {
             boolean isPresentedName = categoryRepository.existsByName(request.getName());
@@ -54,7 +54,7 @@ public class CategoryService implements ICategoryService {
             Category category = new Category(request.getName(), questionType);
             categoryRepository.save(category);
         }catch (IllegalArgumentException e){
-            throw new InvalidENUMException("Invalid question type!");
+            throw new InvalidValueException("Invalid question type!");
         }
     }
 
@@ -65,7 +65,7 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public void updateCategory(AddCategoryRequest request, int id) throws ResourceNotFoundException, ResourceExistsException, InvalidENUMException {
+    public void updateCategory(AddUpdateCategoryRequest request, int id) throws ResourceNotFoundException, ResourceExistsException, InvalidValueException {
 
         Category category = getCategoryById(id);
 
@@ -79,7 +79,7 @@ public class CategoryService implements ICategoryService {
             category.setName(request.getName());
             categoryRepository.save(category);
         }catch (IllegalArgumentException e){
-            throw new InvalidENUMException("Invalid question type!");
+            throw new InvalidValueException("Invalid question type!");
         }
 
     }

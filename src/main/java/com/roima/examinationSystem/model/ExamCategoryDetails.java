@@ -1,5 +1,6 @@
 package com.roima.examinationSystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,5 +32,13 @@ public class ExamCategoryDetails {
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonBackReference
     private Exam exam;
+
+    public ExamCategoryDetails(Difficulty difficulty, int count, Category category, Exam exam) {
+        this.difficulty = difficulty;
+        this.count = count;
+        this.category = category;
+        this.exam = exam;
+    }
 }

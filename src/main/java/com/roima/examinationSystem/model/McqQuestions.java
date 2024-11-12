@@ -44,12 +44,7 @@ public class McqQuestions {
     @JsonBackReference
     private List<StudentMcqAnswer> studentMcqAnswer;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "mcq_questions_exams",
-            joinColumns = @JoinColumn(name = "mcq_questions_id"),
-            inverseJoinColumns = @JoinColumn(name = "exam_id")
-    )
+    @ManyToMany(mappedBy = "mcqQuestions")
     @JsonBackReference
     private List<Exam> exam;
 

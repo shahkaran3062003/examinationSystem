@@ -1,6 +1,6 @@
 package com.roima.examinationSystem.service.user;
 
-import com.roima.examinationSystem.exception.InvalidENUMException;
+import com.roima.examinationSystem.exception.InvalidValueException;
 import com.roima.examinationSystem.exception.ResourceExistsException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.model.Role;
@@ -25,7 +25,7 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public void addUser(AddUserRequest request) throws InvalidENUMException,ResourceExistsException {
+    public void addUser(AddUserRequest request) throws InvalidValueException,ResourceExistsException {
 
         try {
             boolean isUserPresent = userRepository.existsByEmail(request.getEmail());
@@ -39,13 +39,13 @@ public class UserService implements IUserService{
                     Role.valueOf(request.getRole()));
             userRepository.save(newUser);
         }catch (IllegalArgumentException e){
-            throw new InvalidENUMException("Invalid user role!");
+            throw new InvalidValueException("Invalid user role!");
         }
 
     }
 
     @Override
-    public void updateUser(UpdateUserRequest request, int userId) throws InvalidENUMException, ResourceNotFoundException {
+    public void updateUser(UpdateUserRequest request, int userId) throws InvalidValueException, ResourceNotFoundException {
 
 
         try {
@@ -61,7 +61,7 @@ public class UserService implements IUserService{
         } catch (ResourceNotFoundException  e) {
             throw e;
         } catch(IllegalArgumentException e){
-            throw new InvalidENUMException("Invalid user role!");
+            throw new InvalidValueException("Invalid user role!");
         }
 
     }
@@ -95,12 +95,12 @@ public class UserService implements IUserService{
     }
 
     @Override
-    public List<User> getUsersByRole(String role) throws InvalidENUMException {
+    public List<User> getUsersByRole(String role) throws InvalidValueException {
         try {
             Role erole = Role.valueOf(role);
             return userRepository.findByRole(erole);
         }catch (IllegalArgumentException e){
-            throw new InvalidENUMException("Invalid user role!");
+            throw new InvalidValueException("Invalid user role!");
         }
     }
 

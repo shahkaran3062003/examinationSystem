@@ -1,7 +1,6 @@
 package com.roima.examinationSystem.service.mcqQuestions;
 
-import com.roima.examinationSystem.exception.InvalidENUMException;
-import com.roima.examinationSystem.exception.InvalidNumberException;
+import com.roima.examinationSystem.exception.InvalidValueException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.model.*;
 import com.roima.examinationSystem.repository.CategoryRepository;
@@ -29,7 +28,7 @@ public class McqQuestionsService implements IMcqQuestionsService {
     private final McqOptionsRepository mcqOptionsRepository;
 
     @Override
-    public void addMcqQuestions(AddMcqQuestionRequest request) throws ResourceNotFoundException, InvalidENUMException,InvalidNumberException {
+    public void addMcqQuestions(AddMcqQuestionRequest request) throws ResourceNotFoundException, InvalidValueException {
 
         try{
             Category category = categoryRepository.findByName(request.getCategory());
@@ -40,7 +39,7 @@ public class McqQuestionsService implements IMcqQuestionsService {
             Difficulty difficulty = Difficulty.valueOf(request.getDifficulty());
 
             if (request.getCorrect_option() > request.getOptions().size()) {
-                throw new InvalidNumberException("Correct option is greater than the number of options!");
+                throw new InvalidValueException("Correct option is greater than the number of options!");
             }
 
             // TODO check image name already exists
@@ -83,13 +82,13 @@ public class McqQuestionsService implements IMcqQuestionsService {
 
 
         } catch (IllegalArgumentException e) {
-            throw new InvalidENUMException("Invalid difficulty!");
+            throw new InvalidValueException("Invalid difficulty!");
         }
 
     }
 
     @Override
-    public void updateMcqQuestions(UpdateMcqQuestionRequest request, int id) throws ResourceNotFoundException, InvalidENUMException,InvalidNumberException {
+    public void updateMcqQuestions(UpdateMcqQuestionRequest request, int id) throws ResourceNotFoundException, InvalidValueException {
 
 
 //        TODO add feature to update image
@@ -100,7 +99,7 @@ public class McqQuestionsService implements IMcqQuestionsService {
             Difficulty difficulty = Difficulty.valueOf(request.getDifficulty());
 
             if(request.getCorrect_option() > request.getOptions().size()) {
-                throw new InvalidNumberException("Correct option is greater than the number of options!");
+                throw new InvalidValueException("Correct option is greater than the number of options!");
             }
 
             int i=0;
@@ -117,7 +116,7 @@ public class McqQuestionsService implements IMcqQuestionsService {
             mcqQuestions.setCorrect_option(request.getCorrect_option());
             mcqQuestionsRepository.save(mcqQuestions);
         } catch (IllegalArgumentException e) {
-            throw new InvalidENUMException("Invalid difficulty!");
+            throw new InvalidValueException("Invalid difficulty!");
         }
 
     }
@@ -151,30 +150,30 @@ public class McqQuestionsService implements IMcqQuestionsService {
     }
 
     @Override
-    public List<McqQuestions> getAllMcqQuestionsByDifficulty(String difficulty) throws InvalidENUMException {
+    public List<McqQuestions> getAllMcqQuestionsByDifficulty(String difficulty) throws InvalidValueException {
         try {
             Difficulty difficultyE = Difficulty.valueOf(difficulty);
             return mcqQuestionsRepository.findAllByDifficulty(difficultyE);
         }catch (IllegalArgumentException e){
-            throw new InvalidENUMException("Invalid difficulty!");
+            throw new InvalidValueException("Invalid difficulty!");
         }
     }
 
     @Override
-    public List<McqQuestions> getAllMcqQuestionsByDifficultyAndCategory(String difficulty, int category_id) throws InvalidENUMException, ResourceNotFoundException {
+    public List<McqQuestions> getAllMcqQuestionsByDifficultyAndCategory(String difficulty, int category_id) throws InvalidValueException, ResourceNotFoundException {
         try{
             Difficulty difficultyE = Difficulty.valueOf(difficulty);
             Category category = categoryRepository.findById(category_id).orElseThrow(()-> new ResourceNotFoundException("Category not found!"));
             return mcqQuestionsRepository.findAllByDifficultyAndCategory(difficultyE, category);
         }catch(IllegalArgumentException e){
-            throw new InvalidENUMException("Invalid difficulty!");
+            throw new InvalidValueException("Invalid difficulty!");
         } catch (ResourceNotFoundException e) {
             throw e;
         }
     }
 
     @Override
-    public List<McqQuestions> getRandomMcqQuestionsByDifficultyAndCategory(String difficulty, int category_id, int number) throws InvalidENUMException, ResourceNotFoundException, InvalidNumberException {
+    public List<McqQuestions> getRandomMcqQuestionsByDifficultyAndCategory(String difficulty, int category_id, int number) throws InvalidValueException, ResourceNotFoundException {
 
         try {
             Category category = categoryRepository.findById(category_id).orElseThrow(() -> new ResourceNotFoundException("Category not found!"));
@@ -182,7 +181,7 @@ public class McqQuestionsService implements IMcqQuestionsService {
             int total_count = mcqQuestionsRepository.countAllByDifficultyAndCategory(difficultyE, category);
 
             if (number > total_count) {
-                throw new InvalidNumberException("Number is greater than the total number of questions!");
+                throw new InvalidValueException("Number is greater than the total number of questions!");
             }
 
             List<McqQuestions> mcqQuestions = mcqQuestionsRepository.findAllByDifficultyAndCategory(difficultyE, category);
@@ -194,9 +193,9 @@ public class McqQuestionsService implements IMcqQuestionsService {
 
 
         }catch (IllegalArgumentException e){
-            throw new InvalidENUMException("Invalid difficulty!");
+            throw new InvalidValueException("Invalid difficulty!");
         }catch (IndexOutOfBoundsException e){
-            throw new InvalidNumberException("Number is greater than the total number of questions!");
+            throw new InvalidValueException("Number is greater than the total number of questions!");
         }
     }
 }

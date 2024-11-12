@@ -1,7 +1,7 @@
 package com.roima.examinationSystem.controller;
 
 
-import com.roima.examinationSystem.exception.InvalidENUMException;
+import com.roima.examinationSystem.exception.InvalidValueException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.request.AddProgrammingQuestionsRequest;
 import com.roima.examinationSystem.request.UpdateProgrammingQuestionsRequest;
@@ -55,7 +55,7 @@ public class ProgrammingQuestionsController {
     public ResponseEntity<ApiResponse> getProgrammingQuestionsByDifficulty(@RequestParam(name = "difficulty") String difficulty){
         try{
             return ResponseEntity.ok(new ApiResponse("success", programmingQuestionsService.getAllProgrammingQuestionsByDifficulty(difficulty)));
-        } catch (InvalidENUMException e) {
+        } catch (InvalidValueException e) {
             return ResponseEntity.badRequest().body(new ApiResponse("error", e.getMessage()));
         }
     }
@@ -64,7 +64,7 @@ public class ProgrammingQuestionsController {
     public ResponseEntity<ApiResponse> getProgrammingQuestionsByCategoryAndDifficulty(@RequestParam("category") int category, @RequestParam("difficulty") String difficulty) {
         try{
             return ResponseEntity.ok(new ApiResponse("success", programmingQuestionsService.getAllProgrammingQuestionsByDifficultyAndCategory(difficulty,category)));
-        }catch (ResourceNotFoundException | InvalidENUMException e) {
+        }catch (ResourceNotFoundException | InvalidValueException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
     }
@@ -74,7 +74,7 @@ public class ProgrammingQuestionsController {
         try{
             programmingQuestionsService.addProgrammingQuestions(request);
             return ResponseEntity.ok(new ApiResponse("success", "Programming Question added successfully!"));
-        } catch (InvalidENUMException | ResourceNotFoundException e) {
+        } catch (InvalidValueException | ResourceNotFoundException e) {
             return ResponseEntity.badRequest().body(new ApiResponse("error",e.getMessage()));
         }
     }
@@ -85,7 +85,7 @@ public class ProgrammingQuestionsController {
         try{
             programmingQuestionsService.updateProgrammingQuestions(request,id);
             return ResponseEntity.ok(new ApiResponse("success", "Programming Question updated successfully!"));
-        }catch(InvalidENUMException | ResourceNotFoundException e){
+        }catch(InvalidValueException | ResourceNotFoundException e){
             return ResponseEntity.badRequest().body(new ApiResponse("error",e.getMessage()));
         }
     }

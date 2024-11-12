@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddCategoryRequest {
+public class AddUpdateCategoryRequest {
 
     @NotNull
     @NotBlank
