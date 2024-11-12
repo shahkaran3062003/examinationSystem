@@ -5,13 +5,14 @@ import com.roima.examinationSystem.exception.InvalidNumberException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.model.McqQuestions;
 import com.roima.examinationSystem.request.AddMcqQuestionRequest;
+import com.roima.examinationSystem.request.UpdateMcqQuestionRequest;
 
 import java.util.List;
 
 public interface IMcqQuestionsService {
 
     void addMcqQuestions(AddMcqQuestionRequest mcqQuestions) throws ResourceNotFoundException, InvalidENUMException,InvalidNumberException;
-    void updateMcqQuestions(AddMcqQuestionRequest mcqQuestions, int id) throws ResourceNotFoundException, InvalidENUMException,InvalidNumberException;
+    void updateMcqQuestions(UpdateMcqQuestionRequest mcqQuestions, int id) throws ResourceNotFoundException, InvalidENUMException,InvalidNumberException;
     void deleteMcqQuestions(int id) throws ResourceNotFoundException;
 
     List<McqQuestions> getAllMcqQuestions();

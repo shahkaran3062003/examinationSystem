@@ -2,9 +2,6 @@ package com.roima.examinationSystem.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,6 +45,11 @@ public class McqQuestions {
     private List<StudentMcqAnswer> studentMcqAnswer;
 
     @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "mcq_questions_exams",
+            joinColumns = @JoinColumn(name = "mcq_questions_id"),
+            inverseJoinColumns = @JoinColumn(name = "exam_id")
+    )
     @JsonBackReference
     private List<Exam> exam;
 
@@ -58,7 +60,7 @@ public class McqQuestions {
         this.category = category;
     }
 
-    public McqQuestions(String question, Difficulty difficulty, int correctOption,  Category category, String image) {
+    public McqQuestions(String question, Difficulty difficulty, int correctOption, Category category, String image) {
         this.question = question;
         this.difficulty = difficulty;
         this.correct_option = correctOption;

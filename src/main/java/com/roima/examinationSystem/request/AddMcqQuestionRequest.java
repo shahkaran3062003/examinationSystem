@@ -1,11 +1,6 @@
 package com.roima.examinationSystem.request;
 
 import com.roima.examinationSystem.customValidators.ValidList;
-import com.roima.examinationSystem.model.Category;
-import com.roima.examinationSystem.model.Difficulty;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,8 +28,8 @@ public class AddMcqQuestionRequest {
     private int correct_option;
 
     @NotNull
-    @Min(1)
-    private int category_id;
+    @NotBlank
+    private String category;
 
     private String image;
 
@@ -43,11 +38,11 @@ public class AddMcqQuestionRequest {
     private List<String> options;
 
 
-    public AddMcqQuestionRequest(String question, String difficulty, int correct_option, List<String> options,int category_id) {
+    public AddMcqQuestionRequest(String question, String difficulty, int correct_option, List<String> options,String category) {
         this.question = question;
         this.difficulty = difficulty;
         this.correct_option = correct_option;
         this.options = options;
-        this.category_id = category_id;
+        this.category = category;
     }
 }

@@ -16,6 +16,8 @@ public class ListValidator implements ConstraintValidator<ValidList, Object> {
         if (value instanceof List) {
             List<?> list = (List<?>) value;
 
+            System.out.println("Woring....");
+
             for (Object item : list) {
                 if (!(item instanceof String)) {
                     return false;

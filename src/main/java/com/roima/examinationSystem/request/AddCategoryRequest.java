@@ -14,4 +14,8 @@ public class AddCategoryRequest {
     @NotNull
     @NotBlank
     private String name;
+
+    @NotNull
+    @NotBlank
+    private String questionType;
 }

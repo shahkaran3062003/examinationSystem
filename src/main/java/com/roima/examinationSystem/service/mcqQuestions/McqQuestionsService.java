@@ -3,14 +3,13 @@ package com.roima.examinationSystem.service.mcqQuestions;
 import com.roima.examinationSystem.exception.InvalidENUMException;
 import com.roima.examinationSystem.exception.InvalidNumberException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
-import com.roima.examinationSystem.model.Category;
-import com.roima.examinationSystem.model.Difficulty;
-import com.roima.examinationSystem.model.McqOptions;
-import com.roima.examinationSystem.model.McqQuestions;
+import com.roima.examinationSystem.model.*;
 import com.roima.examinationSystem.repository.CategoryRepository;
 import com.roima.examinationSystem.repository.McqOptionsRepository;
 import com.roima.examinationSystem.request.AddMcqQuestionRequest;
 import com.roima.examinationSystem.repository.McqQuestionsRepository;
+import com.roima.examinationSystem.request.UpdateMcqOptionRequest;
+import com.roima.examinationSystem.request.UpdateMcqQuestionRequest;
 import com.roima.examinationSystem.service.mcqOptions.McqOptionsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,7 +32,11 @@ public class McqQuestionsService implements IMcqQuestionsService {
     public void addMcqQuestions(AddMcqQuestionRequest request) throws ResourceNotFoundException, InvalidENUMException,InvalidNumberException {
 
         try{
-            Category category = categoryRepository.findById(request.getCategory_id()).orElseThrow(()-> new ResourceNotFoundException("Category not found!"));
+            Category category = categoryRepository.findByName(request.getCategory());
+            if(category==null){
+                category = new Category(request.getCategory(), QuestionType.MCQ);
+                categoryRepository.save(category);
+            }
             Difficulty difficulty = Difficulty.valueOf(request.getDifficulty());
 
             if (request.getCorrect_option() > request.getOptions().size()) {
@@ -86,7 +89,7 @@ public class McqQuestionsService implements IMcqQuestionsService {
     }
 
     @Override
-    public void updateMcqQuestions(AddMcqQuestionRequest request, int id) throws ResourceNotFoundException, InvalidENUMException,InvalidNumberException {
+    public void updateMcqQuestions(UpdateMcqQuestionRequest request, int id) throws ResourceNotFoundException, InvalidENUMException,InvalidNumberException {
 
 
 //        TODO add feature to update image
@@ -101,8 +104,10 @@ public class McqQuestionsService implements IMcqQuestionsService {
             }
 
             int i=0;
-            for(McqOptions option: mcqQuestions.getMcqOptions()){
-                option.setText(request.getOptions().get(i));
+            for(UpdateMcqOptionRequest option: request.getOptions()){
+                McqOptions options = mcqOptionsRepository.findById(option.getId()).orElseThrow(()-> new ResourceNotFoundException("Mcq Option not found!"));
+                options.setText(option.getText());
+                mcqOptionsRepository.save(options);
                 i++;
             }
 
@@ -155,7 +160,7 @@ public class McqQuestionsService implements IMcqQuestionsService {
         try{
             Difficulty difficultyE = Difficulty.valueOf(difficulty);
             Category category = categoryRepository.findById(category_id).orElseThrow(()-> new ResourceNotFoundException("Category not found!"));
-            return mcqQuestionsRepository.findAllByDifficultyAndCategory(difficultyE,category);
+            return mcqQuestionsRepository.findAllByDifficultyAndCategory(difficultyE, category);
         }catch(IllegalArgumentException e){
             throw new InvalidENUMException("Invalid difficulty!");
         } catch (ResourceNotFoundException e) {

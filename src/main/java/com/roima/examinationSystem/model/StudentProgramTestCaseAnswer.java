@@ -23,6 +23,7 @@ public class StudentProgramTestCaseAnswer {
 
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private ProgrammingTestCase programmingTestCase;
 
 

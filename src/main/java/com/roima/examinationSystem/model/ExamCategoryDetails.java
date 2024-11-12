@@ -13,7 +13,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class ExamMcqCategory {
+public class ExamCategoryDetails {
 
 
     @Id
