@@ -1,5 +1,6 @@
 package com.roima.examinationSystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,13 +25,18 @@ public class StudentProgrammingAnswer {
     @Column(length = 2000)
     private String submittedCode;
 
-    private int passTestCount;
+    private int totalPassTestCount=0;
+    private int totalFailTestCount=0;
+
+    private boolean isSolved = false;
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonBackReference
     private Exam exam;
 
     @ManyToOne
+    @JsonBackReference
     private Student student;
 
     @ManyToOne
@@ -38,4 +44,13 @@ public class StudentProgrammingAnswer {
 
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true,mappedBy = "studentProgrammingAnswer")
     private List<StudentProgramTestCaseAnswer> studentProgramTestCaseAnswer;
+
+    public StudentProgrammingAnswer(String submittedCode, Exam exam, Student student, ProgrammingQuestions programmingQuestions) {
+        this.submittedCode = submittedCode;
+        this.exam = exam;
+        this.student = student;
+        this.programmingQuestions = programmingQuestions;
+    }
+
+
 }

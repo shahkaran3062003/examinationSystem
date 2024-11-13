@@ -1,5 +1,6 @@
 package com.roima.examinationSystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,11 +27,20 @@ public class StudentMcqAnswer {
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonBackReference
     private Exam exam;
 
     @ManyToOne
+    @JsonBackReference
     private Student student;
 
     @ManyToOne
     private McqQuestions mcqQuestions;
+
+    public StudentMcqAnswer(int selectedOption, Exam exam, Student student, McqQuestions mcqQuestions) {
+        this.selectedOption = selectedOption;
+        this.exam = exam;
+        this.student = student;
+        this.mcqQuestions = mcqQuestions;
+    }
 }

@@ -22,6 +22,14 @@ public class AddUpdateExamRequest {
     private String title;
 
     @NotNull
+    @NotBlank
+    private String description;
+
+    @NotNull
+    @NotBlank
+    private String instructions;
+
+    @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss",timezone = "Asia/Kolkata")
     private Date start_datetime;
 

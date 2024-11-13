@@ -74,6 +74,8 @@ public class ExamService implements IExamService {
                 throw new InvalidValueException("End date is before start date!");
             Exam exam = new Exam(
                     request.getTitle(),
+                    request.getDescription(),
+                    request.getInstructions(),
                     request.getTotalMcqQuestions(),
                     request.getTotalProgrammingQuestions(),
                     request.getStart_datetime(),
@@ -121,6 +123,8 @@ public class ExamService implements IExamService {
             Difficulty difficulty = Difficulty.valueOf(request.getDifficulty());
 
             exam.setTitle(request.getTitle());
+            exam.setDescription(request.getDescription());
+            exam.setInstructions(request.getInstructions());
             exam.setTotalMcqQuestions(request.getTotalMcqQuestions());
             exam.setTotalProgrammingQuestions(request.getTotalProgrammingQuestions());
             exam.setStart_datetime(request.getStart_datetime());

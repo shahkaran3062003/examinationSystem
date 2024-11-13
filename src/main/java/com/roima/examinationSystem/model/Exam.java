@@ -26,6 +26,10 @@ public class Exam {
     private int id;
 
     private String title;
+    private String description;
+    private String instructions;
+
+
     private int totalMcqQuestions;
     private int totalProgrammingQuestions;
 
@@ -79,8 +83,14 @@ public class Exam {
     @JsonBackReference
     private List<StudentProgrammingAnswer> studentProgrammingAnswer;
 
-    public Exam(String title, int totalMcqQuestions, int totalProgrammingQuestions, Date start_datetime, Date end_datetime,int duration, int passing_criteria,Difficulty difficulty, College college) {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "exam", orphanRemoval = true)
+    @JsonBackReference
+    private List<StudentExamDetails> studentExamDetails;
+
+    public Exam(String title,String description, String instructions, int totalMcqQuestions, int totalProgrammingQuestions, Date start_datetime, Date end_datetime,int duration, int passing_criteria,Difficulty difficulty, College college) {
         this.title = title;
+        this.description = description;
+        this.instructions = instructions;
         this.totalMcqQuestions = totalMcqQuestions;
         this.totalProgrammingQuestions = totalProgrammingQuestions;
         this.start_datetime = start_datetime;

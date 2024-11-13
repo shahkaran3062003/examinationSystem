@@ -5,9 +5,11 @@ import com.roima.examinationSystem.model.Difficulty;
 import com.roima.examinationSystem.model.McqQuestions;
 import com.roima.examinationSystem.model.QuestionType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface McqQuestionsRepository extends JpaRepository<McqQuestions,Integer> {
 
     List<McqQuestions> findAllByCategory(Category category);
