@@ -8,6 +8,7 @@ import com.roima.examinationSystem.request.AddUserRequest;
 import com.roima.examinationSystem.request.UpdateUserRequest;
 import com.roima.examinationSystem.response.ApiResponse;
 import com.roima.examinationSystem.service.user.IUserService;
+import com.roima.examinationSystem.service.userCollegeManagement.UserCollegeManagementService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,17 +21,20 @@ import java.util.List;
 @RequestMapping("${api.prefix}/user")
 public class UserController {
 
-    private final IUserService userService;
+    private final UserCollegeManagementService userCollegeManagementService;
+
+
+
     @GetMapping("/get/all")
     public ResponseEntity<ApiResponse> getAllUsers() {
-        return ResponseEntity.ok(new ApiResponse("success", userService.getAllUsers()));
+        return ResponseEntity.ok(new ApiResponse("success", userCollegeManagementService.getAllUsers()));
     }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse> getUserById(@PathVariable int id) {
 
         try {
-            User user = userService.getUserById(id);
+            User user = userCollegeManagementService.getUserById(id);
             return ResponseEntity.ok(new ApiResponse("success", user));
         }catch (ResourceNotFoundException e){
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
@@ -42,7 +46,7 @@ public class UserController {
     public ResponseEntity<ApiResponse> getUserByEmail(@RequestParam(name = "email") String email) {
 
         try {
-            User user = userService.getUserByEmail(email);
+            User user = userCollegeManagementService.getUserByEmail(email);
             return ResponseEntity.ok(new ApiResponse("success", user));
         }catch (ResourceNotFoundException e){
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
@@ -53,7 +57,7 @@ public class UserController {
     @GetMapping("get/role")
     public ResponseEntity<ApiResponse> getUsersByRole(@RequestParam(name = "role") String role) {
         try{
-            List<User> users = userService.getUsersByRole(role);
+            List<User> users = userCollegeManagementService.getUsersByRole(role);
             return ResponseEntity.ok(new ApiResponse("success", users));
         } catch (InvalidValueException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
@@ -63,7 +67,7 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> deleteUserById(@PathVariable int id) {
         try {
-            userService.deleteUserById(id);
+            userCollegeManagementService.deleteUserById(id);
             return ResponseEntity.ok(new ApiResponse("success", "User deleted successfully!"));
         }catch (Exception | ResourceNotFoundException e){
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
@@ -74,7 +78,7 @@ public class UserController {
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addUser(@RequestBody @Valid AddUserRequest request) {
         try {
-            userService.addUser(request);
+            userCollegeManagementService.addUser(request);
             return ResponseEntity.ok(new ApiResponse("success", "User added successfully!"));
         }catch (Exception | InvalidValueException | ResourceExistsException e){
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
@@ -85,7 +89,7 @@ public class UserController {
     @PutMapping("/update/{userId}")
     public ResponseEntity<ApiResponse> updateUser(@RequestBody @Valid UpdateUserRequest request, @PathVariable int userId) {
         try {
-            userService.updateUser(request,userId);
+            userCollegeManagementService.updateUser(request,userId);
             return ResponseEntity.ok(new ApiResponse("success", "User updated successfully!"));
         }  catch (InvalidValueException | ResourceNotFoundException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));

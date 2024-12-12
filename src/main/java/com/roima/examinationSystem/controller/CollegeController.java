@@ -8,6 +8,7 @@ import com.roima.examinationSystem.request.AddCollegeRequest;
 import com.roima.examinationSystem.request.UpdateCollegeRequest;
 import com.roima.examinationSystem.response.ApiResponse;
 import com.roima.examinationSystem.service.college.CollegeService;
+import com.roima.examinationSystem.service.userCollegeManagement.UserCollegeManagementService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,18 +20,18 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("${api.prefix}/college")
 public class CollegeController {
 
-    private final CollegeService collegeService;
+    private final UserCollegeManagementService userCollegeManagementService;
 
     @GetMapping("/get/all")
     public ResponseEntity<ApiResponse> getAllColleges() {
-            return ResponseEntity.ok(new ApiResponse("Success", collegeService.getConvertedDtoList(collegeService.getAllColleges())));
+            return ResponseEntity.ok(new ApiResponse("Success", userCollegeManagementService.getConvertedDtoList(userCollegeManagementService.getAllColleges())));
     }
 
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse> getCollegeById(@PathVariable int id) {
         try{
-            College college = collegeService.getCollegeById(id);
-            CollegeDto collegeDto = collegeService.convertToDto(college);
+            College college = userCollegeManagementService.getCollegeById(id);
+            CollegeDto collegeDto = userCollegeManagementService.convertToDto(college);
             return ResponseEntity.ok(new ApiResponse("Success", collegeDto));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("Error", e.getMessage()));
@@ -40,8 +41,8 @@ public class CollegeController {
     @GetMapping("/get/name")
     public ResponseEntity<ApiResponse> getCollegeByName(@RequestParam(name = "name") String name) {
         try{
-            College college = collegeService.getCollegeByName(name);
-            CollegeDto collegeDto = collegeService.convertToDto(college);
+            College college = userCollegeManagementService.getCollegeByName(name);
+            CollegeDto collegeDto = userCollegeManagementService.convertToDto(college);
             return ResponseEntity.ok(new ApiResponse("Success", collegeDto));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("Error", e.getMessage()));
@@ -52,7 +53,7 @@ public class CollegeController {
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addCollege(@RequestBody @Valid AddCollegeRequest request) {
         try{
-            collegeService.addCollege(request);
+            userCollegeManagementService.addCollege(request);
             return ResponseEntity.ok(new ApiResponse("Success", "College added successfully!"));
         } catch (ResourceExistsException  e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("Error", e.getMessage()));
@@ -64,7 +65,7 @@ public class CollegeController {
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse> updateCollege(@RequestBody @Valid UpdateCollegeRequest request, @PathVariable int id) {
         try{
-            collegeService.updateCollege(request, id);
+            userCollegeManagementService.updateCollege(request, id);
             return ResponseEntity.ok(new ApiResponse("Success", "College updated successfully!"));
 
         } catch (ResourceExistsException | ResourceNotFoundException e) {
@@ -75,7 +76,7 @@ public class CollegeController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> deleteCollege(@PathVariable int id) {
         try{
-            collegeService.deleteCollegeById(id);
+            userCollegeManagementService.deleteCollegeById(id);
             return ResponseEntity.ok(new ApiResponse("Success", "College deleted successfully!"));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("Error", e.getMessage()));

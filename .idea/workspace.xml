@@ -4,7 +4,102 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e770141f-7dc6-4504-9665-05e67707c434" name="Changes" comment="add new model to store each student's exam statistics. create endpoints to submit,change,clear mcq answers. create endpoints to submit code." />
+    <list default="true" id="e770141f-7dc6-4504-9665-05e67707c434" name="Changes" comment="update readme file.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/examManagement/ExamManagementService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/examManagement/IExamManagementService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/questionManagement/IQuestionManagementService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/questionManagement/QuestionManagementService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/studentManagement/IStudentManagementService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/studentManagement/StudentManagementService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/userCollegeManagement/IUserCollegeManagementService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/userCollegeManagement/UserCollegeManagementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_08-11-2024_21_02_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_08-11-2024_21_02__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/CategoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/CategoryController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/CollegeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/CollegeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/ExamCategoryDetailsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/ExamCategoryDetailsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/ExamController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/ExamController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/McqOptionsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/McqOptionsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/McqQuestionsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/McqQuestionsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/ProgrammingQuestionsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/ProgrammingQuestionsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/ProgrammingTestCaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/ProgrammingTestCaseController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/StudentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/StudentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/StudentExamDetailsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/StudentExamDetailsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/StudentMcqAnswerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/StudentMcqAnswerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/StudentProgrammingAnswerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/StudentProgrammingAnswerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/examMcqDetails/ExamMcqDetailsService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/examMcqDetails/IExamMcqDetailsService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/ExaminationSystemApplication.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/CategoryController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/CategoryController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/CollegeController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/ExamCategoryDetailsController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/ExamController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/McqOptionsController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/McqQuestionsController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/ProgrammingQuestionsController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/ProgrammingTestCaseController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/StudentController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/StudentExamDetailsController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/StudentMcqAnswerController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/StudentProgrammingAnswerController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/controller/UserController.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/customValidators/ListValidator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/customValidators/ValidList.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/dto/CollegeDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/dto/StudentDto.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/exception/GlobalExceptionHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/CollegeRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/ExamCategoryDetailsRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/ExamRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/StudentExamDetailsRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/StudentMcqAnswerRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/StudentProgrammingAnswerRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/StudentRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/UserRepository.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/AddCollegeRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/AddDeleteExamMcqQuestionsRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/AddDeleteExamProgrammingQuestionsRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/AddStudentMcqAnswerRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/AddStudentProgrammingAnswerRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/AddStudentRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/AddUpdateExamCategoryDetailsRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/AddUpdateExamRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/AddUserRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/UpdateCollegeRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/UpdateStudentRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/UpdateUserRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/category/CategoryService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/category/ICategoryService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/college/CollegeService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/college/ICollegeService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/exam/ExamService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/exam/IExamService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/examCategoryDetails/ExamCategoryDetailsService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/examCategoryDetails/IExamCategoryDetailsService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/examMcqDetails/ExamMcqDetailsService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/examMcqDetails/IExamMcqDetailsService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/mcqOptions/IMcqOptionsService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/mcqOptions/McqOptionsService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/mcqQuestions/IMcqQuestionsService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/mcqQuestions/McqQuestionsService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/programmingQuestions/IProgrammingQuestionsService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/programmingQuestions/ProgrammingQuestionsService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/programmingTestCase/IProgrammingTestCaseService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/programmingTestCase/ProgrammingTestCaseService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/student/IStudentService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/student/StudentService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/studentExamDetails/IStudentExamDetailsService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/studentExamDetails/StudentExamDetailsService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/studentMcqAnswer/IStudentMcqAnswerService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/studentMcqAnswer/StudentMcqAnswerService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/studentProgrammingAnswer/IStudentProgrammingAnswerService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/studentProgrammingAnswer/StudentProgrammingAnswerService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/user/IUserService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/service/user/UserService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/com/roima/examinationSystem/ExaminationSystemApplicationTests.class" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -209,7 +304,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731521556152</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="update readme file.">
+      <option name="closed" value="true" />
+      <created>1731682446547</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1731682446547</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -236,6 +339,7 @@
     <MESSAGE value="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;target/classes/com/roima/examinationSystem/model/ExamCategoryDetails.class" />
     <MESSAGE value="modify exam entity and add overall difficulty for exam entity. add endpoints to CRUD exam, CRUD exam category vise details, CRUD mcq questions to exam, CRUD programming questions to exam." />
     <MESSAGE value="add new model to store each student's exam statistics. create endpoints to submit,change,clear mcq answers. create endpoints to submit code." />
-    <option name="LAST_COMMIT_MESSAGE" value="add new model to store each student's exam statistics. create endpoints to submit,change,clear mcq answers. create endpoints to submit code." />
+    <MESSAGE value="update readme file." />
+    <option name="LAST_COMMIT_MESSAGE" value="update readme file." />
   </component>
 </project>
