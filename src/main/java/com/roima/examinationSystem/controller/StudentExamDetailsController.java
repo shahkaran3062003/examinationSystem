@@ -3,7 +3,7 @@ package com.roima.examinationSystem.controller;
 
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.response.ApiResponse;
-import com.roima.examinationSystem.service.studentExamDetails.StudentExamDetailsService;
+import com.roima.examinationSystem.service.studentManagement.StudentManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,17 +17,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("${api.prefix}/student-exam-details")
 public class StudentExamDetailsController {
 
-    private final StudentExamDetailsService studentExamDetailsService;
+    private final StudentManagementService studentManagementService;
 
     @GetMapping("/get/all/student/{id}")
     public ResponseEntity<ApiResponse> getAllStudentExamDetailsByStudentId(@PathVariable int id) {
-        return ResponseEntity.ok(new ApiResponse("success", studentExamDetailsService.getAllStudentExamDetailsByStudentId(id)));
+        return ResponseEntity.ok(new ApiResponse("success", studentManagementService.getAllStudentExamDetailsByStudentId(id)));
     }
 
     @GetMapping("/get/student/{studentId}/exam/{examId}")
     public ResponseEntity<ApiResponse> getStudentExamDetailsByStudentIdAndExamId(@PathVariable int studentId, @PathVariable int examId) {
         try {
-            return ResponseEntity.ok(new ApiResponse("success", studentExamDetailsService.getStudentExamDetailsByStudentIdAndExamId(studentId, examId)));
+            return ResponseEntity.ok(new ApiResponse("success", studentManagementService.getStudentExamDetailsByStudentIdAndExamId(studentId, examId)));
         }catch (ResourceNotFoundException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
@@ -35,6 +35,6 @@ public class StudentExamDetailsController {
 
     @GetMapping("/get/all/exam/{id}")
     public ResponseEntity<ApiResponse> getAllStudentExamDetailsByExamId(@PathVariable int id) {
-        return ResponseEntity.ok(new ApiResponse("success", studentExamDetailsService.getAllStudentExamDetailsByExamId(id)));
+        return ResponseEntity.ok(new ApiResponse("success", studentManagementService.getAllStudentExamDetailsByExamId(id)));
     }
 }

@@ -2,10 +2,9 @@ package com.roima.examinationSystem.controller;
 
 
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
-import com.roima.examinationSystem.model.StudentMcqAnswer;
 import com.roima.examinationSystem.request.AddStudentMcqAnswerRequest;
 import com.roima.examinationSystem.response.ApiResponse;
-import com.roima.examinationSystem.service.studentMcqAnswer.StudentMcqAnswerService;
+import com.roima.examinationSystem.service.studentManagement.StudentManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,13 +15,13 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("${api.prefix}/student-mcq-answer")
 public class StudentMcqAnswerController {
 
-    private final StudentMcqAnswerService studentMcqAnswerService;
+    private final StudentManagementService studentManagementService;
 
 
     @GetMapping("get/all/student/{studentId}")
     public ResponseEntity<ApiResponse> getAllMcqAnswerByStudentId(@PathVariable int studentId) {
         try {
-            return ResponseEntity.ok(new ApiResponse("success", studentMcqAnswerService.getStudentMcqAnswerByStudentId(studentId)));
+            return ResponseEntity.ok(new ApiResponse("success", studentManagementService.getStudentMcqAnswerByStudentId(studentId)));
         }catch (ResourceNotFoundException e){
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
@@ -32,7 +31,7 @@ public class StudentMcqAnswerController {
     @GetMapping("get/{id}")
     public ResponseEntity<ApiResponse> getMcqAnswerById(@PathVariable int id) {
         try {
-            return ResponseEntity.ok(new ApiResponse("success", studentMcqAnswerService.getStudentMcqAnswerById(id)));
+            return ResponseEntity.ok(new ApiResponse("success", studentManagementService.getStudentMcqAnswerById(id)));
         }catch (ResourceNotFoundException e){
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
@@ -42,7 +41,7 @@ public class StudentMcqAnswerController {
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addMcqAnswer(@RequestBody AddStudentMcqAnswerRequest request) {
         try {
-            studentMcqAnswerService.addStudentMcqAnswer(request);
+            studentManagementService.addStudentMcqAnswer(request);
             return ResponseEntity.ok(new ApiResponse("success","Mcq Answer added successfully" ));
         }catch (ResourceNotFoundException e){
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
@@ -52,7 +51,7 @@ public class StudentMcqAnswerController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> deleteMcqAnswer(@PathVariable int id) {
         try {
-            studentMcqAnswerService.deleteStudentMcqAnswerById(id);
+            studentManagementService.deleteStudentMcqAnswerById(id);
             return ResponseEntity.ok(new ApiResponse("success","Mcq Answer deleted successfully" ));
         }catch (ResourceNotFoundException e){
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));

@@ -6,7 +6,7 @@ import com.roima.examinationSystem.exception.ResourceExistsException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.request.AddUpdateCategoryRequest;
 import com.roima.examinationSystem.response.ApiResponse;
-import com.roima.examinationSystem.service.Category.CategoryService;
+import com.roima.examinationSystem.service.questionManagement.QuestionManagementService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,18 +16,19 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("${api.prefix}/category")
 public class CategoryController {
-    private final CategoryService CategoryService;
+
+    private final QuestionManagementService questionManagementService;
 
 
     @GetMapping("/get/all")
     public ResponseEntity<ApiResponse> getAllCategories() {
-        return ResponseEntity.ok(new ApiResponse("success", CategoryService.getAllCategories()));
+        return ResponseEntity.ok(new ApiResponse("success", questionManagementService.getAllCategories()));
     }
 
     @GetMapping("/get/all/questionType")
     public ResponseEntity<ApiResponse> getAllQuestionTypes(@RequestParam("questionType") String questionType) {
         try {
-            return ResponseEntity.ok(new ApiResponse("success", CategoryService.getAllCategoriesByQuestionType(questionType)));
+            return ResponseEntity.ok(new ApiResponse("success", questionManagementService.getAllCategoriesByQuestionType(questionType)));
         }catch(InvalidValueException e){
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
@@ -37,7 +38,7 @@ public class CategoryController {
     @GetMapping("/get/{id}")
     public ResponseEntity<ApiResponse> getCategoryById(@PathVariable int id) {
         try {
-            return ResponseEntity.ok(new ApiResponse("success", CategoryService.getCategoryById(id)));
+            return ResponseEntity.ok(new ApiResponse("success", questionManagementService.getCategoryById(id)));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
@@ -46,7 +47,7 @@ public class CategoryController {
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addCategory(@RequestBody @Valid AddUpdateCategoryRequest request) {
         try{
-            CategoryService.addCategory(request);
+            questionManagementService.addCategory(request);
             return ResponseEntity.ok(new ApiResponse("success", "Category added successfully!"));
         } catch (ResourceExistsException | InvalidValueException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
@@ -56,7 +57,7 @@ public class CategoryController {
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse> updateCategory(@RequestBody @Valid AddUpdateCategoryRequest request, @PathVariable int id) {
         try{
-            CategoryService.updateCategory(request, id);
+            questionManagementService.updateCategory(request, id);
             return ResponseEntity.ok(new ApiResponse("success", "Category updated successfully!"));
         } catch (ResourceNotFoundException | ResourceExistsException | InvalidValueException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
@@ -66,7 +67,7 @@ public class CategoryController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> deleteCategory(@PathVariable int id) {
         try{
-            CategoryService.deleteCategoryById(id);
+            questionManagementService.deleteCategoryById(id);
             return ResponseEntity.ok(new ApiResponse("success", "Category deleted successfully!"));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
