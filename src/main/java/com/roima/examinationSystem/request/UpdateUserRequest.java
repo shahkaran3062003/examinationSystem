@@ -13,7 +13,7 @@ public class UpdateUserRequest {
 
     @NotNull
     @NotBlank
-    private String username;
+    private String fullName;
 
     @NotNull
     @NotBlank
@@ -28,8 +28,8 @@ public class UpdateUserRequest {
     @NotBlank
     private String role;
 
-    public UpdateUserRequest(String username, String email, String password, String role) {
-        this.username = username;
+    public UpdateUserRequest(String fullName, String email, String password, String role) {
+        this.fullName = fullName;
         this.email = email;
         this.password = password;
         this.role = role;

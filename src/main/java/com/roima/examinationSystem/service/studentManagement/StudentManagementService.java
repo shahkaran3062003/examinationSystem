@@ -51,13 +51,7 @@ public class StudentManagementService implements IStudentManagementService {
 
     @Override
     public Student getStudentByEmail(String email) throws ResourceNotFoundException {
-        Student student =  studentRepository.findByUserEmail(email);
-
-        if(student == null)
-        {
-            throw new ResourceNotFoundException("Student not found!");
-        }
-        return student;
+        return studentRepository.findByUserEmail(email).orElseThrow(()-> new ResourceNotFoundException("Student not found!"));
     }
 
     @Override
@@ -86,7 +80,7 @@ public class StudentManagementService implements IStudentManagementService {
             throw new ResourceExistsException("User already exists!");
         }
 
-        oldUser.setUsername(request.getUsername());
+        oldUser.setFullName(request.getFullName());
         oldUser.setEmail(request.getEmail());
         oldUser.setPassword(request.getPassword());
 

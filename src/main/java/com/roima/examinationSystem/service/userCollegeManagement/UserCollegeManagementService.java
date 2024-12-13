@@ -44,7 +44,7 @@ public class UserCollegeManagementService implements IUserCollegeManagementServi
                 throw new ResourceExistsException("User already exists!");
             }
             User newUser = new User(
-                    request.getUsername(),
+                    request.getFullName(),
                     request.getEmail(),
                     request.getPassword(),
                     Role.valueOf(request.getRole()));
@@ -65,12 +65,10 @@ public class UserCollegeManagementService implements IUserCollegeManagementServi
             Role role = Role.valueOf(request.getRole());
 
             user.setEmail(request.getEmail());
-            user.setUsername(request.getUsername());
+            user.setFullName(request.getFullName());
             user.setPassword(request.getPassword());
             user.setRole(role);
             userRepository.save(user);
-        } catch (ResourceNotFoundException  e) {
-            throw e;
         } catch(IllegalArgumentException e){
             throw new InvalidValueException("Invalid user role!");
         }
@@ -80,13 +78,8 @@ public class UserCollegeManagementService implements IUserCollegeManagementServi
     @Override
     public void deleteUserById(int id) throws ResourceNotFoundException {
 
-        try
-        {
-            User user = getUserById(id);
-            userRepository.delete(user);
-        } catch (ResourceNotFoundException e) {
-            throw e;
-        }
+        User user = getUserById(id);
+        userRepository.delete(user);
     }
 
     @Override
@@ -96,12 +89,7 @@ public class UserCollegeManagementService implements IUserCollegeManagementServi
 
     @Override
     public User getUserByEmail(String email) throws ResourceNotFoundException {
-        User user = userRepository.findByEmail(email);
-        if(user == null){
-            throw new ResourceNotFoundException("User not found!");
-        }else {
-            return userRepository.findByEmail(email);
-        }
+        return userRepository.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("User not found!"));
 
     }
 
@@ -131,13 +119,7 @@ public class UserCollegeManagementService implements IUserCollegeManagementServi
     @Override
     public College getCollegeByName(String name) throws ResourceNotFoundException {
 
-        College college = collegeRepository.findByName(name);
-
-        if(college== null){
-            throw new ResourceNotFoundException("College not found!");
-        }else{
-            return college;
-        }
+        return collegeRepository.findByName(name).orElseThrow(()->new ResourceNotFoundException("College not found!"));
     }
 
     @Override

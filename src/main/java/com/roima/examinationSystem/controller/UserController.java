@@ -11,6 +11,7 @@ import com.roima.examinationSystem.service.userCollegeManagement.UserCollegeMana
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class UserController {
 
 
     @GetMapping("/get/all")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse> getAllUsers() {
         return ResponseEntity.ok(new ApiResponse("success", userCollegeManagementService.getAllUsers()));
     }

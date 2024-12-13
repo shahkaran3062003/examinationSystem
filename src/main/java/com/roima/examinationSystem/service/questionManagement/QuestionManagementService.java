@@ -6,7 +6,6 @@ import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.model.*;
 import com.roima.examinationSystem.repository.*;
 import com.roima.examinationSystem.request.*;
-import com.roima.examinationSystem.service.mcqOptions.McqOptionsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -232,8 +231,6 @@ public class QuestionManagementService implements IQuestionManagementService {
             return mcqQuestionsRepository.findAllByDifficultyAndCategory(difficultyE, category);
         }catch(IllegalArgumentException e){
             throw new InvalidValueException("Invalid difficulty!");
-        } catch (ResourceNotFoundException e) {
-            throw e;
         }
     }
 

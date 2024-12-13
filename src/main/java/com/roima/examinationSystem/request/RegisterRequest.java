@@ -1,38 +1,35 @@
 package com.roima.examinationSystem.request;
 
+
 import com.roima.examinationSystem.model.Role;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
-
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
-public class AddUserRequest {
+public class RegisterRequest {
 
     @NotNull
     @NotBlank
+    private String username;
 
-    private String fullName;
-
-    @NotNull
-    @NotBlank
-    @Email
+    @Email(message = "Invalid email address")
     private String email;
 
-    @NotNull
     @NotBlank
+    @NotNull
     private String password;
 
-    @NotNull
     @NotBlank
+    @NotNull
     private String role;
 
-    public AddUserRequest(String fullName, String email, String password, String role) {
-        this.fullName = fullName;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
 }

@@ -57,7 +57,7 @@ public class AddStudentRequest {
 
     @NotNull
     @NotBlank
-    private String username;
+    private String fullName;
 
     @NotNull
     @NotBlank
@@ -73,7 +73,7 @@ public class AddStudentRequest {
     private int college_id;
 
 
-    public AddStudentRequest(String name,String contact, BigInteger enrollment_number, int year, int semester, float cgpa, int backlog, String department , String username, String email, String password , int college_id) {
+    public AddStudentRequest(String name,String contact, BigInteger enrollment_number, int year, int semester, float cgpa, int backlog, String department , String fullName, String email, String password , int college_id) {
         this.name = name;
         this.contact = contact;
         this.enrollment_number = enrollment_number;
@@ -82,14 +82,14 @@ public class AddStudentRequest {
         this.cgpa = cgpa;
         this.backlog = backlog;
         this.department = department;
-        this.username = username;
+        this.fullName = fullName;
         this.email = email;
         this.password = password;
         this.college_id = college_id;
     }
 
     public User getUser() {
-        return new User(this.username, this.email, this.password, this.role);
+        return new User(this.fullName, this.email, this.password, this.role);
     }
 
     public Student getStudent(User user, College college) {
