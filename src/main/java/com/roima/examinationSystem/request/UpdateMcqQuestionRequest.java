@@ -32,16 +32,12 @@ public class UpdateMcqQuestionRequest {
 
     private String image;
 
-    @NotNull
-    @ValidList
-    private List<UpdateMcqOptionRequest> options;
 
 
-    public UpdateMcqQuestionRequest(String question, String difficulty, int correct_option, List<UpdateMcqOptionRequest> options,int category_id) {
+    public UpdateMcqQuestionRequest(String question, String difficulty, int correct_option,int category_id) {
         this.question = question;
         this.difficulty = difficulty;
         this.correct_option = correct_option;
-        this.options = options;
         this.category_id = category_id;
     }
 }

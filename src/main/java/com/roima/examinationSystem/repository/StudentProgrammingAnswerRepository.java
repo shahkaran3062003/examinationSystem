@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface StudentProgrammingAnswerRepository extends JpaRepository<StudentProgrammingAnswer,Integer> {
-    List<StudentProgrammingAnswer> findAllByStudentId(int studentId);
+    List<StudentProgrammingAnswer> findAllByStudentIdAndExamId(int studentId,int examId);
 
     StudentProgrammingAnswer findByExamIdAndStudentIdAndProgrammingQuestionsId(int examId,int studentId,int programmingQuestionsId);
 }

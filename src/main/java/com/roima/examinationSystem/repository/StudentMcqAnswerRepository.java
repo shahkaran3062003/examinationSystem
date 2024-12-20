@@ -13,4 +13,6 @@ public interface StudentMcqAnswerRepository extends JpaRepository<StudentMcqAnsw
     StudentMcqAnswer findByExamIdAndStudentIdAndMcqQuestionsId(int examId, int studentId, int mcqQuestionsId);
 
     List<StudentMcqAnswer> findAllByStudentId(int studentId);
+
+    List<StudentMcqAnswer> findAllByStudentIdAndExamId(int studentId, int examId);
 }

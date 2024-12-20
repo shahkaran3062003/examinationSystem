@@ -23,6 +23,8 @@ public class McqOptions {
     private int option_number;
     private String text;
 
+    private String image;
+
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference
@@ -32,5 +34,11 @@ public class McqOptions {
     public McqOptions(int optionNumber, String text) {
         this.option_number = optionNumber;
         this.text = text;
+    }
+
+    public McqOptions(int option_number, String text, String image) {
+        this.option_number = option_number;
+        this.text = text;
+        this.image = image;
     }
 }

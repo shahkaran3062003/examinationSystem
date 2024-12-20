@@ -1,9 +1,7 @@
 package com.roima.examinationSystem.auth;
 
 import com.roima.examinationSystem.model.User;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -33,12 +31,18 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String jwtToken) {
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(jwtToken)
-                .getBody();
+        try {
+            return Jwts
+                    .parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(jwtToken)
+                    .getBody();
+        }catch (ExpiredJwtException e){
+            throw e;
+        }catch (MalformedJwtException | SignatureException | IllegalArgumentException e){
+            throw new MalformedJwtException("Invalid JWT token");
+        }
     }
 
     private Key getSigningKey() {

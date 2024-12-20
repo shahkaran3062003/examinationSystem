@@ -1,5 +1,8 @@
 package com.roima.examinationSystem.auth;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +25,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailService;
+    private final CustomExceptionHandler customExceptionHandler;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -32,20 +36,30 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
 
         if(authHeader != null && authHeader.startsWith("Bearer ")){
+
             jwt = authHeader.substring(7);
-            userEmail = jwtService.extractUsername(jwt);
+
+            try {
+                userEmail = jwtService.extractUsername(jwt);
+            }catch (ExpiredJwtException e){
+                customExceptionHandler.handleException(response,"Token has expired. Please login again.");
+                return;
+            }catch (MalformedJwtException | SignatureException | IllegalArgumentException e){
+                customExceptionHandler.handleException(response, "Invalid token. Please provide a valid token.");
+                return;
+            }
 
         }
 
-        System.out.println(userEmail);
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
 
-            if(jwtService.isTokenValid(jwt, userDetailService.loadUserByUsername(userEmail))){
+            UserDetails userDetails = userDetailService.loadUserByUsername(userEmail);
+            if(jwtService.isTokenValid(jwt, userDetails)){
 
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetailService.loadUserByUsername(userEmail),
+                        userDetails,
                         null,
-                        userDetailService.loadUserByUsername(userEmail).getAuthorities()
+                        userDetails.getAuthorities()
                 );
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);

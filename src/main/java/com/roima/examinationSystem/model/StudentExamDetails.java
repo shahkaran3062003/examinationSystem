@@ -21,6 +21,8 @@ public class StudentExamDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(nullable = true)
+    private boolean isStarted = false;
     private boolean isSubmitted = false;
     private boolean isPassed = false;
 
@@ -45,7 +47,24 @@ public class StudentExamDetails {
     @JsonBackReference
     private Exam exam;
 
-    public StudentExamDetails(int totalMcqQuestions, int totalUnattemptedMcqQuestions, int totalProgrammingQuestions, int totalUnattemptedProgrammingQuestions, Student student, Exam exam) {
+//    public StudentExamDetails(int totalMcqQuestions, int totalUnattemptedMcqQuestions, int totalProgrammingQuestions, int totalUnattemptedProgrammingQuestions, Student student, Exam exam) {
+//        this.totalMcqQuestions = totalMcqQuestions;
+//        this.totalUnattemptedMcqQuestions = totalUnattemptedMcqQuestions;
+//        this.totalProgrammingQuestions = totalProgrammingQuestions;
+//        this.totalUnattemptedProgrammingQuestions = totalUnattemptedProgrammingQuestions;
+//        this.student = student;
+//        this.exam = exam;
+//    }
+//
+//    public StudentExamDetails(int totalProgrammingQuestions, int totalUnattemptedProgrammingQuestions, Student student, Exam exam) {
+//        this.totalProgrammingQuestions = totalProgrammingQuestions;
+//        this.totalUnattemptedProgrammingQuestions = totalUnattemptedProgrammingQuestions;
+//        this.student = student;
+//        this.exam = exam;
+//    }
+
+    public StudentExamDetails(boolean isStarted ,int totalMcqQuestions, int totalUnattemptedMcqQuestions, int totalProgrammingQuestions, int totalUnattemptedProgrammingQuestions, Student student, Exam exam) {
+        this.isStarted = isStarted;
         this.totalMcqQuestions = totalMcqQuestions;
         this.totalUnattemptedMcqQuestions = totalUnattemptedMcqQuestions;
         this.totalProgrammingQuestions = totalProgrammingQuestions;
@@ -54,10 +73,4 @@ public class StudentExamDetails {
         this.exam = exam;
     }
 
-    public StudentExamDetails(int totalProgrammingQuestions, int totalUnattemptedProgrammingQuestions, Student student, Exam exam) {
-        this.totalProgrammingQuestions = totalProgrammingQuestions;
-        this.totalUnattemptedProgrammingQuestions = totalUnattemptedProgrammingQuestions;
-        this.student = student;
-        this.exam = exam;
-    }
 }

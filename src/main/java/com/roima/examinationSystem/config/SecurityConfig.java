@@ -4,6 +4,7 @@ package com.roima.examinationSystem.config;
 import com.roima.examinationSystem.auth.CustomExceptionHandler;
 import com.roima.examinationSystem.auth.JWTAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
@@ -27,6 +28,15 @@ public class SecurityConfig {
     private final JWTAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
 
+    @Value("${api.adminPrefix}")
+    private String adminPrefix;
+
+    @Value("${api.studentPrefix}")
+    private String studentPrefix;
+
+    @Value("${api.prefix}")
+    private String prefix;
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -35,8 +45,10 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/v1/auth/login","/api/v1/auth/register")
+                        .requestMatchers(prefix+"/auth/login",prefix+"/auth/register")
                         .permitAll()
+                        .requestMatchers(adminPrefix+"/**").hasRole("ADMIN")
+                        .requestMatchers(studentPrefix+"/**").hasAnyRole("ADMIN","STUDENT")
                         .anyRequest()
                         .authenticated())
                 .exceptionHandling(exception -> exception

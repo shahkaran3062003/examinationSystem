@@ -9,13 +9,15 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Component
 public class CustomExceptionHandler implements AuthenticationEntryPoint, AccessDeniedHandler {
 
 
-    private void handleException(HttpServletResponse response, String message) throws IOException {
+    public void handleException(HttpServletResponse response, String message) throws IOException {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         ApiResponse apiResponse = new ApiResponse("error", message);
 
@@ -29,7 +31,6 @@ public class CustomExceptionHandler implements AuthenticationEntryPoint, AccessD
         if (authException instanceof BadCredentialsException) {
             handleException(response, "Wrong login credentials.");
         } else {
-            // For other types of authentication failures (if needed)
             handleException(response, "Authentication Failed: Please login to access this resource.");
         }
 

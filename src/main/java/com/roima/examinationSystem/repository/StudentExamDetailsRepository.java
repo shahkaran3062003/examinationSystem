@@ -5,6 +5,8 @@ import com.roima.examinationSystem.model.Exam;
 import com.roima.examinationSystem.model.Student;
 import com.roima.examinationSystem.model.StudentExamDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,5 +19,6 @@ public interface StudentExamDetailsRepository extends JpaRepository<StudentExamD
 
     StudentExamDetails findByStudentIdAndExamId(int studentId, int examId);
 
-    List<StudentExamDetails> findAllByExamId(int examId);
+    @Query("SELECT s FROM StudentExamDetails s WHERE s.exam.id = :examId ORDER BY s.isPassed DESC, s.totalCorrectMcqAnswers DESC")
+    List<StudentExamDetails> findExamResultsSorted(@Param("examId") int examId);
 }

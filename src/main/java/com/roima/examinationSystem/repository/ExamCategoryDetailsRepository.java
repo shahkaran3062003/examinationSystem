@@ -12,5 +12,6 @@ import java.util.List;
 @Repository
 public interface ExamCategoryDetailsRepository extends JpaRepository<ExamCategoryDetails,Integer> {
     boolean existsByCategoryAndDifficultyAndExam(Category category, Difficulty difficulty, Exam exam);
+    ExamCategoryDetails findByCategoryAndDifficultyAndExam(Category category, Difficulty difficulty, Exam exam);
     List<ExamCategoryDetails> findAllByExam(Exam exam);
 }

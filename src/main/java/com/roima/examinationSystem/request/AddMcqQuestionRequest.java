@@ -35,10 +35,10 @@ public class AddMcqQuestionRequest {
 
     @NotNull
     @ValidList
-    private List<String> options;
+    private List<AddMcqOptionRequest> options;
 
 
-    public AddMcqQuestionRequest(String question, String difficulty, int correct_option, List<String> options,String category) {
+    public AddMcqQuestionRequest(String question, String difficulty, int correct_option, List<AddMcqOptionRequest> options,String category) {
         this.question = question;
         this.difficulty = difficulty;
         this.correct_option = correct_option;
