@@ -1,6 +1,8 @@
 package com.roima.examinationSystem.service.admin.questionManagement;
 
+import com.roima.examinationSystem.dto.LanguageDto;
 import com.roima.examinationSystem.dto.admin.AdminMcqQuestionDto;
+import com.roima.examinationSystem.exception.FetchException;
 import com.roima.examinationSystem.exception.InvalidValueException;
 import com.roima.examinationSystem.exception.ResourceExistsException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
@@ -68,6 +70,12 @@ public interface IQuestionManagementService {
     void addProgrammingTestCase(AddProgrammingTestCaseRequest request) throws ResourceNotFoundException;
     void updateProgrammingTestCase(UpdateProgrammingTestRequest request, int id) throws ResourceNotFoundException;
     void deleteProgrammingTestCase(int id) throws ResourceNotFoundException;
+
+    // Programming Languages
+    List<LanguageDto> getAllLanguages();
+    void addLanguage(AddLanguageRequest request) throws ResourceExistsException, ResourceNotFoundException;
+    void deleteLanguage(int id) throws ResourceNotFoundException;
+
 
 
 }

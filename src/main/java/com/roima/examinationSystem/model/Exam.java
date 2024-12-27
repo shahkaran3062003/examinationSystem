@@ -11,6 +11,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -34,10 +35,10 @@ public class Exam {
     private int totalProgrammingQuestions;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private Date start_datetime;
+    private LocalDateTime start_datetime;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private Date end_datetime;
+    private LocalDateTime end_datetime;
 
     private int passing_criteria;
 
@@ -87,7 +88,12 @@ public class Exam {
     @JsonBackReference
     private List<StudentExamDetails> studentExamDetails;
 
-    public Exam(String title,String description, String instructions, int totalMcqQuestions, int totalProgrammingQuestions, Date start_datetime, Date end_datetime,int duration, int passing_criteria,Difficulty difficulty, College college) {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "exam", orphanRemoval = true)
+    @JsonBackReference
+    private List<ExamMonitor> examMonitor;
+
+    public Exam(String title,String description, String instructions, int totalMcqQuestions, int totalProgrammingQuestions, LocalDateTime start_datetime, LocalDateTime end_datetime,int duration, int passing_criteria,Difficulty difficulty, College college) {
         this.title = title;
         this.description = description;
         this.instructions = instructions;

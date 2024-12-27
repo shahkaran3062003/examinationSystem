@@ -2,7 +2,6 @@ package com.roima.examinationSystem.controller.admin;
 
 
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
-import com.roima.examinationSystem.request.AddStudentMcqAnswerRequest;
 import com.roima.examinationSystem.response.ApiResponse;
 import com.roima.examinationSystem.service.admin.studentManagement.StudentManagementService;
 import lombok.RequiredArgsConstructor;
@@ -38,15 +37,15 @@ public class StudentMcqAnswerController {
     }
 
 
-    @PostMapping("/add")
-    public ResponseEntity<ApiResponse> addMcqAnswer(@RequestBody AddStudentMcqAnswerRequest request) {
-        try {
-            studentManagementService.addStudentMcqAnswer(request);
-            return ResponseEntity.ok(new ApiResponse("success","Mcq Answer added successfully" ));
-        }catch (ResourceNotFoundException e){
-            return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
-        }
-    }
+//    @PostMapping("/add")
+//    public ResponseEntity<ApiResponse> addMcqAnswer(@RequestBody AddStudentMcqAnswerRequest request) {
+//        try {
+//            studentManagementService.addStudentMcqAnswer(request);
+//            return ResponseEntity.ok(new ApiResponse("success","Mcq Answer added successfully" ));
+//        }catch (ResourceNotFoundException e){
+//            return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
+//        }
+//    }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> deleteMcqAnswer(@PathVariable int id) {

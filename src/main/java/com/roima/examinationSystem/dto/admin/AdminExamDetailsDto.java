@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -22,9 +23,9 @@ public class AdminExamDetailsDto {
     private int totalMcqQuestions;
     private int totalProgrammingQuestions;
 
-    private Date start_datetime;
+    private LocalDateTime start_datetime;
 
-    private Date end_datetime;
+    private LocalDateTime end_datetime;
 
     private int passing_criteria;
 

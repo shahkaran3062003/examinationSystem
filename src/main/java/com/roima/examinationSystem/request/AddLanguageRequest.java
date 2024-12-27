@@ -7,27 +7,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddStudentProgrammingAnswerRequest {
+public class AddLanguageRequest {
 
     @NotNull
     @NotBlank
-    private String submittedCode;
+    String name;
 
     @NotNull
     @Min(1)
-    private int examId;
-    @NotNull
-    @Min(1)
-    private int studentId;
-
-    @NotNull
-    @Min(1)
-    private int programmingQuestionsId;
-
-    @NotNull
-    private int languageId;
+    int judge0Id;
 }

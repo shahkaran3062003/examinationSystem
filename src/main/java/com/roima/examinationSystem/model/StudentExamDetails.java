@@ -22,9 +22,12 @@ public class StudentExamDetails {
     private int id;
 
     @Column(nullable = true)
-    private boolean isStarted = false;
-    private boolean isSubmitted = false;
-    private boolean isPassed = false;
+    private String examIp;
+
+    @Column(nullable = true)
+    private Boolean isStarted = false;
+    private Boolean isSubmitted = false;
+    private Boolean isPassed = false;
 
     private int totalCorrectMcqAnswers=0;
     private int totalWrongMcqAnswers=0;
@@ -63,7 +66,8 @@ public class StudentExamDetails {
 //        this.exam = exam;
 //    }
 
-    public StudentExamDetails(boolean isStarted ,int totalMcqQuestions, int totalUnattemptedMcqQuestions, int totalProgrammingQuestions, int totalUnattemptedProgrammingQuestions, Student student, Exam exam) {
+    public StudentExamDetails(String examIp, boolean isStarted ,int totalMcqQuestions, int totalUnattemptedMcqQuestions, int totalProgrammingQuestions, int totalUnattemptedProgrammingQuestions, Student student, Exam exam) {
+        this.examIp = examIp;
         this.isStarted = isStarted;
         this.totalMcqQuestions = totalMcqQuestions;
         this.totalUnattemptedMcqQuestions = totalUnattemptedMcqQuestions;

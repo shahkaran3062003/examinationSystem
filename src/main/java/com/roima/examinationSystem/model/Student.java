@@ -78,6 +78,11 @@ public class Student {
     @JsonBackReference
     private List<StudentExamDetails> studentExamDetails;
 
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "student", orphanRemoval = true)
+    @JsonBackReference
+    private List<ExamMonitor> examMonitor;
+
     public Student(String name, String contact, BigInteger enrollmentNumber,int year, int semester,  float cgpa,  int backlog, String department, User user, College college) {
 
         this.name = name;

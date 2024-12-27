@@ -2,14 +2,18 @@ package com.roima.examinationSystem.service.admin.questionManagement;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.roima.examinationSystem.dto.LanguageDto;
 import com.roima.examinationSystem.dto.admin.AdminMcqQuestionDto;
 import com.roima.examinationSystem.dto.McqOptionsDto;
+import com.roima.examinationSystem.exception.FetchException;
 import com.roima.examinationSystem.exception.InvalidValueException;
 import com.roima.examinationSystem.exception.ResourceExistsException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.model.*;
 import com.roima.examinationSystem.repository.*;
 import com.roima.examinationSystem.request.*;
+import com.roima.examinationSystem.service.judge0.Judge0Service;
+import com.roima.examinationSystem.utils.FileManagementUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.io.ClassPathResource;
@@ -37,7 +41,10 @@ public class QuestionManagementService implements IQuestionManagementService {
     private final McqOptionsRepository mcqOptionsRepository;
     private final ProgrammingQuestionsRepository programmingQuestionsRepository;
     private final ProgrammingTestCaseRepository programmingTestCaseRepository;
+    private final LanguageRepository languageRepository;
     private final ModelMapper modelMapper;
+    private final FileManagementUtil fileManagementUtil;
+    private final Judge0Service judge0Service;
 
 
     @Override
@@ -132,7 +139,7 @@ public class QuestionManagementService implements IQuestionManagementService {
 
             String questionImagePath = null;
             if(questionImage!=null && !questionImage.isEmpty()) {
-                questionImagePath = saveImage(questionImage);
+                questionImagePath = fileManagementUtil.saveImage(questionImage);
             }
 
             McqQuestions newMcqQuestion;
@@ -155,7 +162,7 @@ public class QuestionManagementService implements IQuestionManagementService {
                 String optionImage = null;
 
                 if(optionImages != null && i < optionImages.size() && optionImages.get(i) != null && !optionImages.get(i).isEmpty()) {
-                    optionImage = saveImage(optionImages.get(i));
+                    optionImage = fileManagementUtil.saveImage(optionImages.get(i));
                 }
 
                 McqOptions newOption = new McqOptions(
@@ -177,48 +184,7 @@ public class QuestionManagementService implements IQuestionManagementService {
     }
 
 
-    private String saveImage(MultipartFile file) throws IOException, InvalidValueException {
 
-        try{
-
-            String imageType = file.getContentType().split("/")[1];
-
-            if(!imageType.equals("png") && !imageType.equals("jpg") && !imageType.equals("jpeg")){
-                throw new InvalidValueException("Invalid file type.");
-            }
-
-
-            String uploadDIR = new ClassPathResource("static/images/").getFile().getAbsolutePath();
-            String imageName = System.currentTimeMillis()+"_" + file.getOriginalFilename();
-            String imagePath = uploadDIR + "//" + imageName;
-
-            Path path = Paths.get(imagePath);
-
-            System.out.println(path);
-
-            Files.copy(file.getInputStream(),path, REPLACE_EXISTING);
-
-            return imageName;
-        }catch (IOException e){
-            throw new IOException("Failed to save image!");
-        }
-    }
-
-    private void deleteImage(String imageName) throws IOException {
-        try{
-            String uploadDIR = new ClassPathResource("static/images/").getFile().getAbsolutePath();
-
-            Path imagePath = Paths.get(uploadDIR,imageName);
-
-            if(Files.exists(imagePath)) {
-                Files.delete(imagePath);
-            }
-
-
-        } catch (IOException e) {
-            throw new IOException("Failed to delete image.");
-        }
-    }
 
     @Transactional
     @Override
@@ -250,9 +216,9 @@ public class QuestionManagementService implements IQuestionManagementService {
 
             if(questionImage!=null && !questionImage.isEmpty()){
                 if(mcqQuestions.getImage()!=null && !mcqQuestions.getImage().isEmpty()){
-                    deleteImage(mcqQuestions.getImage());
+                    fileManagementUtil.deleteImage(mcqQuestions.getImage());
                 }
-                mcqQuestions.setImage(saveImage(questionImage));
+                mcqQuestions.setImage(fileManagementUtil.saveImage(questionImage));
             }
 
             mcqQuestions.setQuestion(request.getQuestion());
@@ -276,13 +242,13 @@ public class QuestionManagementService implements IQuestionManagementService {
             McqQuestions mcqQuestions = mcqQuestionsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Mcq Question not found!"));
 
             if(mcqQuestions.getImage()!=null && !mcqQuestions.getImage().isEmpty()){
-                deleteImage(mcqQuestions.getImage());
+                fileManagementUtil.deleteImage(mcqQuestions.getImage());
             }
 
             for(McqOptions option : mcqQuestions.getMcqOptions()){
 
                 if(option.getImage()!=null && !option.getImage().isEmpty()){
-                    deleteImage(option.getImage());
+                    fileManagementUtil.deleteImage(option.getImage());
                 }
             }
 
@@ -380,7 +346,7 @@ public class QuestionManagementService implements IQuestionManagementService {
     private AdminMcqQuestionDto convertToDto(McqQuestions mcqQuestions){
         AdminMcqQuestionDto dto = modelMapper.map(mcqQuestions,AdminMcqQuestionDto.class);
         if(dto.getImage()!=null){
-            dto.setImage(getLiveImagePath(dto.getImage()));
+            dto.setImage(fileManagementUtil.getLiveImagePath(dto.getImage()));
         }
         dto.setMcqOptions(getConvertedMcqOptionsDtoList(dto.getMcqOptions()));
         return dto;
@@ -388,7 +354,7 @@ public class QuestionManagementService implements IQuestionManagementService {
 
     private McqOptionsDto convertToDto(McqOptionsDto mcqOptions){
         if(mcqOptions.getImage()!=null){
-            mcqOptions.setImage(getLiveImagePath(mcqOptions.getImage()));
+            mcqOptions.setImage(fileManagementUtil.getLiveImagePath(mcqOptions.getImage()));
         }
         return mcqOptions;
     }
@@ -397,16 +363,10 @@ public class QuestionManagementService implements IQuestionManagementService {
     private McqOptionsDto convertToDto(McqOptions mcqOptions){
         McqOptionsDto dto = modelMapper.map(mcqOptions,McqOptionsDto.class);
         if(mcqOptions.getImage()!=null){
-            dto.setImage(getLiveImagePath(mcqOptions.getImage()));
+            dto.setImage(fileManagementUtil.getLiveImagePath(mcqOptions.getImage()));
         }
         return dto;
     }
-
-
-    private String getLiveImagePath(String image){
-        return ServletUriComponentsBuilder.fromCurrentContextPath().path("/images/").path(image).toUriString();
-    }
-
 
     // ----------------------------------------------------Mcq Options---------------------------------------------
 
@@ -421,7 +381,7 @@ public class QuestionManagementService implements IQuestionManagementService {
 
         String imageName = null;
         if(optionImage!=null &&  !optionImage.isEmpty()){
-            imageName = saveImage(optionImage);
+            imageName = fileManagementUtil.saveImage(optionImage);
         }
 
         for(McqOptions option : mcqQuestions.getMcqOptions()){
@@ -448,7 +408,7 @@ public class QuestionManagementService implements IQuestionManagementService {
 
         try {
             if (mcqoptions.getImage() != null && !mcqoptions.getImage().isEmpty()) {
-                deleteImage(mcqoptions.getImage());
+                fileManagementUtil.deleteImage(mcqoptions.getImage());
             }
         }catch (IOException e){
             throw new IOException("Failed to delete image!");
@@ -474,9 +434,9 @@ public class QuestionManagementService implements IQuestionManagementService {
             if(optionImage!=null && !optionImage.isEmpty()){
 
                 if(mcqoptions.getImage()!=null) {
-                    deleteImage(mcqoptions.getImage());
+                    fileManagementUtil.deleteImage(mcqoptions.getImage());
                 }
-                mcqoptions.setImage(saveImage(optionImage));
+                mcqoptions.setImage(fileManagementUtil.saveImage(optionImage));
             }
 
             McqQuestions mcqQuestions = mcqoptions.getMcqQuestions();
@@ -655,8 +615,11 @@ public class QuestionManagementService implements IQuestionManagementService {
         ProgrammingTestCase testCase = new ProgrammingTestCase(
                 request.getInput(),
                 request.getOutput(),
-                programmingQuestions
+                programmingQuestions,
+                request.getIsPublic()
+
         );
+
         programmingTestCaseRepository.save(testCase);
     }
 
@@ -673,6 +636,44 @@ public class QuestionManagementService implements IQuestionManagementService {
         ProgrammingTestCase testCase = programmingTestCaseRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Programming Test Case not found!"));
         programmingTestCaseRepository.delete(testCase);
 
+    }
+
+    // --------------------------------------------------Languages-----------------------------------------------
+
+    @Override
+    public List<LanguageDto> getAllLanguages() {
+        return convertToDtoList(languageRepository.findAll());
+    }
+
+    @Override
+    public void addLanguage(AddLanguageRequest request) throws ResourceExistsException, ResourceNotFoundException {
+
+        if(languageRepository.existsByName(request.getName()) || languageRepository.existsByJudge0Id(request.getJudge0Id())){
+            throw new ResourceExistsException("Language already exists!");
+        }
+
+        if(!judge0Service.isLanguageSupported(request)){
+            throw new ResourceNotFoundException("Judge0 Language not supported!");
+        }
+
+
+        Language language = new Language(request.getName(), request.getJudge0Id());
+        languageRepository.save(language);
+    }
+
+    @Override
+    public void deleteLanguage(int id) throws ResourceNotFoundException {
+        Language language = languageRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Language not found!"));
+        languageRepository.delete(language);
+
+    }
+
+    private List<LanguageDto> convertToDtoList(List<Language> languages){
+        return languages.stream().map(this::convertToDto).toList();
+    }
+
+    private LanguageDto convertToDto(Language language){
+        return modelMapper.map(language, LanguageDto.class);
     }
 
 }

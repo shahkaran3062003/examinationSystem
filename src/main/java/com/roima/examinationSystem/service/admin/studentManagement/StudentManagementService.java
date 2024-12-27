@@ -6,8 +6,6 @@ import com.roima.examinationSystem.exception.ResourceExistsException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.model.*;
 import com.roima.examinationSystem.repository.*;
-import com.roima.examinationSystem.request.AddStudentMcqAnswerRequest;
-import com.roima.examinationSystem.request.AddStudentProgrammingAnswerRequest;
 import com.roima.examinationSystem.request.AddStudentRequest;
 import com.roima.examinationSystem.request.UpdateStudentRequest;
 import lombok.RequiredArgsConstructor;
@@ -147,61 +145,61 @@ public class StudentManagementService implements IStudentManagementService {
 
 
     //-------------------------------Student Mcq answer----------------------------------
-    @Override
-    public void addStudentMcqAnswer(AddStudentMcqAnswerRequest request) throws ResourceNotFoundException {
-        Exam exam = examRepository.findById(request.getExamId()).orElseThrow(()-> new ResourceNotFoundException("Exam not found!"));
-        Student student = studentRepository.findById(request.getStudentId()).orElseThrow(()-> new ResourceNotFoundException("Student not found!"));
-        McqQuestions mcqQuestions = mcqQuestionsRepository.findById(request.getMcqQuestionsId()).orElseThrow(()-> new ResourceNotFoundException("Mcq Question not found!"));
-
-        boolean isCorrect = request.getSelectedOption()==mcqQuestions.getCorrect_option();
-
-        StudentMcqAnswer studentMcqAnswer = studentMcqAnswerRepository.findByExamIdAndStudentIdAndMcqQuestionsId(request.getExamId(), request.getStudentId(), request.getMcqQuestionsId());
-
-        boolean isNewAnswer = false;
-        if(studentMcqAnswer == null) {
-            studentMcqAnswer = new StudentMcqAnswer(request.getSelectedOption(), exam, student, mcqQuestions);
-            studentMcqAnswer.setCorrect(isCorrect);
-            isNewAnswer = true;
-        }else{
-            studentMcqAnswer.setSelectedOption(request.getSelectedOption());
-            studentMcqAnswer.setCorrect(isCorrect);
-        }
-
-        studentMcqAnswerRepository.save(studentMcqAnswer);
-
-        StudentExamDetails studentExamDetails = studentExamDetailsRepository.findByStudentAndExam(student,exam);
-
-        if(studentExamDetails==null){
-
-            int totalMcqQuestions = exam.getMcqQuestions().size();
-            int totalProgrammingQuestions = exam.getProgrammingQuestions().size();
-            int totalUnattemptedMcqQuestions = totalMcqQuestions;
-            int totalUnattemptedProgrammingQuestions = totalProgrammingQuestions;
-
-            studentExamDetails = new StudentExamDetails(
-                    true,
-                    totalMcqQuestions,
-                    totalUnattemptedMcqQuestions,
-                    totalProgrammingQuestions,
-                    totalUnattemptedProgrammingQuestions,
-                    student,
-                    exam
-            );
-            studentExamDetailsRepository.save(studentExamDetails);
-        }
-
-        if(isCorrect){
-            studentExamDetails.setTotalCorrectMcqAnswers(studentExamDetails.getTotalCorrectMcqAnswers()+1);
-        }else{
-            studentExamDetails.setTotalWrongMcqAnswers(studentExamDetails.getTotalWrongMcqAnswers()+1);
-        }
-
-        if(isNewAnswer) {
-            studentExamDetails.setTotalUnattemptedMcqQuestions(studentExamDetails.getTotalUnattemptedMcqQuestions() - 1);
-        }
-        studentExamDetailsRepository.save(studentExamDetails);
-
-    }
+//    @Override
+//    public void addStudentMcqAnswer(AddStudentMcqAnswerRequest request) throws ResourceNotFoundException {
+//        Exam exam = examRepository.findById(request.getExamId()).orElseThrow(()-> new ResourceNotFoundException("Exam not found!"));
+//        Student student = studentRepository.findById(request.getStudentId()).orElseThrow(()-> new ResourceNotFoundException("Student not found!"));
+//        McqQuestions mcqQuestions = mcqQuestionsRepository.findById(request.getMcqQuestionsId()).orElseThrow(()-> new ResourceNotFoundException("Mcq Question not found!"));
+//
+//        boolean isCorrect = request.getSelectedOption()==mcqQuestions.getCorrect_option();
+//
+//        StudentMcqAnswer studentMcqAnswer = studentMcqAnswerRepository.findByExamIdAndStudentIdAndMcqQuestionsId(request.getExamId(), request.getStudentId(), request.getMcqQuestionsId());
+//
+//        boolean isNewAnswer = false;
+//        if(studentMcqAnswer == null) {
+//            studentMcqAnswer = new StudentMcqAnswer(request.getSelectedOption(), exam, student, mcqQuestions);
+//            studentMcqAnswer.setCorrect(isCorrect);
+//            isNewAnswer = true;
+//        }else{
+//            studentMcqAnswer.setSelectedOption(request.getSelectedOption());
+//            studentMcqAnswer.setCorrect(isCorrect);
+//        }
+//
+//        studentMcqAnswerRepository.save(studentMcqAnswer);
+//
+//        StudentExamDetails studentExamDetails = studentExamDetailsRepository.findByStudentAndExam(student,exam);
+//
+//        if(studentExamDetails==null){
+//
+//            int totalMcqQuestions = exam.getMcqQuestions().size();
+//            int totalProgrammingQuestions = exam.getProgrammingQuestions().size();
+//            int totalUnattemptedMcqQuestions = totalMcqQuestions;
+//            int totalUnattemptedProgrammingQuestions = totalProgrammingQuestions;
+//
+//            studentExamDetails = new StudentExamDetails(
+//                    true,
+//                    totalMcqQuestions,
+//                    totalUnattemptedMcqQuestions,
+//                    totalProgrammingQuestions,
+//                    totalUnattemptedProgrammingQuestions,
+//                    student,
+//                    exam
+//            );
+//            studentExamDetailsRepository.save(studentExamDetails);
+//        }
+//
+//        if(isCorrect){
+//            studentExamDetails.setTotalCorrectMcqAnswers(studentExamDetails.getTotalCorrectMcqAnswers()+1);
+//        }else{
+//            studentExamDetails.setTotalWrongMcqAnswers(studentExamDetails.getTotalWrongMcqAnswers()+1);
+//        }
+//
+//        if(isNewAnswer) {
+//            studentExamDetails.setTotalUnattemptedMcqQuestions(studentExamDetails.getTotalUnattemptedMcqQuestions() - 1);
+//        }
+//        studentExamDetailsRepository.save(studentExamDetails);
+//
+//    }
 
     @Override
     public List<StudentMcqAnswer> getStudentMcqAnswerByStudentId(int studentId,int examId) throws ResourceNotFoundException {
@@ -221,60 +219,60 @@ public class StudentManagementService implements IStudentManagementService {
 
 
     //---------------------------------Student Programming Answer---------------------------------------
-    @Override
-    public void addStudentProgrammingAnswer(AddStudentProgrammingAnswerRequest request) throws ResourceNotFoundException {
-
-        Exam exam = examRepository.findById(request.getExamId()).orElseThrow(()-> new ResourceNotFoundException("Exam not found!"));
-        Student student = studentRepository.findById(request.getStudentId()).orElseThrow(()-> new ResourceNotFoundException("Student not found!"));
-        ProgrammingQuestions programmingQuestions = programmingQuestionsRepository.findById(request.getProgrammingQuestionsId()).orElseThrow(()-> new ResourceNotFoundException("Programming Question not found!"));
-
-//        TODO compile and run all testcase of programming question and update testcase result
-//        TODO handle compile error and runtime error
-
-        StudentProgrammingAnswer studentProgrammingAnswer = studentProgrammingAnswerRepository.findByExamIdAndStudentIdAndProgrammingQuestionsId(request.getExamId(),request.getStudentId(),request.getProgrammingQuestionsId());
-
-        boolean isNewAnswer = false;
-        if(studentProgrammingAnswer == null) {
-            studentProgrammingAnswer = new StudentProgrammingAnswer(
-                    request.getSubmittedCode(),
-                    exam,
-                    student,
-                    programmingQuestions
-            );
-            isNewAnswer = true;
-        }else{
-            studentProgrammingAnswer.setSubmittedCode(request.getSubmittedCode());
-        }
-        studentProgrammingAnswerRepository.save(studentProgrammingAnswer);
-
-        StudentExamDetails studentExamDetails = studentExamDetailsRepository.findByStudentAndExam(student,exam);
-
-        if(studentExamDetails==null){
-            int totalMcqQuestions = exam.getMcqQuestions().size();
-            int totalProgrammingQuestions = exam.getProgrammingQuestions().size();
-            int totalUnattemptedMcqQuestions = totalMcqQuestions;
-            int totalUnattemptedProgrammingQuestions = totalProgrammingQuestions;
-
-            studentExamDetails = new StudentExamDetails(
-                    true,
-                    totalMcqQuestions,
-                    totalUnattemptedMcqQuestions,
-                    totalProgrammingQuestions,
-                    totalUnattemptedProgrammingQuestions,
-                    student,
-                    exam
-            );
-            studentExamDetailsRepository.save(studentExamDetails);
-        }
-
-//        TODO check if student program pass all testcase or not if yes then update totalSolvedProgrammingQuestions of studentExamDetails else update totalUnsolvedProgrammingQuestions
-
-        if(isNewAnswer) {
-            studentExamDetails.setTotalUnattemptedProgrammingQuestions(studentExamDetails.getTotalUnattemptedProgrammingQuestions() - 1);
-        }
-        studentExamDetailsRepository.save(studentExamDetails);
-
-    }
+//    @Override
+//    public void addStudentProgrammingAnswer(AddStudentProgrammingAnswerRequest request) throws ResourceNotFoundException {
+//
+//        Exam exam = examRepository.findById(request.getExamId()).orElseThrow(()-> new ResourceNotFoundException("Exam not found!"));
+//        Student student = studentRepository.findById(request.getStudentId()).orElseThrow(()-> new ResourceNotFoundException("Student not found!"));
+//        ProgrammingQuestions programmingQuestions = programmingQuestionsRepository.findById(request.getProgrammingQuestionsId()).orElseThrow(()-> new ResourceNotFoundException("Programming Question not found!"));
+//
+////        TODO compile and run all testcase of programming question and update testcase result
+////        TODO handle compile error and runtime error
+//
+//        StudentProgrammingAnswer studentProgrammingAnswer = studentProgrammingAnswerRepository.findByExamIdAndStudentIdAndProgrammingQuestionsId(request.getExamId(),request.getStudentId(),request.getProgrammingQuestionsId());
+//
+//        boolean isNewAnswer = false;
+//        if(studentProgrammingAnswer == null) {
+//            studentProgrammingAnswer = new StudentProgrammingAnswer(
+//                    request.getSubmittedCode(),
+//                    exam,
+//                    student,
+//                    programmingQuestions
+//            );
+//            isNewAnswer = true;
+//        }else{
+//            studentProgrammingAnswer.setSubmittedCode(request.getSubmittedCode());
+//        }
+//        studentProgrammingAnswerRepository.save(studentProgrammingAnswer);
+//
+//        StudentExamDetails studentExamDetails = studentExamDetailsRepository.findByStudentAndExam(student,exam);
+//
+//        if(studentExamDetails==null){
+//            int totalMcqQuestions = exam.getMcqQuestions().size();
+//            int totalProgrammingQuestions = exam.getProgrammingQuestions().size();
+//            int totalUnattemptedMcqQuestions = totalMcqQuestions;
+//            int totalUnattemptedProgrammingQuestions = totalProgrammingQuestions;
+//
+//            studentExamDetails = new StudentExamDetails(
+//                    true,
+//                    totalMcqQuestions,
+//                    totalUnattemptedMcqQuestions,
+//                    totalProgrammingQuestions,
+//                    totalUnattemptedProgrammingQuestions,
+//                    student,
+//                    exam
+//            );
+//            studentExamDetailsRepository.save(studentExamDetails);
+//        }
+//
+////        TODO check if student program pass all testcase or not if yes then update totalSolvedProgrammingQuestions of studentExamDetails else update totalUnsolvedProgrammingQuestions
+//
+//        if(isNewAnswer) {
+//            studentExamDetails.setTotalUnattemptedProgrammingQuestions(studentExamDetails.getTotalUnattemptedProgrammingQuestions() - 1);
+//        }
+//        studentExamDetailsRepository.save(studentExamDetails);
+//
+//    }
 
     @Override
     public List<StudentProgrammingAnswer> getAllProgrammingAnswerByStudentId(int studentId,int examId) throws ResourceNotFoundException {
@@ -291,9 +289,4 @@ public class StudentManagementService implements IStudentManagementService {
         StudentProgrammingAnswer programmingAnswer = studentProgrammingAnswerRepository.findById(programmingAnswerId).orElseThrow(()-> new ResourceNotFoundException("Programming Answer not found!"));
         studentProgrammingAnswerRepository.delete(programmingAnswer);
     }
-
-
-
-
-
 }

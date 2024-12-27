@@ -1,17 +1,16 @@
 package com.roima.examinationSystem.service.admin.examManagement;
 
+import com.roima.examinationSystem.dto.admin.AdminExamMonitorDto;
 import com.roima.examinationSystem.exception.ExamException;
 import com.roima.examinationSystem.exception.InvalidValueException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
-import com.roima.examinationSystem.model.Exam;
-import com.roima.examinationSystem.model.ExamCategoryDetails;
-import com.roima.examinationSystem.model.McqQuestions;
-import com.roima.examinationSystem.model.ProgrammingQuestions;
+import com.roima.examinationSystem.model.*;
 import com.roima.examinationSystem.request.AddDeleteExamMcqQuestionsRequest;
 import com.roima.examinationSystem.request.AddDeleteExamProgrammingQuestionsRequest;
 import com.roima.examinationSystem.request.AddUpdateExamCategoryDetailsRequest;
 import com.roima.examinationSystem.request.AddUpdateExamRequest;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface IExamManagementService {
@@ -40,6 +39,10 @@ public interface IExamManagementService {
     void updateExamCategory(AddUpdateExamCategoryDetailsRequest request, int id) throws ResourceNotFoundException, InvalidValueException;
     void deleteExamCategory(int id) throws ResourceNotFoundException;
 
-
+    //student exam monitor
+    List<AdminExamMonitorDto> getStudentExamMonitorDetails(int studentId, int examId) throws ResourceNotFoundException;
+    void deleteExamMonitorById(int id) throws ResourceNotFoundException, IOException;
+    void deleteExamMonitorByStudentIdAndExamId(int studentId, int examId) throws ResourceNotFoundException, IOException;
+    void deleteExamMonitorByExamId(int examId) throws ResourceNotFoundException, IOException;
 
 }

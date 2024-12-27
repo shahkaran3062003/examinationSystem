@@ -31,13 +31,13 @@ public interface IStudentManagementService {
     List<StudentExamDetails> getAllStudentExamDetailsByExamId(int examId);
 
     //Student MCQ Answer
-    void addStudentMcqAnswer(AddStudentMcqAnswerRequest request) throws ResourceNotFoundException;
+//    void addStudentMcqAnswer(AddStudentMcqAnswerRequest request) throws ResourceNotFoundException;
     List<StudentMcqAnswer> getStudentMcqAnswerByStudentId(int studentId, int examId) throws ResourceNotFoundException;
     StudentMcqAnswer getStudentMcqAnswerById(int id) throws ResourceNotFoundException;
     void deleteStudentMcqAnswerById(int id) throws ResourceNotFoundException;
 
     //Student Programming Answer
-    void addStudentProgrammingAnswer(AddStudentProgrammingAnswerRequest request) throws ResourceNotFoundException;
+//    void addStudentProgrammingAnswer(AddStudentProgrammingAnswerRequest request) throws ResourceNotFoundException;
     List<StudentProgrammingAnswer> getAllProgrammingAnswerByStudentId(int studentId,int examId) throws ResourceNotFoundException;
     StudentProgrammingAnswer getProgrammingAnswerById(int programmingAnswerId) throws ResourceNotFoundException;
     void deleteProgrammingAnswerById(int programmingAnswerId) throws ResourceNotFoundException;

@@ -1,5 +1,6 @@
 package com.roima.examinationSystem.service.admin.examManagement;
 
+import com.roima.examinationSystem.dto.admin.AdminExamMonitorDto;
 import com.roima.examinationSystem.exception.ExamException;
 import com.roima.examinationSystem.exception.InvalidValueException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
@@ -9,12 +10,18 @@ import com.roima.examinationSystem.request.AddDeleteExamMcqQuestionsRequest;
 import com.roima.examinationSystem.request.AddDeleteExamProgrammingQuestionsRequest;
 import com.roima.examinationSystem.request.AddUpdateExamCategoryDetailsRequest;
 import com.roima.examinationSystem.request.AddUpdateExamRequest;
+import com.roima.examinationSystem.service.admin.questionManagement.QuestionManagementService;
+import com.roima.examinationSystem.utils.FileManagementUtil;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -27,6 +34,11 @@ public class ExamManagementService implements IExamManagementService {
     private final ProgrammingQuestionsRepository programmingQuestionsRepository;
     private final ExamCategoryDetailsRepository examCategoryDetailsRepository;
     private final CategoryRepository categoryRepository;
+    private final ExamMonitorRepository examMonitorRepository;
+    private final ModelMapper modelMapper;
+    private final FileManagementUtil fileManagementUtil;
+
+    private final QuestionManagementService questionManagementService;
 
 
     //----------------------------------------Exam--------------------------------------------------------------------
@@ -75,7 +87,9 @@ public class ExamManagementService implements IExamManagementService {
             College college = collegeRepository.findById(request.getCollege_id()).orElseThrow(() -> new ResourceNotFoundException("College not found!"));
             Difficulty difficulty = Difficulty.valueOf(request.getDifficulty());
 
-            if (request.getEnd_datetime().before(request.getStart_datetime()))
+
+
+            if (request.getEnd_datetime().isBefore(request.getStart_datetime()))
                 throw new InvalidValueException("End date is before start date!");
             Exam exam = new Exam(
                     request.getTitle(),
@@ -122,7 +136,7 @@ public class ExamManagementService implements IExamManagementService {
         try {
             Exam exam = examRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Exam not found!"));
             College college = collegeRepository.findById(request.getCollege_id()).orElseThrow(() -> new ResourceNotFoundException("College not found!"));
-            if (request.getEnd_datetime().before(request.getStart_datetime()))
+            if (request.getEnd_datetime().isBefore(request.getStart_datetime()))
                 throw new InvalidValueException("End date is before start date!");
 
             Difficulty difficulty = Difficulty.valueOf(request.getDifficulty());
@@ -311,6 +325,67 @@ public class ExamManagementService implements IExamManagementService {
     public void deleteExamCategory(int id) throws ResourceNotFoundException {
         ExamCategoryDetails examCategoryDetails = examCategoryDetailsRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Exam Category Details not found!"));
         examCategoryDetailsRepository.delete(examCategoryDetails);
+    }
+
+//    ------------------------------------------Exam Monitor------------------------------------------------------------
+
+    @Override
+    public List<AdminExamMonitorDto> getStudentExamMonitorDetails(int studentId, int examId) throws ResourceNotFoundException {
+        List<ExamMonitor> examMonitorsList = examMonitorRepository.findAllByStudentIdAndExamId(studentId,examId);
+
+        if(examMonitorsList.isEmpty()) throw new ResourceNotFoundException("No monitor details found!");
+
+        return convertToDtoList(examMonitorsList);
+
+    }
+
+
+    @Override
+    public void deleteExamMonitorById(int id) throws ResourceNotFoundException, IOException {
+        ExamMonitor examMonitor = examMonitorRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Exam Monitor not found!"));
+
+        fileManagementUtil.deleteImage(examMonitor.getScreenImage());
+        fileManagementUtil.deleteImage(examMonitor.getUserImage());
+        examMonitorRepository.delete(examMonitor);
+    }
+
+    @Override
+    public void deleteExamMonitorByStudentIdAndExamId(int studentId, int examId) throws ResourceNotFoundException, IOException {
+        List<ExamMonitor> examMonitors = examMonitorRepository.findAllByStudentIdAndExamId(studentId,examId);
+        if(examMonitors.isEmpty()) throw new ResourceNotFoundException("No monitor details found!");
+
+        for(ExamMonitor examMonitor: examMonitors){
+            fileManagementUtil.deleteImage(examMonitor.getScreenImage());
+            fileManagementUtil.deleteImage(examMonitor.getUserImage());
+        }
+
+
+        examMonitorRepository.deleteAll(examMonitors);
+    }
+
+    @Override
+    public void deleteExamMonitorByExamId(int examId) throws ResourceNotFoundException, IOException {
+        List<ExamMonitor> examMonitors = examMonitorRepository.findAllByExamId(examId);
+        if(examMonitors.isEmpty()) throw new ResourceNotFoundException("No monitor details found!");
+
+        for(ExamMonitor examMonitor:examMonitors){
+            fileManagementUtil.deleteImage(examMonitor.getUserImage());
+            fileManagementUtil.deleteImage(examMonitor.getScreenImage());
+        }
+
+        examMonitorRepository.deleteAll(examMonitors);
+    }
+
+    private List<AdminExamMonitorDto> convertToDtoList(List<ExamMonitor> examMonitors){
+        return examMonitors.stream().map(this::convertToDto).collect(Collectors.toList());
+    }
+
+
+    private AdminExamMonitorDto convertToDto(ExamMonitor examMonitor){
+        AdminExamMonitorDto dto = modelMapper.map(examMonitor, AdminExamMonitorDto.class);
+        dto.setScreenImage(fileManagementUtil.getLiveImagePath(examMonitor.getScreenImage()));
+        dto.setUserImage(fileManagementUtil.getLiveImagePath(examMonitor.getUserImage()));
+        return dto;
     }
 
 }

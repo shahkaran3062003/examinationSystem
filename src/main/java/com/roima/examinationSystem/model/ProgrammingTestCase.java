@@ -31,6 +31,9 @@ public class ProgrammingTestCase {
     @Column(length = 2000)
     private String output;
 
+    @Column(nullable = true)
+    private Boolean isPublic = false;
+
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -46,6 +49,14 @@ public class ProgrammingTestCase {
         this.output = output;
         this.programmingQuestions = programmingQuestions;
     }
+
+    public ProgrammingTestCase(String input, String output, ProgrammingQuestions programmingQuestions, boolean isPublic) {
+        this.input = input;
+        this.output = output;
+        this.programmingQuestions = programmingQuestions;
+        this.isPublic = isPublic;
+    }
+
 
 }
 

@@ -1,5 +1,6 @@
 package com.roima.examinationSystem.auth;
 
+import com.roima.examinationSystem.dto.LoginDto;
 import com.roima.examinationSystem.exception.InvalidValueException;
 import com.roima.examinationSystem.exception.ResourceExistsException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
@@ -32,7 +33,7 @@ public class AuthService {
     private final HttpServletRequest request;
 
 
-    public String login(LoginRequest loginRequest) throws ResourceNotFoundException {
+    public LoginDto login(LoginRequest loginRequest) throws ResourceNotFoundException {
 
         try {
             authenticationManager.authenticate(
@@ -47,7 +48,8 @@ public class AuthService {
             if(user.getRole()==Role.STUDENT) {
                 log(user.getId(), loginRequest.getEmail(), request.getRemoteAddr(), true);
             }
-            return jwtService.generateToken(user);
+
+            return new LoginDto(jwtService.generateToken(user), user.getRole().toString());
         }catch (Exception e) {
             log(-1,loginRequest.getEmail(),request.getRemoteAddr(),false);
             throw e;

@@ -42,14 +42,18 @@ public class StudentProgrammingAnswer {
     @ManyToOne
     private ProgrammingQuestions programmingQuestions;
 
+    @ManyToOne
+    private Language language;
+
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true,mappedBy = "studentProgrammingAnswer")
     private List<StudentProgramTestCaseAnswer> studentProgramTestCaseAnswer;
 
-    public StudentProgrammingAnswer(String submittedCode, Exam exam, Student student, ProgrammingQuestions programmingQuestions) {
+    public StudentProgrammingAnswer(String submittedCode, Exam exam, Student student, ProgrammingQuestions programmingQuestions, Language language) {
         this.submittedCode = submittedCode;
         this.exam = exam;
         this.student = student;
         this.programmingQuestions = programmingQuestions;
+        this.language = language;
     }
 
 

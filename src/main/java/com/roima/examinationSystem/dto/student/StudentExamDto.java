@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -22,9 +23,9 @@ public class StudentExamDto {
     private int totalMcqQuestions;
     private int totalProgrammingQuestions;
 
-    private Date start_datetime;
+    private LocalDateTime start_datetime;
 
-    private Date end_datetime;
+    private LocalDateTime end_datetime;
 
     private int duration;
 
