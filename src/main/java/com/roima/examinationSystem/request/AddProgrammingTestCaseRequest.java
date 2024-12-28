@@ -28,22 +28,7 @@ public class AddProgrammingTestCaseRequest {
     private String output;
 
     @NotNull
-    @ValidBoolean
-    private boolean isPublic;
-
-    public AddProgrammingTestCaseRequest(int programmingQuestionId, String input, String output) {
-        this.programmingQuestionId = programmingQuestionId;
-        this.input = input;
-        this.output = output;
-    }
-
-    public boolean getIsPublic() {
-        return isPublic;
-    }
-
-    public void setIsPublic(boolean isPublic){
-        this.isPublic = isPublic;
-    }
-
+    @NotBlank
+    private String type;
 
 }

@@ -1,6 +1,7 @@
 package com.roima.examinationSystem.controller.admin;
 
 
+import com.roima.examinationSystem.exception.InvalidValueException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.request.AddProgrammingTestCaseRequest;
 import com.roima.examinationSystem.request.UpdateProgrammingTestRequest;
@@ -42,7 +43,7 @@ public class ProgrammingTestCaseController {
         try{
             questionManagementService.addProgrammingTestCase(request);
             return ResponseEntity.ok(new ApiResponse("success", "Programming Test Case added successfully!"));
-        } catch (ResourceNotFoundException e) {
+        } catch (ResourceNotFoundException | InvalidValueException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error",e.getMessage()));
         }
     }

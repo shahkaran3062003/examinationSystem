@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.roima.examinationSystem.dto.LanguageDto;
 import com.roima.examinationSystem.dto.admin.AdminMcqQuestionDto;
 import com.roima.examinationSystem.dto.McqOptionsDto;
-import com.roima.examinationSystem.exception.FetchException;
 import com.roima.examinationSystem.exception.InvalidValueException;
 import com.roima.examinationSystem.exception.ResourceExistsException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
@@ -16,20 +15,13 @@ import com.roima.examinationSystem.service.judge0.Judge0Service;
 import com.roima.examinationSystem.utils.FileManagementUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
-
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @Service
 @RequiredArgsConstructor
@@ -608,19 +600,24 @@ public class QuestionManagementService implements IQuestionManagementService {
     }
 
     @Override
-    public void addProgrammingTestCase(AddProgrammingTestCaseRequest request) throws ResourceNotFoundException {
+    public void addProgrammingTestCase(AddProgrammingTestCaseRequest request) throws ResourceNotFoundException, InvalidValueException {
 
-        ProgrammingQuestions programmingQuestions = programmingQuestionsRepository.findById(request.getProgrammingQuestionId()).orElseThrow(()-> new ResourceNotFoundException("Programming Questions not found!"));
+        try {
+            ProgrammingQuestions programmingQuestions = programmingQuestionsRepository.findById(request.getProgrammingQuestionId()).orElseThrow(() -> new ResourceNotFoundException("Programming Questions not found!"));
 
-        ProgrammingTestCase testCase = new ProgrammingTestCase(
-                request.getInput(),
-                request.getOutput(),
-                programmingQuestions,
-                request.getIsPublic()
+            TestCaseType type = TestCaseType.valueOf(request.getType());
 
-        );
+            ProgrammingTestCase testCase = new ProgrammingTestCase(
+                    request.getInput(),
+                    request.getOutput(),
+                    programmingQuestions,
+                    type
+            );
 
-        programmingTestCaseRepository.save(testCase);
+            programmingTestCaseRepository.save(testCase);
+        }catch (IllegalArgumentException e){
+            throw new InvalidValueException("Invalid test case type! possible values are [SAMPLE, PUBLIC, HIDDEN]");
+        }
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.roima.examinationSystem.request.AddUpdateExamCategoryDetailsRequest;
 import com.roima.examinationSystem.request.AddUpdateExamRequest;
 import com.roima.examinationSystem.service.admin.questionManagement.QuestionManagementService;
 import com.roima.examinationSystem.utils.FileManagementUtil;
+import com.roima.examinationSystem.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,8 @@ public class ExamManagementService implements IExamManagementService {
     private final ExamMonitorRepository examMonitorRepository;
     private final ModelMapper modelMapper;
     private final FileManagementUtil fileManagementUtil;
+
+    private final Utils utils;
 
     private final QuestionManagementService questionManagementService;
 
@@ -283,6 +286,8 @@ public class ExamManagementService implements IExamManagementService {
             Difficulty difficulty = Difficulty.valueOf(request.getDifficulty());
             Exam exam = examRepository.findById(request.getExamId()).orElseThrow(()-> new ResourceNotFoundException("Exam not found!"));
             if(examCategoryDetailsRepository.existsByCategoryAndDifficultyAndExam(category, difficulty, exam)) throw new InvalidValueException("Category with Same Difficulty already exists!");
+
+            if(!utils.isExamDifficultyCorrect(exam,request)) throw new InvalidValueException("Category Difficulty is too high for this Exam!");
             ExamCategoryDetails examCategoryDetails = new ExamCategoryDetails(difficulty, request.getCount(), category,exam);
             examCategoryDetailsRepository.save(examCategoryDetails);
         }catch (IllegalArgumentException e){
@@ -300,21 +305,38 @@ public class ExamManagementService implements IExamManagementService {
 
             ExamCategoryDetails otherExamCategoryDetails = examCategoryDetailsRepository.findByCategoryAndDifficultyAndExam(category, difficulty, exam);
 
-            if(otherExamCategoryDetails==null){
-                examCategoryDetails.setCategory(category);
-                examCategoryDetails.setDifficulty(difficulty);
-                examCategoryDetails.setCount(request.getCount());
-                examCategoryDetails.setExam(exam);
-                examCategoryDetailsRepository.save(examCategoryDetails);
-            }
-            else if(otherExamCategoryDetails.getId()==examCategoryDetails.getId()){
 
-                examCategoryDetails.setCount(request.getCount());
-                examCategoryDetailsRepository.save(examCategoryDetails);
-            }
-            else{
+
+
+            if(otherExamCategoryDetails!=null && otherExamCategoryDetails.getId()!=examCategoryDetails.getId()){
                 throw new InvalidValueException("Category with Same Difficulty already exists in same exam!");
             }
+
+            if(!utils.isExamDifficultyCorrect(exam,request,id)) throw new InvalidValueException("Category Difficulty is too high for this Exam!");
+
+
+            examCategoryDetails.setCategory(category);
+            examCategoryDetails.setDifficulty(difficulty);
+            examCategoryDetails.setCount(request.getCount());
+            examCategoryDetails.setExam(exam);
+            examCategoryDetailsRepository.save(examCategoryDetails);
+
+
+//            if(otherExamCategoryDetails==null){
+//                examCategoryDetails.setCategory(category);
+//                examCategoryDetails.setDifficulty(difficulty);
+//                examCategoryDetails.setCount(request.getCount());
+//                examCategoryDetails.setExam(exam);
+//                examCategoryDetailsRepository.save(examCategoryDetails);
+//            }
+//            else if(otherExamCategoryDetails.getId()==examCategoryDetails.getId()){
+//
+//                examCategoryDetails.setCount(request.getCount());
+//                examCategoryDetailsRepository.save(examCategoryDetails);
+//            }
+//            else{
+//                throw new InvalidValueException("Category with Same Difficulty already exists in same exam!");
+//            }
 
         }catch (IllegalArgumentException e){
             throw new InvalidValueException("Invalid Difficulty!");

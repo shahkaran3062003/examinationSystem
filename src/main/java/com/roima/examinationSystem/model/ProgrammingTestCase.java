@@ -3,8 +3,6 @@ package com.roima.examinationSystem.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,9 +29,8 @@ public class ProgrammingTestCase {
     @Column(length = 2000)
     private String output;
 
-    @Column(nullable = true)
-    private Boolean isPublic = false;
-
+    @Enumerated(EnumType.STRING)
+    private TestCaseType type;
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -50,11 +47,12 @@ public class ProgrammingTestCase {
         this.programmingQuestions = programmingQuestions;
     }
 
-    public ProgrammingTestCase(String input, String output, ProgrammingQuestions programmingQuestions, boolean isPublic) {
+    public ProgrammingTestCase(String input, String output, ProgrammingQuestions programmingQuestions, TestCaseType type) {
         this.input = input;
         this.output = output;
         this.programmingQuestions = programmingQuestions;
-        this.isPublic = isPublic;
+        this.type = type;
+
     }
 
 
