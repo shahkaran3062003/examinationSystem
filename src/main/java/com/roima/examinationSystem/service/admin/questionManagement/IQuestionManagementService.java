@@ -68,8 +68,8 @@ public interface IQuestionManagementService {
     ProgrammingTestCase getProgrammingTestCaseById(int id) throws ResourceNotFoundException;
     List<ProgrammingTestCase> getAllProgrammingTestCasesByProgrammingQuestionsId(int programmingQuestionsId) throws ResourceNotFoundException;
     void addProgrammingTestCase(AddProgrammingTestCaseRequest request) throws ResourceNotFoundException, InvalidValueException;
-    void updateProgrammingTestCase(UpdateProgrammingTestRequest request, int id) throws ResourceNotFoundException;
-    void deleteProgrammingTestCase(int id) throws ResourceNotFoundException;
+    void updateProgrammingTestCase(UpdateProgrammingTestCaseRequest request, int id) throws ResourceNotFoundException, InvalidValueException;
+    void deleteProgrammingTestCase(int id) throws ResourceNotFoundException, InvalidValueException;
 
     // Programming Languages
     List<LanguageDto> getAllLanguages();

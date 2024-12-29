@@ -3,9 +3,6 @@ package com.roima.examinationSystem.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,6 +32,11 @@ public class ProgrammingQuestions {
     private String implementation;
 
 
+    @ManyToOne
+    @JoinColumn(name="implementation_language")
+    private Language implementationLanguage;
+
+
     @OneToMany(cascade = {CascadeType.REFRESH,CascadeType.DETACH,CascadeType.REMOVE,CascadeType.MERGE}, fetch = FetchType.EAGER, orphanRemoval = true, mappedBy = "programmingQuestions")
     private List<ProgrammingTestCase> programmingTestCase;
 
@@ -51,10 +53,11 @@ public class ProgrammingQuestions {
     @JsonBackReference
     private List<StudentProgrammingAnswer> studentProgrammingAnswer;
 
-    public ProgrammingQuestions(String statement, Difficulty difficulty, String implementation, Category category) {
+    public ProgrammingQuestions(String statement, Difficulty difficulty, String implementation, Language implementationLanguage,  Category category) {
         this.statement = statement;
         this.difficulty = difficulty;
         this.implementation = implementation;
+        this.implementationLanguage = implementationLanguage;
         this.category = category;
     }
 }

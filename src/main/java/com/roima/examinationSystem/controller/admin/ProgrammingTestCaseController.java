@@ -4,7 +4,7 @@ package com.roima.examinationSystem.controller.admin;
 import com.roima.examinationSystem.exception.InvalidValueException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.request.AddProgrammingTestCaseRequest;
-import com.roima.examinationSystem.request.UpdateProgrammingTestRequest;
+import com.roima.examinationSystem.request.UpdateProgrammingTestCaseRequest;
 import com.roima.examinationSystem.response.ApiResponse;
 import com.roima.examinationSystem.service.admin.questionManagement.QuestionManagementService;
 import jakarta.validation.Valid;
@@ -49,11 +49,11 @@ public class ProgrammingTestCaseController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse> updateProgrammingTestCase(@RequestBody @Valid UpdateProgrammingTestRequest request, @PathVariable int id) {
+    public ResponseEntity<ApiResponse> updateProgrammingTestCase(@RequestBody @Valid UpdateProgrammingTestCaseRequest request, @PathVariable int id) {
         try{
             questionManagementService.updateProgrammingTestCase(request, id);
             return ResponseEntity.ok(new ApiResponse("success", "Programming Test Case updated successfully!"));
-        } catch (ResourceNotFoundException e) {
+        } catch (ResourceNotFoundException | InvalidValueException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error",e.getMessage()));
         }
     }
@@ -63,7 +63,7 @@ public class ProgrammingTestCaseController {
         try{
             questionManagementService.deleteProgrammingTestCase(id);
             return ResponseEntity.ok(new ApiResponse("success", "Programming Test Case deleted successfully!"));
-        } catch (ResourceNotFoundException e) {
+        } catch (ResourceNotFoundException | InvalidValueException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error",e.getMessage()));
         }
     }

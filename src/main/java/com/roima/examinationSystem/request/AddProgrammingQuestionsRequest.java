@@ -31,14 +31,26 @@ public class AddProgrammingQuestionsRequest {
     @Size(max=2000, message = "Implementation must not be more than 2000 characters")
     private String implementation;
 
+    @NotNull
+    @Min(1)
+    private int implementationLanguageId;
+
 
     @NotNull
     @NotBlank
     private String category;
 
-    @NotNull
+
     List<AddProgrammingTestRequest> programmingTestCases;
 
+
+    public AddProgrammingQuestionsRequest(String statement, String difficulty, String implementation, int implementationLanguageId, String category){
+        this.statement = statement;
+        this.difficulty = difficulty;
+        this.implementation = implementation;
+        this.implementationLanguageId = implementationLanguageId;
+        this.category = category;
+    }
 
 }
 

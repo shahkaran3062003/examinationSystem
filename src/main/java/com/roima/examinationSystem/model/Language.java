@@ -1,6 +1,7 @@
 package com.roima.examinationSystem.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.roima.examinationSystem.repository.LanguageRepository;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,8 +28,13 @@ public class Language{
     int judge0Id;
 
 
+    @OneToMany(mappedBy = "implementationLanguage")
+    @JsonBackReference
+    private List<ProgrammingQuestions> programmingQuestionsList;
+
     @OneToMany(mappedBy = "language")
-    private List<StudentProgrammingAnswer> programmingQuestionsList;
+    @JsonBackReference
+    private List<StudentProgrammingAnswer> studentProgrammingAnswerList;
 
     public Language(String name, int judge0Id){
         this.name=name;

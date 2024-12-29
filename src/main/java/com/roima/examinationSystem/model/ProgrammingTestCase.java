@@ -47,7 +47,7 @@ public class ProgrammingTestCase {
         this.programmingQuestions = programmingQuestions;
     }
 
-    public ProgrammingTestCase(String input, String output, ProgrammingQuestions programmingQuestions, TestCaseType type) {
+    public ProgrammingTestCase(String input, String output, TestCaseType type, ProgrammingQuestions programmingQuestions) {
         this.input = input;
         this.output = output;
         this.programmingQuestions = programmingQuestions;

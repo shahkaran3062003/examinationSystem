@@ -31,8 +31,10 @@ public class UpdateProgrammingQuestionsRequest {
 
     @NotNull
     @Min(1)
-    private int category_id;
+    private int implementationLanguageId;
 
     @NotNull
-    List<UpdateProgrammingTestCaseRequest> programmingTestCases;
+    @Min(1)
+    private int category_id;
+
 }

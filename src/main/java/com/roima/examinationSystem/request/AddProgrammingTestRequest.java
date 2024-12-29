@@ -18,4 +18,8 @@ public class AddProgrammingTestRequest {
     @NotNull
     @NotBlank
     private String output;
+
+    @NotNull
+    @NotBlank
+    private String type;
 }

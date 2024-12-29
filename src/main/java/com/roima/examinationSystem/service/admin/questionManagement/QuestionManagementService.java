@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -121,7 +122,11 @@ public class QuestionManagementService implements IQuestionManagementService {
             if(category==null){
                 category = new Category(request.getCategory(), QuestionType.MCQ);
                 categoryRepository.save(category);
+            }else if(category.getQuestionType() != QuestionType.MCQ){
+                throw new InvalidValueException("Category is not MCQ!");
             }
+
+
             Difficulty difficulty = Difficulty.valueOf(request.getDifficulty());
 
             if (request.getCorrect_option() > request.getOptions().size()) {
@@ -192,6 +197,10 @@ public class QuestionManagementService implements IQuestionManagementService {
             Category category = categoryRepository.findById(request.getCategory_id()).orElseThrow(()-> new ResourceNotFoundException("Category not found!"));
             Difficulty difficulty = Difficulty.valueOf(request.getDifficulty());
 
+
+            if(category.getQuestionType() != QuestionType.MCQ){
+                throw new InvalidValueException("Category is not MCQ!");
+            }
 
             boolean isOptionCorrect = false;
             for(McqOptions option : mcqQuestions.getMcqOptions()){
@@ -456,27 +465,57 @@ public class QuestionManagementService implements IQuestionManagementService {
     // ----------------------------------------------Programming Questions-------------------------------------------
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void addProgrammingQuestions(AddProgrammingQuestionsRequest request) throws InvalidValueException, ResourceNotFoundException {
         try{
             Difficulty difficultyE = Difficulty.valueOf(request.getDifficulty());
 
             Category category = categoryRepository.findByName(request.getCategory());
+            Language implementationLanguage = languageRepository.findById(request.getImplementationLanguageId()).orElseThrow(()-> new ResourceNotFoundException("Language not found!"));
 
             if(category == null){
                 category = new Category(request.getCategory(), QuestionType.PROGRAMMING);
                 categoryRepository.save(category);
+            } else if (category.getQuestionType() != QuestionType.PROGRAMMING) {
+                throw new InvalidValueException("Category is not Programming!");
             }
 
-            ProgrammingQuestions programmingQuestions = new ProgrammingQuestions(request.getStatement(), difficultyE, request.getImplementation(),category);
-            programmingQuestionsRepository.save(programmingQuestions);
+            ProgrammingQuestions programmingQuestions = new ProgrammingQuestions(request.getStatement(), difficultyE, request.getImplementation(),implementationLanguage,category);
 
-            for(AddProgrammingTestRequest testCase: request.getProgrammingTestCases()){
-                ProgrammingTestCase programmingTestCase = new ProgrammingTestCase(testCase.getInput(), testCase.getOutput(),programmingQuestions);
-                programmingTestCaseRepository.save(programmingTestCase);
+            if(request.getProgrammingTestCases().isEmpty()){
+                throw new InvalidValueException("Programming Questions must have at least one PUBLIC/HIDDEN testcase!");
+            }
+
+            boolean IsPublicOrHiddenTestCasePresent = false;
+
+            List<ProgrammingTestCase> programmingTestCaseList = new ArrayList<>();
+            if(request.getProgrammingTestCases()!=null && !request.getProgrammingTestCases().isEmpty()){
+
+                for(AddProgrammingTestRequest testCase: request.getProgrammingTestCases()){
+                    TestCaseType type = TestCaseType.valueOf(testCase.getType());
+                    if(!IsPublicOrHiddenTestCasePresent &&   type==TestCaseType.PUBLIC || type==TestCaseType.HIDDEN){
+                        IsPublicOrHiddenTestCasePresent= true;
+                    }
+                    ProgrammingTestCase programmingTestCase = new ProgrammingTestCase(testCase.getInput(), testCase.getOutput(),type,programmingQuestions);
+
+                    // TODO : before saving testcase check if it passes on given implementation with judge0
+
+
+                    programmingTestCaseList.add(programmingTestCase);
+                }
+
+                if(!IsPublicOrHiddenTestCasePresent){
+                    throw new InvalidValueException("Programming Questions must have at least one PUBLIC/HIDDEN testcase!");
+                }
+            }
+
+            programmingQuestionsRepository.save(programmingQuestions);
+            for(ProgrammingTestCase ptc : programmingTestCaseList){
+                programmingTestCaseRepository.save(ptc);
             }
 
         }catch (IllegalArgumentException e){
-            throw new InvalidValueException("Invalid difficulty!");
+            throw new InvalidValueException("Invalid difficulty or Testcase type!");
         }
     }
 
@@ -487,18 +526,18 @@ public class QuestionManagementService implements IQuestionManagementService {
 
             Difficulty difficulty = Difficulty.valueOf(request.getDifficulty());
 
+            Language implementationLanguage = languageRepository.findById(request.getImplementationLanguageId()).orElseThrow(()-> new ResourceNotFoundException("Language not found!"));
+
             Category category = categoryRepository.findById(request.getCategory_id()).orElseThrow(()-> new ResourceNotFoundException("Category not found!"));
 
-            for(UpdateProgrammingTestCaseRequest testCase: request.getProgrammingTestCases()){
-                ProgrammingTestCase programmingTestCase = programmingTestCaseRepository.findById(testCase.getId()).orElseThrow(()-> new ResourceNotFoundException("Programming Test Case not found!"));
-                programmingTestCase.setInput(testCase.getInput());
-                programmingTestCase.setOutput(testCase.getOutput());
-                programmingTestCaseRepository.save(programmingTestCase);
+            if(category.getQuestionType() != QuestionType.PROGRAMMING){
+                throw new InvalidValueException("Category is not Programming!");
             }
 
             programmingQuestions.setStatement(request.getStatement());
             programmingQuestions.setDifficulty(difficulty);
             programmingQuestions.setImplementation(request.getImplementation());
+            programmingQuestions.setImplementationLanguage(implementationLanguage);
             programmingQuestions.setCategory(category);
             programmingQuestionsRepository.save(programmingQuestions);
 
@@ -610,9 +649,11 @@ public class QuestionManagementService implements IQuestionManagementService {
             ProgrammingTestCase testCase = new ProgrammingTestCase(
                     request.getInput(),
                     request.getOutput(),
-                    programmingQuestions,
-                    type
+                    type,
+                    programmingQuestions
             );
+
+            // TODO : before saving test case, check if it passes on given implementation with judge0
 
             programmingTestCaseRepository.save(testCase);
         }catch (IllegalArgumentException e){
@@ -621,16 +662,65 @@ public class QuestionManagementService implements IQuestionManagementService {
     }
 
     @Override
-    public void updateProgrammingTestCase(UpdateProgrammingTestRequest request, int id) throws ResourceNotFoundException {
-        ProgrammingTestCase testCase = programmingTestCaseRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Programming Test Case not found!"));
-        testCase.setInput(request.getInput());
-        testCase.setOutput(request.getOutput());
-        programmingTestCaseRepository.save(testCase);
+    public void updateProgrammingTestCase(UpdateProgrammingTestCaseRequest request, int id) throws ResourceNotFoundException, InvalidValueException {
+        try {
+            ProgrammingTestCase testCase = programmingTestCaseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Programming Test Case not found!"));
+            TestCaseType type = TestCaseType.valueOf(request.getType());
+
+            int publicTestCaseCount = programmingTestCaseRepository.countByProgrammingQuestionsIdAndType(testCase.getProgrammingQuestions().getId(),TestCaseType.PUBLIC);
+            int hiddenTestCaseCount = programmingTestCaseRepository.countByProgrammingQuestionsIdAndType(testCase.getProgrammingQuestions().getId(),TestCaseType.HIDDEN);
+
+            int totalValidTestCase = publicTestCaseCount+hiddenTestCaseCount;
+
+            if(testCase.getType() == TestCaseType.PUBLIC || testCase.getType() == TestCaseType.HIDDEN) {
+                totalValidTestCase--;
+            }
+
+            if(type == TestCaseType.PUBLIC || type == TestCaseType.HIDDEN) {
+                totalValidTestCase++;
+            }
+
+            if(totalValidTestCase<=0){
+                throw new InvalidValueException("Programming Questions must have at least one PUBLIC/HIDDEN testcase!");
+            }
+
+
+
+
+            if(!(request.getInput().equals(testCase.getInput()) && request.getOutput().equals(testCase.getOutput()))){
+                // TODO : before updating test case, check if it passes on given implementation with judge0
+
+            }
+
+
+            testCase.setInput(request.getInput());
+            testCase.setOutput(request.getOutput());
+            testCase.setType(type);
+            programmingTestCaseRepository.save(testCase);
+
+        }catch (IllegalArgumentException e){
+            throw new InvalidValueException("Invalid test case type! possible values are [SAMPLE, PUBLIC, HIDDEN]");
+        }
     }
 
     @Override
-    public void deleteProgrammingTestCase(int id) throws ResourceNotFoundException {
+    public void deleteProgrammingTestCase(int id) throws ResourceNotFoundException, InvalidValueException {
         ProgrammingTestCase testCase = programmingTestCaseRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Programming Test Case not found!"));
+
+        int publicTestCaseCount = programmingTestCaseRepository.countByProgrammingQuestionsIdAndType(testCase.getProgrammingQuestions().getId(),TestCaseType.PUBLIC);
+        int hiddenTestCaseCount = programmingTestCaseRepository.countByProgrammingQuestionsIdAndType(testCase.getProgrammingQuestions().getId(),TestCaseType.HIDDEN);
+
+        int totalValidTestCase = publicTestCaseCount+hiddenTestCaseCount;
+
+        if(testCase.getType()==TestCaseType.PUBLIC || testCase.getType()==TestCaseType.HIDDEN){
+            totalValidTestCase--;
+        }
+
+        if(totalValidTestCase<=0){
+            throw new InvalidValueException("Can't delete test case! Programming Questions must have at least one PUBLIC/HIDDEN testcase!");
+        }
+
+
         programmingTestCaseRepository.delete(testCase);
 
     }
