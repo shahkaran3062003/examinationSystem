@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.roima.examinationSystem.dto.LanguageDto;
 import com.roima.examinationSystem.dto.admin.AdminMcqQuestionDto;
 import com.roima.examinationSystem.dto.McqOptionsDto;
+import com.roima.examinationSystem.exception.FetchException;
 import com.roima.examinationSystem.exception.InvalidValueException;
 import com.roima.examinationSystem.exception.ResourceExistsException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
@@ -13,6 +14,10 @@ import com.roima.examinationSystem.repository.*;
 import com.roima.examinationSystem.request.*;
 import com.roima.examinationSystem.service.judge0.Judge0Service;
 import com.roima.examinationSystem.utils.FileManagementUtil;
+import com.roima.examinationSystem.utils.judge0.BatchData;
+import com.roima.examinationSystem.utils.judge0.BatchSubmissionResult;
+import com.roima.examinationSystem.utils.judge0.BatchTestCase;
+import com.roima.examinationSystem.utils.judge0.Judge0Util;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -38,6 +43,7 @@ public class QuestionManagementService implements IQuestionManagementService {
     private final ModelMapper modelMapper;
     private final FileManagementUtil fileManagementUtil;
     private final Judge0Service judge0Service;
+    private final Judge0Util judge0Util;
 
 
     @Override
@@ -466,7 +472,7 @@ public class QuestionManagementService implements IQuestionManagementService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void addProgrammingQuestions(AddProgrammingQuestionsRequest request) throws InvalidValueException, ResourceNotFoundException {
+    public void addProgrammingQuestions(AddProgrammingQuestionsRequest request) throws InvalidValueException, ResourceNotFoundException, FetchException {
         try{
             Difficulty difficultyE = Difficulty.valueOf(request.getDifficulty());
 
@@ -482,32 +488,40 @@ public class QuestionManagementService implements IQuestionManagementService {
 
             ProgrammingQuestions programmingQuestions = new ProgrammingQuestions(request.getStatement(), difficultyE, request.getImplementation(),implementationLanguage,category);
 
-            if(request.getProgrammingTestCases().isEmpty()){
+            if(request.getProgrammingTestCases()==null ||  request.getProgrammingTestCases().isEmpty()){
                 throw new InvalidValueException("Programming Questions must have at least one PUBLIC/HIDDEN testcase!");
             }
 
             boolean IsPublicOrHiddenTestCasePresent = false;
 
             List<ProgrammingTestCase> programmingTestCaseList = new ArrayList<>();
-            if(request.getProgrammingTestCases()!=null && !request.getProgrammingTestCases().isEmpty()){
-
-                for(AddProgrammingTestRequest testCase: request.getProgrammingTestCases()){
-                    TestCaseType type = TestCaseType.valueOf(testCase.getType());
-                    if(!IsPublicOrHiddenTestCasePresent &&   type==TestCaseType.PUBLIC || type==TestCaseType.HIDDEN){
-                        IsPublicOrHiddenTestCasePresent= true;
-                    }
-                    ProgrammingTestCase programmingTestCase = new ProgrammingTestCase(testCase.getInput(), testCase.getOutput(),type,programmingQuestions);
-
-                    // TODO : before saving testcase check if it passes on given implementation with judge0
+            List<BatchTestCase> batchTestCaseList = new ArrayList<>();
 
 
-                    programmingTestCaseList.add(programmingTestCase);
+            for(AddProgrammingTestRequest testCase: request.getProgrammingTestCases()){
+                TestCaseType type = TestCaseType.valueOf(testCase.getType());
+                if(!IsPublicOrHiddenTestCasePresent &&   type==TestCaseType.PUBLIC || type==TestCaseType.HIDDEN){
+                    IsPublicOrHiddenTestCasePresent= true;
                 }
+                ProgrammingTestCase programmingTestCase = new ProgrammingTestCase(testCase.getInput(), testCase.getOutput(),type,programmingQuestions);
 
-                if(!IsPublicOrHiddenTestCasePresent){
-                    throw new InvalidValueException("Programming Questions must have at least one PUBLIC/HIDDEN testcase!");
-                }
+                BatchTestCase batchTestCase = new BatchTestCase(testCase.getInput(),testCase.getOutput());
+                programmingTestCaseList.add(programmingTestCase);
+                batchTestCaseList.add(batchTestCase);
             }
+
+            BatchData batchData = new BatchData(implementationLanguage.getJudge0Id(),request.getImplementation(),batchTestCaseList);
+
+            List<BatchSubmissionResult> batchSubmissionResults = judge0Util.batchSubmissions(batchData);
+
+            if(!judge0Util.isAllTestCasesPassed(batchSubmissionResults)){
+                throw new InvalidValueException("Implementation code does not pass on all testcases!");
+            }
+
+            if(!IsPublicOrHiddenTestCasePresent){
+                throw new InvalidValueException("Programming Questions must have at least one PUBLIC/HIDDEN testcase!");
+            }
+
 
             programmingQuestionsRepository.save(programmingQuestions);
             for(ProgrammingTestCase ptc : programmingTestCaseList){
@@ -520,7 +534,7 @@ public class QuestionManagementService implements IQuestionManagementService {
     }
 
     @Override
-    public void updateProgrammingQuestions(UpdateProgrammingQuestionsRequest request, int id) throws ResourceNotFoundException, InvalidValueException {
+    public void updateProgrammingQuestions(UpdateProgrammingQuestionsRequest request, int id) throws ResourceNotFoundException, InvalidValueException, FetchException {
         try{
             ProgrammingQuestions programmingQuestions = programmingQuestionsRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Programming Questions not found!"));
 
@@ -532,6 +546,24 @@ public class QuestionManagementService implements IQuestionManagementService {
 
             if(category.getQuestionType() != QuestionType.PROGRAMMING){
                 throw new InvalidValueException("Category is not Programming!");
+            }
+
+
+            if(!programmingQuestions.getImplementation().equals(request.getImplementation()) || programmingQuestions.getImplementationLanguage().getId()!=request.getImplementationLanguageId()){
+
+                List<BatchTestCase> batchTestCaseList = new ArrayList<>();
+                for(ProgrammingTestCase testCase: programmingQuestions.getProgrammingTestCase()){
+                    BatchTestCase batchTestCase = new BatchTestCase(testCase.getInput(),testCase.getOutput());
+                    batchTestCaseList.add(batchTestCase);
+                }
+
+                BatchData batchData = new BatchData(implementationLanguage.getJudge0Id(),request.getImplementation(),batchTestCaseList);
+                List<BatchSubmissionResult> batchSubmissionResultList = judge0Util.batchSubmissions(batchData);
+
+                if(!judge0Util.isAllTestCasesPassed(batchSubmissionResultList)){
+                    throw new InvalidValueException("Implementation code does not pass on all testcases!");
+                }
+
             }
 
             programmingQuestions.setStatement(request.getStatement());
@@ -639,7 +671,7 @@ public class QuestionManagementService implements IQuestionManagementService {
     }
 
     @Override
-    public void addProgrammingTestCase(AddProgrammingTestCaseRequest request) throws ResourceNotFoundException, InvalidValueException {
+    public void addProgrammingTestCase(AddProgrammingTestCaseRequest request) throws ResourceNotFoundException, InvalidValueException, FetchException {
 
         try {
             ProgrammingQuestions programmingQuestions = programmingQuestionsRepository.findById(request.getProgrammingQuestionId()).orElseThrow(() -> new ResourceNotFoundException("Programming Questions not found!"));
@@ -653,7 +685,23 @@ public class QuestionManagementService implements IQuestionManagementService {
                     programmingQuestions
             );
 
-            // TODO : before saving test case, check if it passes on given implementation with judge0
+
+            List<BatchTestCase> batchTestCaseList = new ArrayList<>();
+            batchTestCaseList.add( new BatchTestCase(
+                    request.getInput(),
+                    request.getOutput()
+            ));
+
+            BatchData batchData = new BatchData(
+                    programmingQuestions.getImplementationLanguage().getJudge0Id(),
+                    programmingQuestions.getImplementation(),
+                    batchTestCaseList);
+
+            List<BatchSubmissionResult> batchSubmissionResults = judge0Util.batchSubmissions(batchData);
+
+            if(!judge0Util.isAllTestCasesPassed(batchSubmissionResults)){
+                throw new InvalidValueException("Test case does not pass on programming question implementation!");
+            }
 
             programmingTestCaseRepository.save(testCase);
         }catch (IllegalArgumentException e){
@@ -662,7 +710,7 @@ public class QuestionManagementService implements IQuestionManagementService {
     }
 
     @Override
-    public void updateProgrammingTestCase(UpdateProgrammingTestCaseRequest request, int id) throws ResourceNotFoundException, InvalidValueException {
+    public void updateProgrammingTestCase(UpdateProgrammingTestCaseRequest request, int id) throws ResourceNotFoundException, InvalidValueException, FetchException {
         try {
             ProgrammingTestCase testCase = programmingTestCaseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Programming Test Case not found!"));
             TestCaseType type = TestCaseType.valueOf(request.getType());
@@ -688,7 +736,22 @@ public class QuestionManagementService implements IQuestionManagementService {
 
 
             if(!(request.getInput().equals(testCase.getInput()) && request.getOutput().equals(testCase.getOutput()))){
-                // TODO : before updating test case, check if it passes on given implementation with judge0
+
+
+                List<BatchTestCase> batchTestCases = new ArrayList<>();
+                batchTestCases.add(
+                        new BatchTestCase(request.getInput(),request.getOutput())
+                );
+                BatchData batchData = new BatchData(
+                        testCase.getProgrammingQuestions().getImplementationLanguage().getJudge0Id(),
+                        testCase.getProgrammingQuestions().getImplementation(),
+                        batchTestCases
+                );
+                List<BatchSubmissionResult> batchSubmissionResults = judge0Util.batchSubmissions(batchData);
+
+                if(!judge0Util.isAllTestCasesPassed(batchSubmissionResults)){
+                    throw new InvalidValueException("Test case does not pass on programming question implementation!");
+                }
 
             }
 

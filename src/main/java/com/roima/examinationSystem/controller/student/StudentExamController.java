@@ -1,12 +1,10 @@
 package com.roima.examinationSystem.controller.student;
 
 
-import com.roima.examinationSystem.exception.ExamException;
-import com.roima.examinationSystem.exception.InvalidValueException;
-import com.roima.examinationSystem.exception.ResourceExistsException;
-import com.roima.examinationSystem.exception.ResourceNotFoundException;
+import com.roima.examinationSystem.exception.*;
 import com.roima.examinationSystem.request.*;
 import com.roima.examinationSystem.response.ApiResponse;
+import com.roima.examinationSystem.service.judge0.Judge0Service;
 import com.roima.examinationSystem.service.student.StudentExamManagementService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +21,7 @@ public class StudentExamController {
 
 
     private final StudentExamManagementService examManagementService;
+    private final Judge0Service judge0Service;
 
     @PostMapping("/get/{collegeId}")
     public ResponseEntity<ApiResponse> getExamByUserId(@PathVariable int collegeId) {
@@ -64,7 +63,7 @@ public class StudentExamController {
         try{
             examManagementService.submitProgrammingQuestion(request);
             return ResponseEntity.ok(new ApiResponse("success","You have successfully submitted the programming question." ));
-        } catch (ResourceNotFoundException | ResourceExistsException | ExamException e) {
+        } catch (ResourceNotFoundException | ResourceExistsException | ExamException | InvalidValueException | FetchException e) {
             return ResponseEntity.badRequest().body(new ApiResponse("error", e.getMessage()));
         }
     }
@@ -82,6 +81,36 @@ public class StudentExamController {
             return ResponseEntity.ok(new ApiResponse("success","Images saved successfully." ));
         }catch (InvalidValueException | ResourceNotFoundException | IOException e){
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
+        }
+    }
+
+
+    @GetMapping("/batch-submission")
+    public ResponseEntity<ApiResponse> batchSubmit(){
+        try{
+            return ResponseEntity.ok(new ApiResponse("success",judge0Service.batchSubmissions() ));
+        } catch (InvalidValueException | FetchException | ResourceNotFoundException e) {
+            return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
+        }
+    }
+
+
+    @PostMapping("/run-code")
+    public ResponseEntity<ApiResponse> runCode(@RequestBody @Valid CodeExecutionRequest request){
+        try{
+            return ResponseEntity.ok(new ApiResponse("success", judge0Service.codeExecution(request)));
+        }catch (InvalidValueException | FetchException | ResourceNotFoundException e){
+            return ResponseEntity.badRequest().body(new ApiResponse("error", e.getMessage()));
+        }
+    }
+
+
+    @PostMapping("/run-test-cases")
+    public ResponseEntity<ApiResponse> runTestCases(@RequestBody @Valid CodeRunTestRequest request){
+        try{
+            return ResponseEntity.ok(new ApiResponse("success", judge0Service.runTestCases(request)));
+        }catch (InvalidValueException | FetchException | ResourceNotFoundException e){
+            return ResponseEntity.badRequest().body(new ApiResponse("error", e.getMessage()));
         }
     }
 

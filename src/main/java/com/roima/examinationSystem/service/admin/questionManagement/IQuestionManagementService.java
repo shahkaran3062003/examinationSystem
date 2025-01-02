@@ -50,8 +50,8 @@ public interface IQuestionManagementService {
 
 
     // Programming Questions
-    void addProgrammingQuestions(AddProgrammingQuestionsRequest request) throws InvalidValueException, ResourceNotFoundException;
-    void updateProgrammingQuestions(UpdateProgrammingQuestionsRequest request, int id) throws ResourceNotFoundException, InvalidValueException;
+    void addProgrammingQuestions(AddProgrammingQuestionsRequest request) throws InvalidValueException, ResourceNotFoundException, FetchException;
+    void updateProgrammingQuestions(UpdateProgrammingQuestionsRequest request, int id) throws ResourceNotFoundException, InvalidValueException, FetchException;
     void deleteProgrammingQuestions(int id) throws ResourceNotFoundException;
 
 
@@ -67,8 +67,8 @@ public interface IQuestionManagementService {
     // Programming Test Cases
     ProgrammingTestCase getProgrammingTestCaseById(int id) throws ResourceNotFoundException;
     List<ProgrammingTestCase> getAllProgrammingTestCasesByProgrammingQuestionsId(int programmingQuestionsId) throws ResourceNotFoundException;
-    void addProgrammingTestCase(AddProgrammingTestCaseRequest request) throws ResourceNotFoundException, InvalidValueException;
-    void updateProgrammingTestCase(UpdateProgrammingTestCaseRequest request, int id) throws ResourceNotFoundException, InvalidValueException;
+    void addProgrammingTestCase(AddProgrammingTestCaseRequest request) throws ResourceNotFoundException, InvalidValueException, FetchException;
+    void updateProgrammingTestCase(UpdateProgrammingTestCaseRequest request, int id) throws ResourceNotFoundException, InvalidValueException, FetchException;
     void deleteProgrammingTestCase(int id) throws ResourceNotFoundException, InvalidValueException;
 
     // Programming Languages

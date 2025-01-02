@@ -28,7 +28,7 @@ public class StudentProgrammingAnswer {
     private int totalPassTestCount=0;
     private int totalFailTestCount=0;
 
-    private boolean isSolved = false;
+    private Boolean isSolved = false;
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)

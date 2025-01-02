@@ -1,6 +1,7 @@
 package com.roima.examinationSystem.service.admin.studentManagement;
 
 
+import com.roima.examinationSystem.dto.admin.StudentProgrammingAnswerDto;
 import com.roima.examinationSystem.dto.student.StudentDto;
 import com.roima.examinationSystem.exception.ResourceExistsException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
@@ -219,74 +220,49 @@ public class StudentManagementService implements IStudentManagementService {
 
 
     //---------------------------------Student Programming Answer---------------------------------------
-//    @Override
-//    public void addStudentProgrammingAnswer(AddStudentProgrammingAnswerRequest request) throws ResourceNotFoundException {
-//
-//        Exam exam = examRepository.findById(request.getExamId()).orElseThrow(()-> new ResourceNotFoundException("Exam not found!"));
-//        Student student = studentRepository.findById(request.getStudentId()).orElseThrow(()-> new ResourceNotFoundException("Student not found!"));
-//        ProgrammingQuestions programmingQuestions = programmingQuestionsRepository.findById(request.getProgrammingQuestionsId()).orElseThrow(()-> new ResourceNotFoundException("Programming Question not found!"));
-//
-////        TODO compile and run all testcase of programming question and update testcase result
-////        TODO handle compile error and runtime error
-//
-//        StudentProgrammingAnswer studentProgrammingAnswer = studentProgrammingAnswerRepository.findByExamIdAndStudentIdAndProgrammingQuestionsId(request.getExamId(),request.getStudentId(),request.getProgrammingQuestionsId());
-//
-//        boolean isNewAnswer = false;
-//        if(studentProgrammingAnswer == null) {
-//            studentProgrammingAnswer = new StudentProgrammingAnswer(
-//                    request.getSubmittedCode(),
-//                    exam,
-//                    student,
-//                    programmingQuestions
-//            );
-//            isNewAnswer = true;
-//        }else{
-//            studentProgrammingAnswer.setSubmittedCode(request.getSubmittedCode());
-//        }
-//        studentProgrammingAnswerRepository.save(studentProgrammingAnswer);
-//
-//        StudentExamDetails studentExamDetails = studentExamDetailsRepository.findByStudentAndExam(student,exam);
-//
-//        if(studentExamDetails==null){
-//            int totalMcqQuestions = exam.getMcqQuestions().size();
-//            int totalProgrammingQuestions = exam.getProgrammingQuestions().size();
-//            int totalUnattemptedMcqQuestions = totalMcqQuestions;
-//            int totalUnattemptedProgrammingQuestions = totalProgrammingQuestions;
-//
-//            studentExamDetails = new StudentExamDetails(
-//                    true,
-//                    totalMcqQuestions,
-//                    totalUnattemptedMcqQuestions,
-//                    totalProgrammingQuestions,
-//                    totalUnattemptedProgrammingQuestions,
-//                    student,
-//                    exam
-//            );
-//            studentExamDetailsRepository.save(studentExamDetails);
-//        }
-//
-////        TODO check if student program pass all testcase or not if yes then update totalSolvedProgrammingQuestions of studentExamDetails else update totalUnsolvedProgrammingQuestions
-//
-//        if(isNewAnswer) {
-//            studentExamDetails.setTotalUnattemptedProgrammingQuestions(studentExamDetails.getTotalUnattemptedProgrammingQuestions() - 1);
-//        }
-//        studentExamDetailsRepository.save(studentExamDetails);
-//
-//    }
 
     @Override
-    public List<StudentProgrammingAnswer> getAllProgrammingAnswerByStudentId(int studentId,int examId) throws ResourceNotFoundException {
-        return studentProgrammingAnswerRepository.findAllByStudentIdAndExamId(studentId,examId);
+    public List<StudentProgrammingAnswerDto> getAllProgrammingAnswerByStudentId(int studentId,int examId) throws ResourceNotFoundException {
+        return convertToDtoList(studentProgrammingAnswerRepository.findAllByStudentIdAndExamId(studentId,examId));
     }
 
     @Override
-    public StudentProgrammingAnswer getProgrammingAnswerById(int programmingAnswerId) throws ResourceNotFoundException {
-        return studentProgrammingAnswerRepository.findById(programmingAnswerId).orElseThrow(()-> new ResourceNotFoundException("Programming Answer not found!"));
+    public StudentProgrammingAnswerDto getProgrammingAnswerById(int programmingAnswerId) throws ResourceNotFoundException {
+        return convertToDto(studentProgrammingAnswerRepository.findById(programmingAnswerId).orElseThrow(()-> new ResourceNotFoundException("Programming Answer not found!")));
     }
 
     @Override
     public void deleteProgrammingAnswerById(int programmingAnswerId) throws ResourceNotFoundException {
         StudentProgrammingAnswer programmingAnswer = studentProgrammingAnswerRepository.findById(programmingAnswerId).orElseThrow(()-> new ResourceNotFoundException("Programming Answer not found!"));
         studentProgrammingAnswerRepository.delete(programmingAnswer);
+    }
+
+
+    private StudentProgrammingAnswerDto convertToDto(StudentProgrammingAnswer studentProgrammingAnswer) {
+
+        StudentProgrammingAnswerDto programmingAnswerDto = new StudentProgrammingAnswerDto();
+        StudentProgrammingAnswerDto.ProgrammingQuestionDto programmingQuestionDto = programmingAnswerDto.getProgrammingQuestions();
+        ProgrammingQuestions programmingQuestions = studentProgrammingAnswer.getProgrammingQuestions();
+
+
+
+        programmingQuestionDto.setId(programmingQuestions.getId());
+        programmingQuestionDto.setStatement(programmingQuestions.getStatement());
+        programmingQuestionDto.setImplementation(programmingQuestions.getImplementation());
+        programmingQuestionDto.setDifficulty(programmingQuestions.getDifficulty());
+        programmingQuestionDto.setCategory(programmingQuestions.getCategory());
+        programmingAnswerDto.setId(studentProgrammingAnswer.getId());
+        programmingAnswerDto.setSubmittedCode(studentProgrammingAnswer.getSubmittedCode());
+        programmingAnswerDto.setTotalPassTestCount(studentProgrammingAnswer.getTotalPassTestCount());
+        programmingAnswerDto.setTotalFailTestCount(studentProgrammingAnswer.getTotalFailTestCount());
+        programmingAnswerDto.setIsSolved(studentProgrammingAnswer.getIsSolved());
+        programmingAnswerDto.setLanguage(studentProgrammingAnswer.getLanguage());
+        programmingAnswerDto.setStudentProgramTestCaseAnswer(studentProgrammingAnswer.getStudentProgramTestCaseAnswer());
+
+        return programmingAnswerDto;
+    }
+
+    private List<StudentProgrammingAnswerDto> convertToDtoList(List<StudentProgrammingAnswer> studentProgrammingAnswers) {
+        return studentProgrammingAnswers.stream().map(this::convertToDto).toList();
     }
 }

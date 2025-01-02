@@ -1,5 +1,6 @@
 package com.roima.examinationSystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +20,7 @@ public class StudentProgramTestCaseAnswer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private boolean status= false;
+    private Boolean status= false;
 
 
     @ManyToOne
@@ -29,6 +30,13 @@ public class StudentProgramTestCaseAnswer {
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonBackReference
     private StudentProgrammingAnswer studentProgrammingAnswer;
+
+    public StudentProgramTestCaseAnswer(Boolean status, ProgrammingTestCase testCase,StudentProgrammingAnswer studentProgrammingAnswer){
+        this.status = status;
+        this.programmingTestCase = testCase;
+        this.studentProgrammingAnswer = studentProgrammingAnswer;
+    }
 
 }

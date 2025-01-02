@@ -4,29 +4,39 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e770141f-7dc6-4504-9665-05e67707c434" name="Changes" comment="add ENUM TestCaseType [SAMPLE, PUBLIC, HIDDEN] to ProgrammingTestCase. implement better exam difficulty calculator based on exam category details.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/utils/Judge0Util.java" afterDir="false" />
+    <list default="true" id="e770141f-7dc6-4504-9665-05e67707c434" name="Changes" comment="add language to programming questions. implement rules to add at least one PUBLIC/HIDDEN testcase in each programming question. can't delete if there is no PUBLIC/HIDDEN testcases. can't update testcase type to SAMPLE if there is no PUBLIC/HIDDEN testcase after update.">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/dto/admin/StudentProgrammingAnswerDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/repository/StudentProgrammingTestCaseAnswerRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/CodeExecutionRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/CodeRunTestRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/CodeSubmissionRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/utils/judge0/BatchData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/utils/judge0/BatchSubmissionRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/utils/judge0/BatchSubmissionResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/utils/judge0/BatchSubmissionResult.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/utils/judge0/BatchTestCase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/utils/judge0/Judge0Util.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/utils/judge0/Status.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/admin/ProgrammingQuestionsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/admin/ProgrammingQuestionsController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/admin/ProgrammingTestCaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/admin/ProgrammingTestCaseController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/Language.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/Language.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/ProgrammingQuestions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/ProgrammingQuestions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/ProgrammingTestCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/ProgrammingTestCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/repository/ProgrammingTestCaseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/repository/ProgrammingTestCaseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/AddProgrammingQuestionsRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/AddProgrammingQuestionsRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/AddProgrammingTestRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/AddProgrammingTestRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/UpdateProgrammingQuestionsRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/UpdateProgrammingQuestionsRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/UpdateProgrammingTestCaseRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/UpdateProgrammingTestCaseRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/request/UpdateProgrammingTestRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/student/StudentExamController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/student/StudentExamController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/StudentProgramTestCaseAnswer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/StudentProgramTestCaseAnswer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/StudentProgrammingAnswer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/StudentProgrammingAnswer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/admin/questionManagement/IQuestionManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/admin/questionManagement/IQuestionManagementService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/admin/questionManagement/QuestionManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/admin/questionManagement/QuestionManagementService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/ProgrammingQuestions.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/ProgrammingQuestions.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/ProgrammingTestCase.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/ProgrammingTestCase.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/AddProgrammingQuestionsRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/AddProgrammingQuestionsRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/AddProgrammingTestRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/AddProgrammingTestRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/UpdateProgrammingQuestionsRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/UpdateProgrammingQuestionsRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/UpdateProgrammingTestCaseRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/UpdateProgrammingTestCaseRequest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/request/UpdateProgrammingTestRequest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/admin/studentManagement/IStudentManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/admin/studentManagement/IStudentManagementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/admin/studentManagement/StudentManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/admin/studentManagement/StudentManagementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/judge0/IJudge0Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/judge0/IJudge0Service.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/judge0/Judge0Service.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/judge0/Judge0Service.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/student/IStudentExamManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/student/IStudentExamManagementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/student/StudentExamManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/student/StudentExamManagementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/utils/Judge0Util.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/StudentProgramTestCaseAnswer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/model/StudentProgramTestCaseAnswer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/ProgrammingTestCaseRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/ProgrammingTestCaseRepository.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,9 +50,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="AnnotationType" />
-        <option value="Interface" />
         <option value="Exception" />
         <option value="Enum" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -312,7 +322,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735427158014</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="add language to programming questions. implement rules to add at least one PUBLIC/HIDDEN testcase in each programming question. can't delete if there is no PUBLIC/HIDDEN testcases. can't update testcase type to SAMPLE if there is no PUBLIC/HIDDEN testcase after update.">
+      <option name="closed" value="true" />
+      <created>1735502443935</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1735502443935</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -345,7 +363,8 @@
     <MESSAGE value="added image option in MCQ question and MCQ option as well. add feature to log student all login attempts. add generate exam feature based on exam category details. improve JWT token verification by handling all exceptions in JWT token." />
     <MESSAGE value="feature to add programming language from judge0 language api. implement exam monitoring feature." />
     <MESSAGE value="add ENUM TestCaseType [SAMPLE, PUBLIC, HIDDEN] to ProgrammingTestCase. implement better exam difficulty calculator based on exam category details." />
-    <option name="LAST_COMMIT_MESSAGE" value="add ENUM TestCaseType [SAMPLE, PUBLIC, HIDDEN] to ProgrammingTestCase. implement better exam difficulty calculator based on exam category details." />
+    <MESSAGE value="add language to programming questions. implement rules to add at least one PUBLIC/HIDDEN testcase in each programming question. can't delete if there is no PUBLIC/HIDDEN testcases. can't update testcase type to SAMPLE if there is no PUBLIC/HIDDEN testcase after update." />
+    <option name="LAST_COMMIT_MESSAGE" value="add language to programming questions. implement rules to add at least one PUBLIC/HIDDEN testcase in each programming question. can't delete if there is no PUBLIC/HIDDEN testcases. can't update testcase type to SAMPLE if there is no PUBLIC/HIDDEN testcase after update." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

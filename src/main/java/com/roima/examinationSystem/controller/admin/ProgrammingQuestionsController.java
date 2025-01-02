@@ -1,6 +1,7 @@
 package com.roima.examinationSystem.controller.admin;
 
 
+import com.roima.examinationSystem.exception.FetchException;
 import com.roima.examinationSystem.exception.InvalidValueException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.request.AddProgrammingQuestionsRequest;
@@ -74,7 +75,7 @@ public class ProgrammingQuestionsController {
         try{
             questionManagementService.addProgrammingQuestions(request);
             return ResponseEntity.ok(new ApiResponse("success", "Programming Question added successfully!"));
-        } catch (InvalidValueException | ResourceNotFoundException e) {
+        } catch (InvalidValueException | ResourceNotFoundException | FetchException e) {
             return ResponseEntity.badRequest().body(new ApiResponse("error",e.getMessage()));
         }
     }
@@ -85,7 +86,7 @@ public class ProgrammingQuestionsController {
         try{
             questionManagementService.updateProgrammingQuestions(request,id);
             return ResponseEntity.ok(new ApiResponse("success", "Programming Question updated successfully!"));
-        }catch(InvalidValueException | ResourceNotFoundException e){
+        }catch(InvalidValueException | ResourceNotFoundException | FetchException e){
             return ResponseEntity.badRequest().body(new ApiResponse("error",e.getMessage()));
         }
     }

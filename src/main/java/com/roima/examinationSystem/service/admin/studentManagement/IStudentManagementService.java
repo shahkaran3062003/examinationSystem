@@ -1,5 +1,6 @@
 package com.roima.examinationSystem.service.admin.studentManagement;
 
+import com.roima.examinationSystem.dto.admin.StudentProgrammingAnswerDto;
 import com.roima.examinationSystem.exception.ResourceExistsException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.model.Student;
@@ -38,8 +39,8 @@ public interface IStudentManagementService {
 
     //Student Programming Answer
 //    void addStudentProgrammingAnswer(AddStudentProgrammingAnswerRequest request) throws ResourceNotFoundException;
-    List<StudentProgrammingAnswer> getAllProgrammingAnswerByStudentId(int studentId,int examId) throws ResourceNotFoundException;
-    StudentProgrammingAnswer getProgrammingAnswerById(int programmingAnswerId) throws ResourceNotFoundException;
+    List<StudentProgrammingAnswerDto> getAllProgrammingAnswerByStudentId(int studentId, int examId) throws ResourceNotFoundException;
+    StudentProgrammingAnswerDto getProgrammingAnswerById(int programmingAnswerId) throws ResourceNotFoundException;
     void deleteProgrammingAnswerById(int programmingAnswerId) throws ResourceNotFoundException;
 
 

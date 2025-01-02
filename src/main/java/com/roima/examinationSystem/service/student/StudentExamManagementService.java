@@ -4,10 +4,7 @@ import com.roima.examinationSystem.dto.McqOptionsDto;
 import com.roima.examinationSystem.dto.student.StudentExamDetailsDto;
 import com.roima.examinationSystem.dto.student.StudentExamDto;
 import com.roima.examinationSystem.dto.student.StudentMcqQuestionDto;
-import com.roima.examinationSystem.exception.ExamException;
-import com.roima.examinationSystem.exception.InvalidValueException;
-import com.roima.examinationSystem.exception.ResourceExistsException;
-import com.roima.examinationSystem.exception.ResourceNotFoundException;
+import com.roima.examinationSystem.exception.*;
 import com.roima.examinationSystem.model.*;
 import com.roima.examinationSystem.repository.*;
 import com.roima.examinationSystem.request.AddStudentMcqAnswerRequest;
@@ -15,16 +12,21 @@ import com.roima.examinationSystem.request.AddStudentProgrammingAnswerRequest;
 import com.roima.examinationSystem.request.StartExamRequest;
 import com.roima.examinationSystem.request.SubmitExamRequest;
 import com.roima.examinationSystem.utils.FileManagementUtil;
+import com.roima.examinationSystem.utils.judge0.BatchData;
+import com.roima.examinationSystem.utils.judge0.BatchSubmissionResult;
+import com.roima.examinationSystem.utils.judge0.BatchTestCase;
+import com.roima.examinationSystem.utils.judge0.Judge0Util;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-
 
 
 @Service
@@ -43,6 +45,7 @@ public class StudentExamManagementService implements IStudentExamManagementServi
     private final ModelMapper modelMapper;
     private final HttpServletRequest httpServletRequest;
     private final FileManagementUtil fileManagementUtil;
+    private final Judge0Util judge0Util;
 
 
     @Override
@@ -56,7 +59,6 @@ public class StudentExamManagementService implements IStudentExamManagementServi
 
         Student student = studentRepository.findById(request.getStudentId()).orElseThrow(()-> new ResourceNotFoundException("Student not found!"));
         Exam exam = examRepository.findById(request.getExamId()).orElseThrow(()-> new ResourceNotFoundException("Exam not found!"));
-
 
         if(!isExamStarted(exam.getStart_datetime())){
             throw new ExamException("Exam not started yet!");
@@ -89,7 +91,7 @@ public class StudentExamManagementService implements IStudentExamManagementServi
             );
             studentExamDetailsRepository.save(studentExamDetails);
         }else if(studentExamDetails.getIsSubmitted()){
-                throw new ExamException("Exam already submitted!");
+            throw new ExamException("Exam already submitted!");
         }
         return convertToExamDto(exam);
     }
@@ -175,7 +177,8 @@ public class StudentExamManagementService implements IStudentExamManagementServi
     }
 
     @Override
-    public void submitProgrammingQuestion(AddStudentProgrammingAnswerRequest request) throws ResourceNotFoundException, ResourceExistsException, ExamException {
+    @Transactional
+    public void submitProgrammingQuestion(AddStudentProgrammingAnswerRequest request) throws ResourceNotFoundException, ResourceExistsException, ExamException, InvalidValueException, FetchException {
 
         StudentExamDetails studentExamDetails = studentExamDetailsRepository.findByStudentIdAndExamId(request.getStudentId(), request.getExamId());
         Exam exam = examRepository.findById(request.getExamId()).orElseThrow(()-> new ResourceNotFoundException("Exam not found!"));
@@ -221,13 +224,74 @@ public class StudentExamManagementService implements IStudentExamManagementServi
         }else{
             studentProgrammingAnswer.setSubmittedCode(request.getSubmittedCode());
         }
+        studentProgrammingAnswer.setLanguage(language);
         studentProgrammingAnswerRepository.save(studentProgrammingAnswer);
 
-//        TODO check if student program pass all testcase or not if yes then update totalSolvedProgrammingQuestions of studentExamDetails else update totalUnsolvedProgrammingQuestions
+
+        BatchData batchData = new BatchData();
+        batchData.setJudge0LanguageId(language.getJudge0Id());
+        batchData.setCode(request.getSubmittedCode());
+
+        List<ProgrammingTestCase> programmingTestCaseList = programmingQuestions.getProgrammingTestCase();
+        List<StudentProgramTestCaseAnswer> studentProgrammingTestCaseAnswerList = studentProgrammingAnswer.getStudentProgramTestCaseAnswer();
+        List<BatchTestCase> testCaseList = new ArrayList<>();
+
+        for(ProgrammingTestCase testCase: programmingTestCaseList){
+            BatchTestCase batchTestCase = new BatchTestCase(testCase.getInput(),testCase.getOutput());
+            testCaseList.add(batchTestCase);
+        }
+
+        batchData.setTestCaseList(testCaseList);
+        List<BatchSubmissionResult> batchSubmissionResultList = judge0Util.batchSubmissions(batchData);
+
+        int totalPassTestCase = 0;
+        int totalFailedTestCase = 0;
+        boolean isSolved = true;
+
+        for(int i=0;i<programmingTestCaseList.size();i++){
+            if(batchSubmissionResultList.get(i).getStatus().getId()==3){
+                totalPassTestCase++;
+
+                if(isNewAnswer){
+                    System.out.println("in true's isNew");
+
+                    if(studentProgrammingTestCaseAnswerList == null){
+                        studentProgrammingTestCaseAnswerList = new ArrayList<>();
+                    }
+
+                    studentProgrammingTestCaseAnswerList.add(new StudentProgramTestCaseAnswer(true,programmingTestCaseList.get(i),studentProgrammingAnswer));
+                }
+                else{
+                    System.out.println("in true's not isNew");
+                    studentProgrammingTestCaseAnswerList.get(i).setStatus(true);
+                }
+            }else{
+                isSolved = false;
+                totalFailedTestCase++;
+                if(isNewAnswer){
+                    System.out.println("in false's isNew");
+                    if(studentProgrammingTestCaseAnswerList == null){
+                        studentProgrammingTestCaseAnswerList = new ArrayList<>();
+                    }
+                    studentProgrammingTestCaseAnswerList.add(new StudentProgramTestCaseAnswer(false,programmingTestCaseList.get(i), studentProgrammingAnswer));
+                }else{
+                    System.out.println("in false's not isNew");
+                    studentProgrammingTestCaseAnswerList.get(i).setStatus(false);
+                }
+            }
+        }
 
         if(isNewAnswer) {
             studentExamDetails.setTotalUnattemptedProgrammingQuestions(studentExamDetails.getTotalUnattemptedProgrammingQuestions() - 1);
         }
+
+        studentProgrammingAnswer.setStudentProgramTestCaseAnswer(studentProgrammingTestCaseAnswerList);
+
+        studentProgrammingAnswer.setTotalPassTestCount(totalPassTestCase);
+        studentProgrammingAnswer.setTotalFailTestCount(totalFailedTestCase);
+        studentProgrammingAnswer.setIsSolved(isSolved);
+
+        studentProgrammingAnswerRepository.save(studentProgrammingAnswer);
         studentExamDetailsRepository.save(studentExamDetails);
 
     }
