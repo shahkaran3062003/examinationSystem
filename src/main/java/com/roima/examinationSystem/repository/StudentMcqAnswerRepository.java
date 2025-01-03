@@ -1,5 +1,6 @@
 package com.roima.examinationSystem.repository;
 
+import com.roima.examinationSystem.model.StudentExamDetails;
 import com.roima.examinationSystem.model.StudentMcqAnswer;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -10,9 +11,6 @@ import java.util.List;
 
 @Repository
 public interface StudentMcqAnswerRepository extends JpaRepository<StudentMcqAnswer,Integer> {
-    StudentMcqAnswer findByExamIdAndStudentIdAndMcqQuestionsId(int examId, int studentId, int mcqQuestionsId);
-
-    List<StudentMcqAnswer> findAllByStudentId(int studentId);
-
-    List<StudentMcqAnswer> findAllByStudentIdAndExamId(int studentId, int examId);
+    StudentMcqAnswer findByStudentExamDetailsIdAndMcqQuestionsId(int studentExamDetailsId, int mcqQuestionsId);
+    List<StudentMcqAnswer> findAllByStudentExamDetailsId(int studentExamDetailsId);
 }

@@ -288,6 +288,39 @@ public class ExamManagementService implements IExamManagementService {
             if(examCategoryDetailsRepository.existsByCategoryAndDifficultyAndExam(category, difficulty, exam)) throw new InvalidValueException("Category with Same Difficulty already exists!");
 
             if(!utils.isExamDifficultyCorrect(exam,request)) throw new InvalidValueException("Category Difficulty is too high for this Exam!");
+
+            int totalQuestions = 0;
+            int currentQuestions = 0;
+
+            if(category.getQuestionType()==QuestionType.MCQ) {
+                totalQuestions = exam.getTotalMcqQuestions();
+                if (exam.getMcqQuestions() != null) {
+                    for(ExamCategoryDetails ecd : exam.getExamCategoryDetails()){
+                        if(ecd.getCategory().getQuestionType()==QuestionType.MCQ){
+                            currentQuestions+=ecd.getCount();
+                        }
+                    }
+                }
+
+                if (currentQuestions + request.getCount() > totalQuestions) {
+                    throw new InvalidValueException("Total MCQ Questions for this Exam is " + totalQuestions + "!");
+                }
+            }else if(category.getQuestionType()==QuestionType.PROGRAMMING){
+                totalQuestions = exam.getTotalProgrammingQuestions();
+                if(exam.getProgrammingQuestions() != null){
+                    for(ExamCategoryDetails ecd: exam.getExamCategoryDetails()){
+                        if(ecd.getCategory().getQuestionType() == QuestionType.PROGRAMMING){
+                            currentQuestions+=ecd.getCount();
+                        }
+                    }
+                }
+
+                if(currentQuestions + request.getCount() > totalQuestions){
+                    throw new InvalidValueException("Total Programming Questions for this Exam is " + totalQuestions + "!");
+                }
+            }
+
+
             ExamCategoryDetails examCategoryDetails = new ExamCategoryDetails(difficulty, request.getCount(), category,exam);
             examCategoryDetailsRepository.save(examCategoryDetails);
         }catch (IllegalArgumentException e){
@@ -352,8 +385,8 @@ public class ExamManagementService implements IExamManagementService {
 //    ------------------------------------------Exam Monitor------------------------------------------------------------
 
     @Override
-    public List<AdminExamMonitorDto> getStudentExamMonitorDetails(int studentId, int examId) throws ResourceNotFoundException {
-        List<ExamMonitor> examMonitorsList = examMonitorRepository.findAllByStudentIdAndExamId(studentId,examId);
+    public List<AdminExamMonitorDto> getStudentExamMonitorDetails(int studentExamDetailsId) throws ResourceNotFoundException {
+        List<ExamMonitor> examMonitorsList = examMonitorRepository.findAllByStudentExamDetailsId(studentExamDetailsId);
 
         if(examMonitorsList.isEmpty()) throw new ResourceNotFoundException("No monitor details found!");
 
@@ -372,8 +405,8 @@ public class ExamManagementService implements IExamManagementService {
     }
 
     @Override
-    public void deleteExamMonitorByStudentIdAndExamId(int studentId, int examId) throws ResourceNotFoundException, IOException {
-        List<ExamMonitor> examMonitors = examMonitorRepository.findAllByStudentIdAndExamId(studentId,examId);
+    public void deleteByStudentExamDetailsId(int studentExamDetailsId) throws ResourceNotFoundException, IOException {
+        List<ExamMonitor> examMonitors = examMonitorRepository.findAllByStudentExamDetailsId(studentExamDetailsId);
         if(examMonitors.isEmpty()) throw new ResourceNotFoundException("No monitor details found!");
 
         for(ExamMonitor examMonitor: examMonitors){

@@ -1,9 +1,7 @@
 package com.roima.examinationSystem.service.student;
 
 import com.roima.examinationSystem.dto.McqOptionsDto;
-import com.roima.examinationSystem.dto.student.StudentExamDetailsDto;
-import com.roima.examinationSystem.dto.student.StudentExamDto;
-import com.roima.examinationSystem.dto.student.StudentMcqQuestionDto;
+import com.roima.examinationSystem.dto.student.*;
 import com.roima.examinationSystem.exception.*;
 import com.roima.examinationSystem.model.*;
 import com.roima.examinationSystem.repository.*;
@@ -26,7 +24,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -55,7 +55,7 @@ public class StudentExamManagementService implements IStudentExamManagementServi
     }
 
     @Override
-    public StudentExamDto startExam(StartExamRequest request) throws ResourceNotFoundException, ResourceExistsException, ExamException {
+    public Map<String,Object> startExam(StartExamRequest request) throws ResourceNotFoundException, ResourceExistsException, ExamException {
 
         Student student = studentRepository.findById(request.getStudentId()).orElseThrow(()-> new ResourceNotFoundException("Student not found!"));
         Exam exam = examRepository.findById(request.getExamId()).orElseThrow(()-> new ResourceNotFoundException("Exam not found!"));
@@ -90,10 +90,27 @@ public class StudentExamManagementService implements IStudentExamManagementServi
                     exam
             );
             studentExamDetailsRepository.save(studentExamDetails);
+
+
+
         }else if(studentExamDetails.getIsSubmitted()){
             throw new ExamException("Exam already submitted!");
         }
-        return convertToExamDto(exam);
+        Map<String,Object> examDetails = new HashMap<>();
+        Map<String,Object> submittedData = new HashMap<>();
+
+        submittedData.put("MCQ",getConvertedStudentSubmittedMcqAnswer(
+                studentExamDetails.getStudentMcqAnswers()
+        ));
+        submittedData.put("PROGRAMMING",getConvertedStudentProgrammingQuestions(
+                studentExamDetails.getStudentProgrammingAnswers()
+        ));
+
+        examDetails.put("exam", convertToExamDto(exam));
+        examDetails.put("submitted", submittedData);
+
+        System.out.println(examDetails);
+        return examDetails;
     }
 
 
@@ -144,34 +161,39 @@ public class StudentExamManagementService implements IStudentExamManagementServi
             throw new ExamException("Different IP address!");
         }
 
-
-        Student student = studentRepository.findById(request.getStudentId()).orElseThrow(()-> new ResourceNotFoundException("Student not found!"));
         McqQuestions mcqQuestions = mcqQuestionsRepository.findById(request.getMcqQuestionsId()).orElseThrow(()-> new ResourceNotFoundException("Mcq Question not found!"));
 
         boolean isCorrect = request.getSelectedOption()==mcqQuestions.getCorrect_option();
 
-        StudentMcqAnswer studentMcqAnswer = studentMcqAnswerRepository.findByExamIdAndStudentIdAndMcqQuestionsId(request.getExamId(), request.getStudentId(), request.getMcqQuestionsId());
+        StudentMcqAnswer studentMcqAnswer = studentMcqAnswerRepository.findByStudentExamDetailsIdAndMcqQuestionsId(studentExamDetails.getId(), request.getMcqQuestionsId());
 
         boolean isNewAnswer = false;
         if(studentMcqAnswer == null) {
-            studentMcqAnswer = new StudentMcqAnswer(request.getSelectedOption(), exam, student, mcqQuestions);
-            studentMcqAnswer.setCorrect(isCorrect);
+            studentMcqAnswer = new StudentMcqAnswer(request.getSelectedOption(), studentExamDetails, mcqQuestions);
             isNewAnswer = true;
         }else{
             studentMcqAnswer.setSelectedOption(request.getSelectedOption());
-            studentMcqAnswer.setCorrect(isCorrect);
-        }
-        studentMcqAnswerRepository.save(studentMcqAnswer);
-
-        if(isCorrect){
-            studentExamDetails.setTotalCorrectMcqAnswers(studentExamDetails.getTotalCorrectMcqAnswers()+1);
-        }else{
-            studentExamDetails.setTotalWrongMcqAnswers(studentExamDetails.getTotalWrongMcqAnswers()+1);
         }
 
         if(isNewAnswer) {
             studentExamDetails.setTotalUnattemptedMcqQuestions(studentExamDetails.getTotalUnattemptedMcqQuestions() - 1);
+            if(isCorrect){
+                studentExamDetails.setTotalCorrectMcqAnswers(studentExamDetails.getTotalCorrectMcqAnswers()+1);
+            }else{
+                studentExamDetails.setTotalWrongMcqAnswers(studentExamDetails.getTotalWrongMcqAnswers()+1);
+            }
+        }else{
+            if(isCorrect && !studentMcqAnswer.isCorrect()){
+                studentExamDetails.setTotalCorrectMcqAnswers(studentExamDetails.getTotalCorrectMcqAnswers()+1);
+                studentExamDetails.setTotalWrongMcqAnswers(studentExamDetails.getTotalWrongMcqAnswers()-1);
+            }else if(!isCorrect && studentMcqAnswer.isCorrect()){
+                studentExamDetails.setTotalCorrectMcqAnswers(studentExamDetails.getTotalCorrectMcqAnswers()-1);
+                studentExamDetails.setTotalWrongMcqAnswers(studentExamDetails.getTotalWrongMcqAnswers()+1);
+            }
         }
+
+        studentMcqAnswer.setCorrect(isCorrect);
+        studentMcqAnswerRepository.save(studentMcqAnswer);
         studentExamDetailsRepository.save(studentExamDetails);
 
     }
@@ -203,20 +225,17 @@ public class StudentExamManagementService implements IStudentExamManagementServi
             throw new ExamException("Different IP address!");
         }
 
-
-        Student student = studentRepository.findById(request.getStudentId()).orElseThrow(()-> new ResourceNotFoundException("Student not found!"));
         ProgrammingQuestions programmingQuestions = programmingQuestionsRepository.findById(request.getProgrammingQuestionsId()).orElseThrow(()-> new ResourceNotFoundException("Programming Question not found!"));
         Language language = languageRepository.findById(request.getLanguageId()).orElseThrow(()-> new ResourceNotFoundException("Language not found!"));
 
 
-        StudentProgrammingAnswer studentProgrammingAnswer = studentProgrammingAnswerRepository.findByExamIdAndStudentIdAndProgrammingQuestionsId(request.getExamId(),request.getStudentId(),request.getProgrammingQuestionsId());
+        StudentProgrammingAnswer studentProgrammingAnswer = studentProgrammingAnswerRepository.findByStudentExamDetailsIdAndProgrammingQuestionsId(studentExamDetails.getId(),request.getProgrammingQuestionsId());
 
         boolean isNewAnswer = false;
         if(studentProgrammingAnswer == null) {
             studentProgrammingAnswer = new StudentProgrammingAnswer(
                     request.getSubmittedCode(),
-                    exam,
-                    student,
+                    studentExamDetails,
                     programmingQuestions,
                     language
             );
@@ -281,9 +300,28 @@ public class StudentExamManagementService implements IStudentExamManagementServi
             }
         }
 
+        int totalSolvedProgrammingQuestions = studentExamDetails.getTotalSolvedProgrammingQuestions();
+        int totalUnsolvedProgrammingQuestions = studentExamDetails.getTotalUnsolvedProgrammingQuestions();
+        int totalUnattemptedProgrammingQuestions = studentExamDetails.getTotalUnattemptedProgrammingQuestions();
+
         if(isNewAnswer) {
-            studentExamDetails.setTotalUnattemptedProgrammingQuestions(studentExamDetails.getTotalUnattemptedProgrammingQuestions() - 1);
+            studentExamDetails.setTotalUnattemptedProgrammingQuestions(totalUnattemptedProgrammingQuestions - 1);
+
+            if(isSolved){
+                studentExamDetails.setTotalSolvedProgrammingQuestions(totalSolvedProgrammingQuestions+1);
+            }else{
+                studentExamDetails.setTotalUnsolvedProgrammingQuestions(totalUnsolvedProgrammingQuestions+1);
+            }
+        }else{
+            if(isSolved && !studentProgrammingAnswer.getIsSolved()){
+                studentExamDetails.setTotalSolvedProgrammingQuestions(totalSolvedProgrammingQuestions+1);
+                studentExamDetails.setTotalUnsolvedProgrammingQuestions(totalUnsolvedProgrammingQuestions-1);
+            }else if (!isSolved && studentProgrammingAnswer.getIsSolved()){
+                studentExamDetails.setTotalSolvedProgrammingQuestions(totalSolvedProgrammingQuestions-1);
+                studentExamDetails.setTotalUnsolvedProgrammingQuestions(totalUnsolvedProgrammingQuestions+1);
+            }
         }
+
 
         studentProgrammingAnswer.setStudentProgramTestCaseAnswer(studentProgrammingTestCaseAnswerList);
 
@@ -298,10 +336,11 @@ public class StudentExamManagementService implements IStudentExamManagementServi
 
     @Override
     public void monitorExam(int studentId, int examId, MultipartFile screenImage, MultipartFile userImage) throws ResourceNotFoundException, InvalidValueException, IOException {
-        Student student = studentRepository.findById(studentId).orElseThrow(()-> new ResourceNotFoundException("Student not found!"));
-        Exam exam = examRepository.findById(examId).orElseThrow(()-> new ResourceNotFoundException("Exam not found!"));
-
-        ExamMonitor examMonitor = new ExamMonitor(exam, student, fileManagementUtil.saveImage(screenImage), fileManagementUtil.saveImage(userImage));
+        StudentExamDetails studentExamDetails = studentExamDetailsRepository.findByStudentIdAndExamId(studentId,examId);
+        if(studentExamDetails==null){
+            throw new ResourceNotFoundException("Student Exam Details not found!");
+        }
+        ExamMonitor examMonitor = new ExamMonitor(studentExamDetails, fileManagementUtil.saveImage(screenImage), fileManagementUtil.saveImage(userImage));
 
         examMonitorRepository.save(examMonitor);
     }
@@ -345,6 +384,30 @@ public class StudentExamManagementService implements IStudentExamManagementServi
             mcqOptions.setImage(fileManagementUtil.getLiveImagePath(mcqOptions.getImage()));
         }
         return mcqOptions;
+    }
+
+    private List<StudentSubmittedMcqQuestionDto> getConvertedStudentSubmittedMcqAnswer(List<StudentMcqAnswer> studentMcqAnswers){
+        return studentMcqAnswers.stream().map(this::convertToDto).toList();
+    }
+
+    private StudentSubmittedMcqQuestionDto convertToDto(StudentMcqAnswer studentMcqAnswer){
+        StudentSubmittedMcqQuestionDto dto = new StudentSubmittedMcqQuestionDto();
+        dto.setId(studentMcqAnswer.getMcqQuestions().getId());
+        dto.setSelectedOption(studentMcqAnswer.getSelectedOption());
+        return dto;
+    }
+
+    private List<StudentSubmittedProgrammingQuestionDto> getConvertedStudentProgrammingQuestions(List<StudentProgrammingAnswer> studentProgrammingAnswers) {
+        return studentProgrammingAnswers.stream().map(this::convertToDto).toList();
+    }
+
+    private StudentSubmittedProgrammingQuestionDto convertToDto(StudentProgrammingAnswer studentProgrammingAnswer)
+    {
+        StudentSubmittedProgrammingQuestionDto dto = new StudentSubmittedProgrammingQuestionDto();
+        dto.setId(studentProgrammingAnswer.getProgrammingQuestions().getId());
+        dto.setSubmittedCode(studentProgrammingAnswer.getSubmittedCode());
+        dto.setLanguageId(studentProgrammingAnswer.getLanguage().getId());
+        return dto;
     }
 
 

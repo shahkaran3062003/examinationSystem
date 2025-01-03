@@ -120,7 +120,6 @@ public class StudentManagementService implements IStudentManagementService {
 
 
 
-
     //----------------------------------Student Exam Details--------------------------------------
     @Override
     public List<StudentExamDetails> getAllStudentExamDetailsByStudentId(int studentId) {
@@ -141,6 +140,13 @@ public class StudentManagementService implements IStudentManagementService {
     @Override
     public List<StudentExamDetails> getAllStudentExamDetailsByExamId(int examId) {
         return studentExamDetailsRepository.findExamResultsSorted(examId);
+    }
+
+    @Override
+    public void deleteStudentExamDetailsById(int id) throws ResourceNotFoundException {
+
+        StudentExamDetails studentExamDetails = studentExamDetailsRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Student Exam Details not found!"));
+        studentExamDetailsRepository.delete(studentExamDetails);
     }
 
 
@@ -203,8 +209,8 @@ public class StudentManagementService implements IStudentManagementService {
 //    }
 
     @Override
-    public List<StudentMcqAnswer> getStudentMcqAnswerByStudentId(int studentId,int examId) throws ResourceNotFoundException {
-        return studentMcqAnswerRepository.findAllByStudentIdAndExamId(studentId,examId);
+    public List<StudentMcqAnswer> getStudentMcqAnswerByStudentId(int studentExamDetails) throws ResourceNotFoundException {
+        return studentMcqAnswerRepository.findAllByStudentExamDetailsId(studentExamDetails);
     }
 
     @Override
@@ -222,8 +228,8 @@ public class StudentManagementService implements IStudentManagementService {
     //---------------------------------Student Programming Answer---------------------------------------
 
     @Override
-    public List<StudentProgrammingAnswerDto> getAllProgrammingAnswerByStudentId(int studentId,int examId) throws ResourceNotFoundException {
-        return convertToDtoList(studentProgrammingAnswerRepository.findAllByStudentIdAndExamId(studentId,examId));
+    public List<StudentProgrammingAnswerDto> getAllProgrammingAnswerByStudentId(int studentExamDetailsId) throws ResourceNotFoundException {
+        return convertToDtoList(studentProgrammingAnswerRepository.findAllByStudentExamDetailsId(studentExamDetailsId));
     }
 
     @Override

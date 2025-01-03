@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.List;
 
@@ -31,13 +29,8 @@ public class StudentProgrammingAnswer {
     private Boolean isSolved = false;
 
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference
-    private Exam exam;
-
-    @ManyToOne
-    @JsonBackReference
-    private Student student;
+    private StudentExamDetails studentExamDetails;
 
     @ManyToOne
     private ProgrammingQuestions programmingQuestions;
@@ -48,10 +41,9 @@ public class StudentProgrammingAnswer {
     @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true,mappedBy = "studentProgrammingAnswer")
     private List<StudentProgramTestCaseAnswer> studentProgramTestCaseAnswer;
 
-    public StudentProgrammingAnswer(String submittedCode, Exam exam, Student student, ProgrammingQuestions programmingQuestions, Language language) {
+    public StudentProgrammingAnswer(String submittedCode, StudentExamDetails studentExamDetails, ProgrammingQuestions programmingQuestions, Language language) {
         this.submittedCode = submittedCode;
-        this.exam = exam;
-        this.student = student;
+        this.studentExamDetails = studentExamDetails;
         this.programmingQuestions = programmingQuestions;
         this.language = language;
     }

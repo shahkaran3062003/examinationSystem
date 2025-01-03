@@ -15,10 +15,10 @@ public class StudentProgrammingAnswerController {
 
     private final StudentManagementService studentManagementService;
 
-    @GetMapping("/get/student/{studentId}/exam/{examId}")
-    public ResponseEntity<ApiResponse> getStudentProgrammingAnswerByStudentId(@PathVariable int studentId,@PathVariable int examId) {
+    @GetMapping("/get/student-exam-details/{studentExamDetailsId}")
+    public ResponseEntity<ApiResponse> getStudentProgrammingAnswerByStudentId(@PathVariable int studentExamDetailsId) {
         try {
-            return ResponseEntity.ok(new ApiResponse("success", studentManagementService.getAllProgrammingAnswerByStudentId(studentId,examId)));
+            return ResponseEntity.ok(new ApiResponse("success", studentManagementService.getAllProgrammingAnswerByStudentId(studentExamDetailsId)));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }

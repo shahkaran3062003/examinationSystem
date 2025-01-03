@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 @Getter
 @Setter
@@ -24,23 +22,16 @@ public class StudentMcqAnswer {
 
     private boolean isCorrect = false;
 
-
-    @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonBackReference
-    private Exam exam;
-
     @ManyToOne
     @JsonBackReference
-    private Student student;
+    private StudentExamDetails studentExamDetails;
 
     @ManyToOne
     private McqQuestions mcqQuestions;
 
-    public StudentMcqAnswer(int selectedOption, Exam exam, Student student, McqQuestions mcqQuestions) {
+    public StudentMcqAnswer(int selectedOption, StudentExamDetails studentExamDetails, McqQuestions mcqQuestions) {
         this.selectedOption = selectedOption;
-        this.exam = exam;
-        this.student = student;
+        this.studentExamDetails = studentExamDetails;
         this.mcqQuestions = mcqQuestions;
     }
 }

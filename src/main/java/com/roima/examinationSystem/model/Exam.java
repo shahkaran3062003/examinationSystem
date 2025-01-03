@@ -76,22 +76,11 @@ public class Exam {
     @JsonBackReference
     private List<ProgrammingQuestions> programmingQuestions;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "exam", orphanRemoval = true)
-    @JsonBackReference
-    private List<StudentMcqAnswer> studentMcqAnswer;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "exam", orphanRemoval = true)
-    @JsonBackReference
-    private List<StudentProgrammingAnswer> studentProgrammingAnswer;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "exam", orphanRemoval = true)
     @JsonBackReference
     private List<StudentExamDetails> studentExamDetails;
 
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "exam", orphanRemoval = true)
-    @JsonBackReference
-    private List<ExamMonitor> examMonitor;
 
     public Exam(String title,String description, String instructions, int totalMcqQuestions, int totalProgrammingQuestions, LocalDateTime start_datetime, LocalDateTime end_datetime,int duration, int passing_criteria,Difficulty difficulty, College college) {
         this.title = title;

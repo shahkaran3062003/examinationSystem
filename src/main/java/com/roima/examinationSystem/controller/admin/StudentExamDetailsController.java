@@ -6,10 +6,7 @@ import com.roima.examinationSystem.response.ApiResponse;
 import com.roima.examinationSystem.service.admin.studentManagement.StudentManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RequiredArgsConstructor
@@ -36,5 +33,15 @@ public class StudentExamDetailsController {
     @GetMapping("/get/exam/{id}/result")
     public ResponseEntity<ApiResponse> getAllStudentExamDetailsByExamId(@PathVariable int id) {
         return ResponseEntity.ok(new ApiResponse("success", studentManagementService.getAllStudentExamDetailsByExamId(id)));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ApiResponse> deleteStudentExamDetails(@PathVariable int id) {
+        try {
+            studentManagementService.deleteStudentExamDetailsById(id);
+            return ResponseEntity.ok(new ApiResponse("success", "Student Exam Details deleted successfully!"));
+        }catch (ResourceNotFoundException e) {
+            return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
+        }
     }
 }

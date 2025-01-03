@@ -40,9 +40,9 @@ public interface IExamManagementService {
     void deleteExamCategory(int id) throws ResourceNotFoundException;
 
     //student exam monitor
-    List<AdminExamMonitorDto> getStudentExamMonitorDetails(int studentId, int examId) throws ResourceNotFoundException;
+    List<AdminExamMonitorDto> getStudentExamMonitorDetails(int studentExamDetailsId) throws ResourceNotFoundException;
     void deleteExamMonitorById(int id) throws ResourceNotFoundException, IOException;
-    void deleteExamMonitorByStudentIdAndExamId(int studentId, int examId) throws ResourceNotFoundException, IOException;
+    void deleteByStudentExamDetailsId(int studentExamDetailsId) throws ResourceNotFoundException, IOException;
     void deleteExamMonitorByExamId(int examId) throws ResourceNotFoundException, IOException;
 
 }

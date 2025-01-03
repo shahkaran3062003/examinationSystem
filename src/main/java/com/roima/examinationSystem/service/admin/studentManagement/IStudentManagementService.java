@@ -30,16 +30,17 @@ public interface IStudentManagementService {
     List<StudentExamDetails> getAllStudentExamDetailsByStudentId(int studentId);
     StudentExamDetails getStudentExamDetailsByStudentIdAndExamId(int studentId,int examId) throws ResourceNotFoundException;
     List<StudentExamDetails> getAllStudentExamDetailsByExamId(int examId);
+    void deleteStudentExamDetailsById(int id) throws ResourceNotFoundException;
 
     //Student MCQ Answer
 //    void addStudentMcqAnswer(AddStudentMcqAnswerRequest request) throws ResourceNotFoundException;
-    List<StudentMcqAnswer> getStudentMcqAnswerByStudentId(int studentId, int examId) throws ResourceNotFoundException;
+    List<StudentMcqAnswer> getStudentMcqAnswerByStudentId(int studentExamDetailsId) throws ResourceNotFoundException;
     StudentMcqAnswer getStudentMcqAnswerById(int id) throws ResourceNotFoundException;
     void deleteStudentMcqAnswerById(int id) throws ResourceNotFoundException;
 
     //Student Programming Answer
 //    void addStudentProgrammingAnswer(AddStudentProgrammingAnswerRequest request) throws ResourceNotFoundException;
-    List<StudentProgrammingAnswerDto> getAllProgrammingAnswerByStudentId(int studentId, int examId) throws ResourceNotFoundException;
+    List<StudentProgrammingAnswerDto> getAllProgrammingAnswerByStudentId(int studentExamDetails) throws ResourceNotFoundException;
     StudentProgrammingAnswerDto getProgrammingAnswerById(int programmingAnswerId) throws ResourceNotFoundException;
     void deleteProgrammingAnswerById(int programmingAnswerId) throws ResourceNotFoundException;
 

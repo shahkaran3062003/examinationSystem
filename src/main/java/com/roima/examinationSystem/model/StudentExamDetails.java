@@ -10,6 +10,8 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -50,21 +52,15 @@ public class StudentExamDetails {
     @JsonBackReference
     private Exam exam;
 
-//    public StudentExamDetails(int totalMcqQuestions, int totalUnattemptedMcqQuestions, int totalProgrammingQuestions, int totalUnattemptedProgrammingQuestions, Student student, Exam exam) {
-//        this.totalMcqQuestions = totalMcqQuestions;
-//        this.totalUnattemptedMcqQuestions = totalUnattemptedMcqQuestions;
-//        this.totalProgrammingQuestions = totalProgrammingQuestions;
-//        this.totalUnattemptedProgrammingQuestions = totalUnattemptedProgrammingQuestions;
-//        this.student = student;
-//        this.exam = exam;
-//    }
-//
-//    public StudentExamDetails(int totalProgrammingQuestions, int totalUnattemptedProgrammingQuestions, Student student, Exam exam) {
-//        this.totalProgrammingQuestions = totalProgrammingQuestions;
-//        this.totalUnattemptedProgrammingQuestions = totalUnattemptedProgrammingQuestions;
-//        this.student = student;
-//        this.exam = exam;
-//    }
+    @OneToMany(mappedBy = "studentExamDetails", cascade = CascadeType.ALL)
+    private List<StudentMcqAnswer> studentMcqAnswers;
+
+    @OneToMany(mappedBy = "studentExamDetails" , cascade = CascadeType.ALL)
+    private List<StudentProgrammingAnswer> studentProgrammingAnswers;
+
+    @OneToMany(mappedBy = "studentExamDetails", cascade = CascadeType.ALL)
+    private List<ExamMonitor> examMonitors;
+
 
     public StudentExamDetails(String examIp, boolean isStarted ,int totalMcqQuestions, int totalUnattemptedMcqQuestions, int totalProgrammingQuestions, int totalUnattemptedProgrammingQuestions, Student student, Exam exam) {
         this.examIp = examIp;

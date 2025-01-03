@@ -39,6 +39,24 @@ public class Category {
     @JsonBackReference
     private List<ExamCategoryDetails> examCategoryDetails;
 
+
+    @PreRemove
+    public void preRemove(){
+
+        if(mcqQuestions != null){
+            mcqQuestions.forEach(mcqQuestion -> mcqQuestion.setCategory(null));
+        }
+
+        if(programmingQuestions != null){
+            programmingQuestions.forEach(programmingQuestion -> programmingQuestion.setCategory(null));
+        }
+
+        if(examCategoryDetails != null){
+            examCategoryDetails.forEach(examCategoryDetail -> examCategoryDetail.setCategory(null));
+        }
+
+    }
+
     public Category(String name,QuestionType questionType) {
         this.name = name;
         this.questionType = questionType;

@@ -17,10 +17,10 @@ public class StudentMcqAnswerController {
     private final StudentManagementService studentManagementService;
 
 
-    @GetMapping("get/student/{studentId}/exam/{examId}")
-    public ResponseEntity<ApiResponse> getAllMcqAnswerByStudentId(@PathVariable int studentId, @PathVariable int examId) {
+    @GetMapping("get/student-exam-details/{studentExamDetailsId}")
+    public ResponseEntity<ApiResponse> getAllMcqAnswerByStudentId(@PathVariable int studentExamDetailsId) {
         try {
-            return ResponseEntity.ok(new ApiResponse("success", studentManagementService.getStudentMcqAnswerByStudentId(studentId,examId)));
+            return ResponseEntity.ok(new ApiResponse("success", studentManagementService.getStudentMcqAnswerByStudentId(studentExamDetailsId)));
         }catch (ResourceNotFoundException e){
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
