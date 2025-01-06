@@ -196,7 +196,7 @@ public class ExamManagementService implements IExamManagementService {
         int i=0;
         for(Integer id: request.getProgrammingQuestionIds()){
             if(mcqQuestionsRepository.existsById(id)){
-                for(i=0;i<exam.getMcqQuestions().size();i++){
+                for(i=0;i<exam.getProgrammingQuestions().size();i++){
                     if(exam.getProgrammingQuestions().get(i).getId() == id){
                         exam.getProgrammingQuestions().remove(i);
                         examRepository.save(exam);

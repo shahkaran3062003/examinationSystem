@@ -11,6 +11,7 @@ import com.roima.examinationSystem.request.AddStudentRequest;
 import com.roima.examinationSystem.request.UpdateStudentRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,52 +26,54 @@ public class StudentManagementService implements IStudentManagementService {
     private final ModelMapper modelMapper;
     private final StudentExamDetailsRepository studentExamDetailsRepository;
     private final StudentMcqAnswerRepository studentMcqAnswerRepository;
-    private final ExamRepository examRepository;
-    private final McqQuestionsRepository mcqQuestionsRepository;
     private final StudentProgrammingAnswerRepository studentProgrammingAnswerRepository;
-    private final ProgrammingQuestionsRepository programmingQuestionsRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
 
     //---------------------------------Student---------------------------------------
     @Override
-    public List<Student> getAllStudents() {
-        return studentRepository.findAll();
+    public List<StudentDto> getAllStudents() {
+        return getConvertedDtoList(studentRepository.findAll());
     }
 
     @Override
-    public List<Student> getStudentsByCollegeId(int collegeId) {
-        return studentRepository.findAllByCollegeId(collegeId);
+    public List<StudentDto> getStudentsByCollegeId(int collegeId) {
+        return getConvertedDtoList(studentRepository.findAllByCollegeId(collegeId));
     }
 
     @Override
-    public Student getStudentById(int id) throws ResourceNotFoundException {
-        return studentRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Student not found!"));
+    public StudentDto getStudentById(int id) throws ResourceNotFoundException {
+        return convertToDto(studentRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Student not found!")));
     }
 
     @Override
-    public Student getStudentByEmail(String email) throws ResourceNotFoundException {
-        return studentRepository.findByUserEmail(email).orElseThrow(()-> new ResourceNotFoundException("Student not found!"));
+    public StudentDto getStudentByEmail(String email) throws ResourceNotFoundException {
+        return convertToDto(studentRepository.findByUserEmail(email).orElseThrow(()-> new ResourceNotFoundException("Student not found!")));
     }
 
     @Override
     public void addStudent(AddStudentRequest student) throws ResourceNotFoundException, ResourceExistsException {
+
+        student.setPassword(passwordEncoder.encode(student.getPassword()));
         User user = student.getUser();
         if(userRepository.existsByEmail(user.getEmail())){
             throw new ResourceExistsException("User already exists!");
         }
 
+        College college = collegeRepository.findByName(student.getCollege_name()).orElse(
+            student.getCollege()
+        );
 
-        College college = collegeRepository.findById(student.getCollege_id())
-                .orElseThrow(()-> new ResourceNotFoundException("College not found!"));
         userRepository.save(user);
+        collegeRepository.save(college);
         studentRepository.save(student.getStudent(user, college));
     }
 
     @Override
     public void updateStudent(UpdateStudentRequest request, int id) throws ResourceNotFoundException, ResourceExistsException {
 
-        Student student = getStudentById(id);
+        Student student = studentRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Student not found!"));
         College college = collegeRepository.findById(request.getCollege_id())
                 .orElseThrow(()-> new ResourceNotFoundException("College not found!"));
 
@@ -81,11 +84,11 @@ public class StudentManagementService implements IStudentManagementService {
 
         oldUser.setFullName(request.getFullName());
         oldUser.setEmail(request.getEmail());
-        oldUser.setPassword(request.getPassword());
+        oldUser.setPassword(passwordEncoder.encode(request.getPassword()));
 
 
 
-        student.setName(request.getName());
+//        student.setName(request.getName());
         student.setContact(request.getContact());
         student.setEnrollment_number(request.getEnrollment_number());
         student.setYear(request.getYear());
@@ -104,7 +107,7 @@ public class StudentManagementService implements IStudentManagementService {
     @Override
     public void deleteStudentById(int id) throws ResourceNotFoundException {
 
-        Student student = getStudentById(id);
+        Student student = studentRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Student not found!"));
         studentRepository.delete(student);
 
     }

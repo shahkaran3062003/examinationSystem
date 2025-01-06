@@ -1,6 +1,7 @@
 package com.roima.examinationSystem.service.admin.studentManagement;
 
 import com.roima.examinationSystem.dto.admin.StudentProgrammingAnswerDto;
+import com.roima.examinationSystem.dto.student.StudentDto;
 import com.roima.examinationSystem.exception.ResourceExistsException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
 import com.roima.examinationSystem.model.Student;
@@ -17,13 +18,13 @@ import java.util.List;
 public interface IStudentManagementService {
 
     //Student
-    List<Student> getAllStudents();
-    List<Student> getStudentsByCollegeId(int id);
-    Student getStudentById(int id) throws ResourceNotFoundException;
+    List<StudentDto> getAllStudents();
+    List<StudentDto> getStudentsByCollegeId(int id);
+    StudentDto getStudentById(int id) throws ResourceNotFoundException;
     void addStudent(AddStudentRequest student) throws ResourceNotFoundException, ResourceExistsException;
     void updateStudent(UpdateStudentRequest request, int id) throws ResourceNotFoundException, ResourceExistsException;
     void deleteStudentById(int id) throws ResourceNotFoundException;
-    Student getStudentByEmail(String email) throws ResourceNotFoundException;
+    StudentDto getStudentByEmail(String email) throws ResourceNotFoundException;
 
 
     //Student Exam Details

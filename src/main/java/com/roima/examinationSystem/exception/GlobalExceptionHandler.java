@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,6 +41,12 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse("Error", "Missing Request Parameter"));
 
+    }
+
+    @ExceptionHandler(MissingServletRequestPartException.class)
+    public ResponseEntity<ApiResponse> handleMissingRequestPartException(Exception e) {
+        System.out.println(e.getMessage());
+        return ResponseEntity.badRequest().body(new ApiResponse("Error", "Missing Request Part file."));
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)

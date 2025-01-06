@@ -19,9 +19,9 @@ import java.math.BigInteger;
 public class AddStudentRequest {
 
 
-    @NotNull
-    @NotBlank
-    private String name;
+//    @NotNull
+//    @NotBlank
+//    private String name;
 
     @NotNull
     @NotBlank
@@ -29,7 +29,7 @@ public class AddStudentRequest {
     private String contact;
 
     @NotNull
-    private BigInteger enrollment_number;
+    private String enrollment_number;
 
     @NotNull
     @Min(1)
@@ -69,12 +69,31 @@ public class AddStudentRequest {
     private String password;
 
     @NotNull
-    @Min(1)
-    private int college_id;
+    @NotBlank
+    private String college_name;
 
+    @NotNull
+    @NotBlank
+    private String college_email;
 
-    public AddStudentRequest(String name,String contact, BigInteger enrollment_number, int year, int semester, float cgpa, int backlog, String department , String fullName, String email, String password , int college_id) {
-        this.name = name;
+    private String college_address;
+
+//    public AddStudentRequest(String name,String contact, BigInteger enrollment_number, int year, int semester, float cgpa, int backlog, String department , String fullName, String email, String password , int college_id) {
+//        this.name = name;
+//        this.contact = contact;
+//        this.enrollment_number = enrollment_number;
+//        this.year = year;
+//        this.semester = semester;
+//        this.cgpa = cgpa;
+//        this.backlog = backlog;
+//        this.department = department;
+//        this.fullName = fullName;
+//        this.email = email;
+//        this.password = password;
+//        this.college_id = college_id;
+//    }
+
+    public AddStudentRequest(String contact, String enrollment_number, int year, int semester, float cgpa, int backlog, String department , String fullName, String email, String password) {
         this.contact = contact;
         this.enrollment_number = enrollment_number;
         this.year = year;
@@ -85,15 +104,35 @@ public class AddStudentRequest {
         this.fullName = fullName;
         this.email = email;
         this.password = password;
-        this.college_id = college_id;
     }
+
+    public AddStudentRequest(String contact,String enrollment_number, int year, int semester, float cgpa, int backlog, String department, String fullName, String email, String password, String college_name, String college_email, String college_address){
+        this.contact = contact;
+        this.enrollment_number = enrollment_number;
+        this.year = year;
+        this.semester = semester;
+        this.cgpa = cgpa;
+        this.backlog = backlog;
+        this.department = department;
+        this.fullName = fullName;
+        this.email = email;
+        this.password = password;
+        this.college_name = college_name;
+        this.college_email = college_email;
+        this.college_address = college_address;
+    }
+
 
     public User getUser() {
         return new User(this.fullName, this.email, this.password, this.role);
     }
 
+    public College getCollege() {
+        return new College(this.college_name,this.college_email,this.college_address);
+    }
     public Student getStudent(User user, College college) {
-        return new Student(this.name, this.contact, this.enrollment_number, this.year, this.semester, this.cgpa, this.backlog, this.department, user, college);
+//        return new Student(this.name, this.contact, this.enrollment_number, this.year, this.semester, this.cgpa, this.backlog, this.department, user, college);
+        return new Student(this.contact, this.enrollment_number, this.year, this.semester, this.cgpa, this.backlog, this.department, user, college);
     }
 
 

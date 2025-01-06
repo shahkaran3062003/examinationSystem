@@ -4,14 +4,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.math.BigInteger;
 import java.util.List;
 
 @Getter
@@ -19,20 +15,18 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString
 public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
-    private String name;
-
     @Column(nullable = false, length = 10)
     private String contact;
 
     @Column(nullable = false)
-    private BigInteger enrollment_number;
+    private String enrollment_number;
 
     @Column(nullable = false)
     private int year;
@@ -70,9 +64,9 @@ public class Student {
     @JsonBackReference
     private List<StudentExamDetails> studentExamDetails;
 
-    public Student(String name, String contact, BigInteger enrollmentNumber,int year, int semester,  float cgpa,  int backlog, String department, User user, College college) {
 
-        this.name = name;
+    public Student(String contact, String enrollmentNumber,int year, int semester,  float cgpa,  int backlog, String department, User user, College college) {
+
         this.contact = contact;
         this.enrollment_number = enrollmentNumber;
         this.year = year;
@@ -82,5 +76,22 @@ public class Student {
         this.department = department;
         this.user = user;
         this.college = college;
+    }
+
+    public User getUser(){
+        if(this.user==null){
+            this.user = new User();
+            this.user.setRole(Role.STUDENT);
+        }
+
+        return this.user;
+    }
+
+    public College getCollege(){
+        if(this.college==null){
+            this.college= new College();
+        }
+
+        return this.college;
     }
 }

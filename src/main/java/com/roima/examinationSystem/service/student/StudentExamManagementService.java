@@ -100,10 +100,10 @@ public class StudentExamManagementService implements IStudentExamManagementServi
         Map<String,Object> submittedData = new HashMap<>();
 
         submittedData.put("MCQ",getConvertedStudentSubmittedMcqAnswer(
-                studentExamDetails.getStudentMcqAnswers()
+                studentExamDetails.getStudentMcqAnswers()!=null?studentExamDetails.getStudentMcqAnswers():new ArrayList<>()
         ));
         submittedData.put("PROGRAMMING",getConvertedStudentProgrammingQuestions(
-                studentExamDetails.getStudentProgrammingAnswers()
+                studentExamDetails.getStudentProgrammingAnswers()!=null?studentExamDetails.getStudentProgrammingAnswers():new ArrayList<>()
         ));
 
         examDetails.put("exam", convertToExamDto(exam));

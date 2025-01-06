@@ -16,9 +16,9 @@ import java.math.BigInteger;
 @NoArgsConstructor
 public class UpdateStudentRequest {
 
-    @NotNull
-    @NotBlank
-    private String name;
+//    @NotNull
+//    @NotBlank
+//    private String name;
 
     @NotNull
     @NotBlank
@@ -26,7 +26,7 @@ public class UpdateStudentRequest {
     private String contact;
 
     @NotNull
-    private BigInteger enrollment_number;
+    private String enrollment_number;
 
     @NotNull
     private int year;
@@ -73,8 +73,22 @@ public class UpdateStudentRequest {
     }
 
 
-    public UpdateStudentRequest(String name,String contact, BigInteger enrollment_number, int year, int semester, float cgpa, int backlog, String department , String fullName, String email, String password , int college_id) {
-        this.name = name;
+//    public UpdateStudentRequest(String name,String contact, BigInteger enrollment_number, int year, int semester, float cgpa, int backlog, String department , String fullName, String email, String password , int college_id) {
+//        this.name = name;
+//        this.contact = contact;
+//        this.enrollment_number = enrollment_number;
+//        this.year = year;
+//        this.semester = semester;
+//        this.cgpa = cgpa;
+//        this.backlog = backlog;
+//        this.department = department;
+//        this.fullName = fullName;
+//        this.email = email;
+//        this.password = password;
+//        this.college_id = college_id;
+//    }
+
+    public UpdateStudentRequest(String contact, String enrollment_number, int year, int semester, float cgpa, int backlog, String department , String fullName, String email, String password , int college_id) {
         this.contact = contact;
         this.enrollment_number = enrollment_number;
         this.year = year;

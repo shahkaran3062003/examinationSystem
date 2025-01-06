@@ -34,7 +34,6 @@ public interface IQuestionManagementService {
     AdminMcqQuestionDto getMcqQuestionsById(int id) throws ResourceNotFoundException;
 
     List<McqQuestions> getAllMcqQuestionsByCategory(int category_id) throws ResourceNotFoundException;
-    List<McqQuestions> getAllMcqQuestionsByCategoryQuestionType();
 
     List<McqQuestions> getAllMcqQuestionsByDifficulty(String difficulty) throws InvalidValueException;
 
@@ -58,7 +57,6 @@ public interface IQuestionManagementService {
     List<ProgrammingQuestions> getAllProgrammingQuestions();
     ProgrammingQuestions getProgrammingQuestionsById(int id) throws ResourceNotFoundException;
     List<ProgrammingQuestions> getAllProgrammingQuestionsByCategory(int category_id) throws ResourceNotFoundException;
-    List<ProgrammingQuestions> getAllProgrammingQuestionsByCategoryQuestionType();
     List<ProgrammingQuestions> getAllProgrammingQuestionsByDifficulty(String difficulty) throws InvalidValueException;
     List<ProgrammingQuestions> getAllProgrammingQuestionsByDifficultyAndCategory(String difficulty, int category_id) throws InvalidValueException, ResourceNotFoundException;
     List<ProgrammingQuestions> getRandomProgrammingQuestionsByDifficultyAndCategory(String difficulty, int category_id,int number) throws InvalidValueException, ResourceNotFoundException;

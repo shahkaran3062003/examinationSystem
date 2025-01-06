@@ -17,8 +17,6 @@ public interface ProgrammingQuestionsRepository extends JpaRepository<Programmin
 
     List<ProgrammingQuestions> findAllByDifficultyAndCategory(Difficulty difficulty, Category Category);
 
-    List<ProgrammingQuestions> findAllByCategoryQuestionType(QuestionType questionType) throws IllegalArgumentException;
-
     int countAllByDifficultyAndCategory(Difficulty difficulty, Category Category);
     boolean existsById(int id);
 }

@@ -228,6 +228,11 @@ public class QuestionManagementService implements IQuestionManagementService {
                 mcqQuestions.setImage(fileManagementUtil.saveImage(questionImage));
             }
 
+            if((questionImage==null || questionImage.isEmpty()) && mcqQuestions.getImage()!=null){
+                fileManagementUtil.deleteImage(mcqQuestions.getImage());
+                mcqQuestions.setImage(null);
+            }
+
             mcqQuestions.setQuestion(request.getQuestion());
             mcqQuestions.setDifficulty(difficulty);
             mcqQuestions.setCategory(category);
@@ -286,10 +291,6 @@ public class QuestionManagementService implements IQuestionManagementService {
         return mcqQuestionsRepository.findAllByCategory(category);
     }
 
-    @Override
-    public List<McqQuestions> getAllMcqQuestionsByCategoryQuestionType() {
-        return mcqQuestionsRepository.findAllByCategoryQuestionType(QuestionType.MCQ);
-    }
 
     @Override
     public List<McqQuestions> getAllMcqQuestionsByDifficulty(String difficulty) throws InvalidValueException {
@@ -446,6 +447,11 @@ public class QuestionManagementService implements IQuestionManagementService {
                 mcqoptions.setImage(fileManagementUtil.saveImage(optionImage));
             }
 
+            if((optionImage==null || optionImage.isEmpty()) && mcqoptions.getImage()!=null){
+                fileManagementUtil.deleteImage(mcqoptions.getImage());
+                mcqoptions.setImage(null);
+            }
+
             McqQuestions mcqQuestions = mcqoptions.getMcqQuestions();
 
             for(McqOptions option : mcqQuestions.getMcqOptions()){
@@ -598,11 +604,6 @@ public class QuestionManagementService implements IQuestionManagementService {
     public List<ProgrammingQuestions> getAllProgrammingQuestionsByCategory(int category_id) throws ResourceNotFoundException {
         Category category = categoryRepository.findById(category_id).orElseThrow(()-> new ResourceNotFoundException("Category not found!"));
         return programmingQuestionsRepository.findAllByCategory(category);
-    }
-
-    @Override
-    public List<ProgrammingQuestions> getAllProgrammingQuestionsByCategoryQuestionType() {
-        return programmingQuestionsRepository.findAllByCategoryQuestionType(QuestionType.PROGRAMMING);
     }
 
     @Override

@@ -28,19 +28,14 @@ public class StudentController {
 
     @GetMapping("/get/all")
     public ResponseEntity<ApiResponse> getAllStudents() {
-
-        List<Student> students = studentManagementService.getAllStudents();
-        List<StudentDto> studentDtos = studentManagementService.getConvertedDtoList(students);
-        return ResponseEntity.ok(new ApiResponse("success", studentDtos));
+        return ResponseEntity.ok(new ApiResponse("success", studentManagementService.getAllStudents()));
     }
 
 
     @GetMapping("/get/all/college/{id}")
     public ResponseEntity<ApiResponse> getAllStudentsByCollegeId(@PathVariable int id) {
 
-        List<Student> students = studentManagementService.getStudentsByCollegeId(id);
-        List<StudentDto> studentDtos = studentManagementService.getConvertedDtoList(students);
-        return ResponseEntity.ok(new ApiResponse("success", studentDtos));
+        return ResponseEntity.ok(new ApiResponse("success", studentManagementService.getStudentsByCollegeId(id)));
     }
 
 
@@ -48,9 +43,7 @@ public class StudentController {
     public ResponseEntity<ApiResponse> getStudentById(@PathVariable int id) {
 
         try {
-            Student student = studentManagementService.getStudentById(id);
-            StudentDto studentDto = studentManagementService.convertToDto(student);
-            return ResponseEntity.ok(new ApiResponse("success", studentDto));
+            return ResponseEntity.ok(new ApiResponse("success", studentManagementService.getStudentById(id)));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }
@@ -60,9 +53,7 @@ public class StudentController {
     public ResponseEntity<ApiResponse> getStudentByEmail(@RequestParam(name = "email") String email) {
 
         try {
-            Student student = studentManagementService.getStudentByEmail(email);
-            StudentDto studentDto = studentManagementService.convertToDto(student);
-            return ResponseEntity.ok(new ApiResponse("success", studentDto));
+            return ResponseEntity.ok(new ApiResponse("success", studentManagementService.getStudentByEmail(email)));
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.internalServerError().body(new ApiResponse("error", e.getMessage()));
         }

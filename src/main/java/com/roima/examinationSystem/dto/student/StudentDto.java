@@ -1,6 +1,7 @@
 package com.roima.examinationSystem.dto.student;
 
 import com.roima.examinationSystem.dto.CollegeDto;
+import com.roima.examinationSystem.dto.UserDto;
 import com.roima.examinationSystem.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.math.BigInteger;
 @NoArgsConstructor
 public class StudentDto {
     private int id;
-    private String name;
+//    private String name;
     private String contact;
     private BigInteger enrollment_number;
     private int year;
@@ -22,6 +23,6 @@ public class StudentDto {
     private float cgpa;
     private int backlog;
     private String department;
-    private User user;
+    private UserDto user;
     private CollegeDto college;
 }

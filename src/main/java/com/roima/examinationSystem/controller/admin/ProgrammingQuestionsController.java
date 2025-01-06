@@ -47,11 +47,6 @@ public class ProgrammingQuestionsController {
         }
     }
 
-    @GetMapping("/get/category/questionType")
-    public ResponseEntity<ApiResponse> getProgrammingQuestionsByCategoryAndQuestionType() {
-        return ResponseEntity.ok(new ApiResponse("success", questionManagementService.getAllProgrammingQuestionsByCategoryQuestionType()));
-    }
-
     @GetMapping("/get/difficulty")
     public ResponseEntity<ApiResponse> getProgrammingQuestionsByDifficulty(@RequestParam(name = "difficulty") String difficulty){
         try{
