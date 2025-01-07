@@ -19,6 +19,6 @@ public interface StudentExamDetailsRepository extends JpaRepository<StudentExamD
 
     StudentExamDetails findByStudentIdAndExamId(int studentId, int examId);
 
-    @Query("SELECT s FROM StudentExamDetails s WHERE s.exam.id = :examId ORDER BY s.isPassed DESC, s.totalCorrectMcqAnswers DESC")
+    @Query("SELECT s FROM StudentExamDetails s WHERE s.exam.id = :examId ORDER BY s.isPassed DESC, s.totalCorrectMcqAnswers DESC, s.totalSolvedProgrammingQuestions DESC")
     List<StudentExamDetails> findExamResultsSorted(@Param("examId") int examId);
 }

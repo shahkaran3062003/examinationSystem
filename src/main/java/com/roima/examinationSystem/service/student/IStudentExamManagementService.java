@@ -1,7 +1,6 @@
 package com.roima.examinationSystem.service.student;
 
-import com.roima.examinationSystem.dto.student.StudentExamDetailsDto;
-import com.roima.examinationSystem.dto.student.StudentExamDto;
+import com.roima.examinationSystem.dto.student.ExamDetailsDto;
 import com.roima.examinationSystem.exception.*;
 import com.roima.examinationSystem.request.AddStudentMcqAnswerRequest;
 import com.roima.examinationSystem.request.AddStudentProgrammingAnswerRequest;
@@ -15,7 +14,7 @@ import java.util.Map;
 
 public interface IStudentExamManagementService {
 
-    List<StudentExamDetailsDto> getExamByCollegeId(int collegeId);
+    List<ExamDetailsDto> getExamByCollegeId(int collegeId);
 
     Map<String,Object> startExam(StartExamRequest request) throws ResourceNotFoundException, ResourceExistsException, ExamException;
     void submitExam(SubmitExamRequest request) throws ResourceNotFoundException, ResourceExistsException, ExamException;

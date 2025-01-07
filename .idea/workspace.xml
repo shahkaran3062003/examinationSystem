@@ -4,12 +4,29 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e770141f-7dc6-4504-9665-05e67707c434" name="Changes" comment="implemented data import feature from excel for 'Student Data', 'Mcq question data', 'Programming question data'.test all api endpoints and fix 2 3 small bugs.">
+    <list default="true" id="e770141f-7dc6-4504-9665-05e67707c434" name="Changes" comment="update readme file and handle some exceptions in GlobalExceptionHandler.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/dto/admin/AdminProgrammingQuestionsDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/dto/admin/AdminProgrammingTestCaseDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/dto/admin/AdminStudentExamDetailsDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/dto/admin/AdminStudentMcqAnswerDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/dto/admin/AdminStudentProgrammingAnswerDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/dto/admin/AdminStudentProgrammingTestCaseAnswerDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/exception/GlobalExceptionHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/exception/GlobalExceptionHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/McqQuestionsRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/McqQuestionsRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/ProgrammingQuestionsRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/ProgrammingQuestionsRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/admin/CollegeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/admin/CollegeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/admin/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/controller/admin/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/dto/admin/StudentProgrammingAnswerDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/dto/student/StudentExamDetailsDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/dto/student/ExamDetailsDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/ExamMonitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/model/ExamMonitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/repository/StudentExamDetailsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/repository/StudentExamDetailsRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/admin/questionManagement/IQuestionManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/admin/questionManagement/IQuestionManagementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/admin/questionManagement/QuestionManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/admin/questionManagement/QuestionManagementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/admin/studentManagement/IStudentManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/admin/studentManagement/IStudentManagementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/admin/studentManagement/StudentManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/admin/studentManagement/StudentManagementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/admin/userCollegeManagement/IUserCollegeManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/admin/userCollegeManagement/IUserCollegeManagementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/admin/userCollegeManagement/UserCollegeManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/admin/userCollegeManagement/UserCollegeManagementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/student/IStudentExamManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/student/IStudentExamManagementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/student/StudentExamManagementService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/roima/examinationSystem/service/student/StudentExamManagementService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/StudentExamDetailsRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/roima/examinationSystem/repository/StudentExamDetailsRepository.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -327,7 +344,23 @@
       <option name="project" value="LOCAL" />
       <updated>1736178212782</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="update readme file and handle some exceptions in GlobalExceptionHandler.">
+      <option name="closed" value="true" />
+      <created>1736180028493</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1736180028493</updated>
+    </task>
+    <task id="LOCAL-00025" summary="update readme file and handle some exceptions in GlobalExceptionHandler.">
+      <option name="closed" value="true" />
+      <created>1736180328745</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1736180328745</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -364,7 +397,8 @@
     <MESSAGE value="implement online code run/execution, run programming question testcases, submit programming question while submitting programming question run all test cases and save results in database. check testcases while adding/updating new programming question or adding/updating testcases of programming questions." />
     <MESSAGE value="normalize StudentMcqAnswer, StudentProgrammingAnswer and ExamMonitor into StudentExamDetails entity. add extra check to generate exam. implement exam resume with already submitted answers when restart exam." />
     <MESSAGE value="implemented data import feature from excel for 'Student Data', 'Mcq question data', 'Programming question data'.test all api endpoints and fix 2 3 small bugs." />
-    <option name="LAST_COMMIT_MESSAGE" value="implemented data import feature from excel for 'Student Data', 'Mcq question data', 'Programming question data'.test all api endpoints and fix 2 3 small bugs." />
+    <MESSAGE value="update readme file and handle some exceptions in GlobalExceptionHandler." />
+    <option name="LAST_COMMIT_MESSAGE" value="update readme file and handle some exceptions in GlobalExceptionHandler." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

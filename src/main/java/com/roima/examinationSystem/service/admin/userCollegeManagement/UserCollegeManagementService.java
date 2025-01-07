@@ -2,6 +2,7 @@ package com.roima.examinationSystem.service.admin.userCollegeManagement;
 
 
 import com.roima.examinationSystem.dto.CollegeDto;
+import com.roima.examinationSystem.dto.UserDto;
 import com.roima.examinationSystem.exception.InvalidValueException;
 import com.roima.examinationSystem.exception.ResourceExistsException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
@@ -34,8 +35,9 @@ public class UserCollegeManagementService implements IUserCollegeManagementServi
 
     //-----------------------------------User----------------------------------------------
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll().stream().toList();
+    public List<UserDto> getAllUsers() {
+
+        return convertToUserDtoList(userRepository.findAll().stream().toList());
     }
 
     @Override
@@ -63,7 +65,7 @@ public class UserCollegeManagementService implements IUserCollegeManagementServi
 
 
         try {
-            User user = getUserById(userId);
+            User user = userRepository.findById(userId).orElseThrow(()->new ResourceNotFoundException("User not found!"));
 
             Role role = Role.valueOf(request.getRole());
 
@@ -81,26 +83,26 @@ public class UserCollegeManagementService implements IUserCollegeManagementServi
     @Override
     public void deleteUserById(int id) throws ResourceNotFoundException {
 
-        User user = getUserById(id);
+        User user = userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User not found!"));
         userRepository.delete(user);
     }
 
     @Override
-    public User getUserById(int id) throws ResourceNotFoundException {
-        return userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User not found!"));
+    public UserDto getUserById(int id) throws ResourceNotFoundException {
+        return convertToDto(userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User not found!")));
     }
 
     @Override
-    public User getUserByEmail(String email) throws ResourceNotFoundException {
-        return userRepository.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("User not found!"));
+    public UserDto getUserByEmail(String email) throws ResourceNotFoundException {
+        return convertToDto( userRepository.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("User not found!")));
 
     }
 
     @Override
-    public List<User> getUsersByRole(String role) throws InvalidValueException {
+    public List<UserDto> getUsersByRole(String role) throws InvalidValueException {
         try {
             Role erole = Role.valueOf(role);
-            return userRepository.findByRole(erole);
+            return convertToUserDtoList( userRepository.findByRole(erole));
         }catch (IllegalArgumentException e){
             throw new InvalidValueException("Invalid user role!");
         }
@@ -110,19 +112,20 @@ public class UserCollegeManagementService implements IUserCollegeManagementServi
     //----------------------------------------College------------------------------
 
     @Override
-    public List<College> getAllColleges() {
-        return collegeRepository.findAll();
+    public List<CollegeDto> getAllColleges() {
+
+        return convertToCollegeDtoList(collegeRepository.findAll());
     }
 
     @Override
-    public College getCollegeById(int id) throws ResourceNotFoundException {
-        return collegeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("College not found!"));
+    public CollegeDto getCollegeById(int id) throws ResourceNotFoundException {
+        return convertToDto( collegeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("College not found!")));
     }
 
     @Override
-    public College getCollegeByName(String name) throws ResourceNotFoundException {
+    public CollegeDto getCollegeByName(String name) throws ResourceNotFoundException {
 
-        return collegeRepository.findByName(name).orElseThrow(()->new ResourceNotFoundException("College not found!"));
+        return convertToDto(collegeRepository.findByName(name).orElseThrow(()->new ResourceNotFoundException("College not found!")));
     }
 
     @Override
@@ -148,7 +151,7 @@ public class UserCollegeManagementService implements IUserCollegeManagementServi
 
     @Override
     public void updateCollege(UpdateCollegeRequest request, int id) throws ResourceExistsException, ResourceNotFoundException {
-        College oldCollege = getCollegeById(id);
+        College oldCollege = collegeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("College not found!"));
 
         if(!Objects.equals(oldCollege.getName(), request.getName()) && collegeRepository.existsByName(request.getName())){
             throw new ResourceExistsException("New College name already exists!");
@@ -175,7 +178,7 @@ public class UserCollegeManagementService implements IUserCollegeManagementServi
 
     @Override
     public void deleteCollegeById(int id) throws ResourceNotFoundException {
-        College college = getCollegeById(id);
+        College college = collegeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("College not found!"));
         collegeRepository.delete(college);
     }
 
@@ -197,8 +200,7 @@ public class UserCollegeManagementService implements IUserCollegeManagementServi
     @Override
     public void deleteLoginLogsByUserId(int userId) throws ResourceNotFoundException {
 
-        boolean isUserPresent = userRepository.existsById(userId);
-        if(!isUserPresent){
+        if(userId != -1 && !userRepository.existsById(userId)){
             throw new ResourceNotFoundException("User not found!");
         }
 
@@ -215,7 +217,24 @@ public class UserCollegeManagementService implements IUserCollegeManagementServi
 
     }
 
-    public List<CollegeDto> getConvertedDtoList(List<College> collegeList){
+    //-------------------------Model Mapper------------------------
+
+        //----------------User----------------------
+
+
+    private List<UserDto> convertToUserDtoList(List<User> userList){
+        return userList.stream().map(this::convertToDto).toList();
+    }
+
+
+    private UserDto convertToDto(User user){
+        return modelMapper.map(user,UserDto.class);
+    }
+
+
+        //---------------College----------------
+
+    public List<CollegeDto> convertToCollegeDtoList(List<College> collegeList){
         return collegeList.stream().map(this::convertToDto).toList();
     }
 

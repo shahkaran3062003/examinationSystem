@@ -2,6 +2,8 @@ package com.roima.examinationSystem.service.admin.questionManagement;
 
 import com.roima.examinationSystem.dto.LanguageDto;
 import com.roima.examinationSystem.dto.admin.AdminMcqQuestionDto;
+import com.roima.examinationSystem.dto.admin.AdminProgrammingQuestionsDto;
+import com.roima.examinationSystem.dto.admin.AdminProgrammingTestCaseDto;
 import com.roima.examinationSystem.exception.FetchException;
 import com.roima.examinationSystem.exception.InvalidValueException;
 import com.roima.examinationSystem.exception.ResourceExistsException;
@@ -54,17 +56,17 @@ public interface IQuestionManagementService {
     void deleteProgrammingQuestions(int id) throws ResourceNotFoundException;
 
 
-    List<ProgrammingQuestions> getAllProgrammingQuestions();
-    ProgrammingQuestions getProgrammingQuestionsById(int id) throws ResourceNotFoundException;
-    List<ProgrammingQuestions> getAllProgrammingQuestionsByCategory(int category_id) throws ResourceNotFoundException;
-    List<ProgrammingQuestions> getAllProgrammingQuestionsByDifficulty(String difficulty) throws InvalidValueException;
-    List<ProgrammingQuestions> getAllProgrammingQuestionsByDifficultyAndCategory(String difficulty, int category_id) throws InvalidValueException, ResourceNotFoundException;
-    List<ProgrammingQuestions> getRandomProgrammingQuestionsByDifficultyAndCategory(String difficulty, int category_id,int number) throws InvalidValueException, ResourceNotFoundException;
+    List<AdminProgrammingQuestionsDto> getAllProgrammingQuestions();
+    AdminProgrammingQuestionsDto getProgrammingQuestionsById(int id) throws ResourceNotFoundException;
+    List<AdminProgrammingQuestionsDto> getAllProgrammingQuestionsByCategory(int category_id) throws ResourceNotFoundException;
+    List<AdminProgrammingQuestionsDto> getAllProgrammingQuestionsByDifficulty(String difficulty) throws InvalidValueException;
+    List<AdminProgrammingQuestionsDto> getAllProgrammingQuestionsByDifficultyAndCategory(String difficulty, int category_id) throws InvalidValueException, ResourceNotFoundException;
+    List<AdminProgrammingQuestionsDto> getRandomProgrammingQuestionsByDifficultyAndCategory(String difficulty, int category_id,int number) throws InvalidValueException, ResourceNotFoundException;
 
 
     // Programming Test Cases
-    ProgrammingTestCase getProgrammingTestCaseById(int id) throws ResourceNotFoundException;
-    List<ProgrammingTestCase> getAllProgrammingTestCasesByProgrammingQuestionsId(int programmingQuestionsId) throws ResourceNotFoundException;
+    AdminProgrammingTestCaseDto getProgrammingTestCaseById(int id) throws ResourceNotFoundException;
+    List<AdminProgrammingTestCaseDto> getAllProgrammingTestCasesByProgrammingQuestionsId(int programmingQuestionsId) throws ResourceNotFoundException;
     void addProgrammingTestCase(AddProgrammingTestCaseRequest request) throws ResourceNotFoundException, InvalidValueException, FetchException;
     void updateProgrammingTestCase(UpdateProgrammingTestCaseRequest request, int id) throws ResourceNotFoundException, InvalidValueException, FetchException;
     void deleteProgrammingTestCase(int id) throws ResourceNotFoundException, InvalidValueException;

@@ -23,6 +23,7 @@ public class ExamMonitor {
 
 
     @ManyToOne
+    @JsonBackReference
     private StudentExamDetails studentExamDetails;
 
     @Column(columnDefinition = "DATETIME")

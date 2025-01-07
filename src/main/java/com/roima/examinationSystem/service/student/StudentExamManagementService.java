@@ -49,7 +49,7 @@ public class StudentExamManagementService implements IStudentExamManagementServi
 
 
     @Override
-    public List<StudentExamDetailsDto> getExamByCollegeId(int collegeId) {
+    public List<ExamDetailsDto> getExamByCollegeId(int collegeId) {
         List<Exam> exams = examRepository.findAllByCollegeId(collegeId);
         return getConvertedDtoList(exams);
     }
@@ -346,8 +346,8 @@ public class StudentExamManagementService implements IStudentExamManagementServi
     }
 
 
-    private StudentExamDetailsDto convertToExamDetailsDto(Exam exam) {
-        return modelMapper.map(exam, StudentExamDetailsDto.class);
+    private ExamDetailsDto convertToExamDetailsDto(Exam exam) {
+        return modelMapper.map(exam, ExamDetailsDto.class);
     }
 
     private StudentExamDto convertToExamDto(Exam exam) {
@@ -356,7 +356,7 @@ public class StudentExamManagementService implements IStudentExamManagementServi
         return dto;
     }
 
-    private List<StudentExamDetailsDto> getConvertedDtoList(List<Exam> exams) {
+    private List<ExamDetailsDto> getConvertedDtoList(List<Exam> exams) {
         return exams.stream().map(this::convertToExamDetailsDto).toList();
     }
 

@@ -1,15 +1,11 @@
 package com.roima.examinationSystem.service.admin.studentManagement;
 
-import com.roima.examinationSystem.dto.admin.StudentProgrammingAnswerDto;
+import com.roima.examinationSystem.dto.admin.AdminStudentExamDetailsDto;
+import com.roima.examinationSystem.dto.admin.AdminStudentMcqAnswerDto;
+import com.roima.examinationSystem.dto.admin.AdminStudentProgrammingAnswerDto;
 import com.roima.examinationSystem.dto.student.StudentDto;
 import com.roima.examinationSystem.exception.ResourceExistsException;
 import com.roima.examinationSystem.exception.ResourceNotFoundException;
-import com.roima.examinationSystem.model.Student;
-import com.roima.examinationSystem.model.StudentExamDetails;
-import com.roima.examinationSystem.model.StudentMcqAnswer;
-import com.roima.examinationSystem.model.StudentProgrammingAnswer;
-import com.roima.examinationSystem.request.AddStudentMcqAnswerRequest;
-import com.roima.examinationSystem.request.AddStudentProgrammingAnswerRequest;
 import com.roima.examinationSystem.request.AddStudentRequest;
 import com.roima.examinationSystem.request.UpdateStudentRequest;
 
@@ -28,21 +24,21 @@ public interface IStudentManagementService {
 
 
     //Student Exam Details
-    List<StudentExamDetails> getAllStudentExamDetailsByStudentId(int studentId);
-    StudentExamDetails getStudentExamDetailsByStudentIdAndExamId(int studentId,int examId) throws ResourceNotFoundException;
-    List<StudentExamDetails> getAllStudentExamDetailsByExamId(int examId);
+    List<AdminStudentExamDetailsDto> getAllStudentExamDetailsByStudentId(int studentId);
+    AdminStudentExamDetailsDto getStudentExamDetailsByStudentIdAndExamId(int studentId,int examId) throws ResourceNotFoundException;
+    List<AdminStudentExamDetailsDto> getAllStudentExamDetailsByExamId(int examId);
     void deleteStudentExamDetailsById(int id) throws ResourceNotFoundException;
 
     //Student MCQ Answer
 //    void addStudentMcqAnswer(AddStudentMcqAnswerRequest request) throws ResourceNotFoundException;
-    List<StudentMcqAnswer> getStudentMcqAnswerByStudentId(int studentExamDetailsId) throws ResourceNotFoundException;
-    StudentMcqAnswer getStudentMcqAnswerById(int id) throws ResourceNotFoundException;
+    List<AdminStudentMcqAnswerDto> getStudentMcqAnswerByStudentId(int studentExamDetailsId) throws ResourceNotFoundException;
+    AdminStudentMcqAnswerDto getStudentMcqAnswerById(int id) throws ResourceNotFoundException;
     void deleteStudentMcqAnswerById(int id) throws ResourceNotFoundException;
 
     //Student Programming Answer
 //    void addStudentProgrammingAnswer(AddStudentProgrammingAnswerRequest request) throws ResourceNotFoundException;
-    List<StudentProgrammingAnswerDto> getAllProgrammingAnswerByStudentId(int studentExamDetails) throws ResourceNotFoundException;
-    StudentProgrammingAnswerDto getProgrammingAnswerById(int programmingAnswerId) throws ResourceNotFoundException;
+    List<AdminStudentProgrammingAnswerDto> getAllProgrammingAnswerByStudentId(int studentExamDetails) throws ResourceNotFoundException;
+    AdminStudentProgrammingAnswerDto getProgrammingAnswerById(int programmingAnswerId) throws ResourceNotFoundException;
     void deleteProgrammingAnswerById(int programmingAnswerId) throws ResourceNotFoundException;
 
 

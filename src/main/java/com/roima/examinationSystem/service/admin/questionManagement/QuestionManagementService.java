@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.roima.examinationSystem.dto.LanguageDto;
 import com.roima.examinationSystem.dto.admin.AdminMcqQuestionDto;
 import com.roima.examinationSystem.dto.McqOptionsDto;
+import com.roima.examinationSystem.dto.admin.AdminProgrammingQuestionsDto;
+import com.roima.examinationSystem.dto.admin.AdminProgrammingTestCaseDto;
 import com.roima.examinationSystem.exception.FetchException;
 import com.roima.examinationSystem.exception.InvalidValueException;
 import com.roima.examinationSystem.exception.ResourceExistsException;
@@ -341,40 +343,7 @@ public class QuestionManagementService implements IQuestionManagementService {
     }
 
 
-    private List<AdminMcqQuestionDto> getConvertedMcqQuestionsDtoList(List<McqQuestions> mcqQuestions){
-        return mcqQuestions.stream().map(this::convertToDto).toList();
-    }
 
-    private List<McqOptionsDto> getConvertedMcqOptionsDtoList(List<McqOptionsDto> mcqOptionsDtos){
-        return mcqOptionsDtos.stream().map(this::convertToDto).toList();
-    }
-
-
-
-    private AdminMcqQuestionDto convertToDto(McqQuestions mcqQuestions){
-        AdminMcqQuestionDto dto = modelMapper.map(mcqQuestions,AdminMcqQuestionDto.class);
-        if(dto.getImage()!=null){
-            dto.setImage(fileManagementUtil.getLiveImagePath(dto.getImage()));
-        }
-        dto.setMcqOptions(getConvertedMcqOptionsDtoList(dto.getMcqOptions()));
-        return dto;
-    }
-
-    private McqOptionsDto convertToDto(McqOptionsDto mcqOptions){
-        if(mcqOptions.getImage()!=null){
-            mcqOptions.setImage(fileManagementUtil.getLiveImagePath(mcqOptions.getImage()));
-        }
-        return mcqOptions;
-    }
-
-
-    private McqOptionsDto convertToDto(McqOptions mcqOptions){
-        McqOptionsDto dto = modelMapper.map(mcqOptions,McqOptionsDto.class);
-        if(mcqOptions.getImage()!=null){
-            dto.setImage(fileManagementUtil.getLiveImagePath(mcqOptions.getImage()));
-        }
-        return dto;
-    }
 
     // ----------------------------------------------------Mcq Options---------------------------------------------
 
@@ -591,45 +560,46 @@ public class QuestionManagementService implements IQuestionManagementService {
     }
 
     @Override
-    public List<ProgrammingQuestions> getAllProgrammingQuestions() {
-        return programmingQuestionsRepository.findAll();
+    public List<AdminProgrammingQuestionsDto> getAllProgrammingQuestions() {
+//        return programmingQuestionsRepository.findAll();
+        return convertToAdminProgrammingQuestionsDtoList(programmingQuestionsRepository.findAll());
     }
 
     @Override
-    public ProgrammingQuestions getProgrammingQuestionsById(int id) throws ResourceNotFoundException {
-        return programmingQuestionsRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Programming Questions not found!"));
+    public AdminProgrammingQuestionsDto getProgrammingQuestionsById(int id) throws ResourceNotFoundException {
+        return convertToDto(programmingQuestionsRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Programming Questions not found!")));
     }
 
     @Override
-    public List<ProgrammingQuestions> getAllProgrammingQuestionsByCategory(int category_id) throws ResourceNotFoundException {
+    public List<AdminProgrammingQuestionsDto> getAllProgrammingQuestionsByCategory(int category_id) throws ResourceNotFoundException {
         Category category = categoryRepository.findById(category_id).orElseThrow(()-> new ResourceNotFoundException("Category not found!"));
-        return programmingQuestionsRepository.findAllByCategory(category);
+        return convertToAdminProgrammingQuestionsDtoList(programmingQuestionsRepository.findAllByCategory(category));
     }
 
     @Override
-    public List<ProgrammingQuestions> getAllProgrammingQuestionsByDifficulty(String difficulty) throws InvalidValueException {
+    public List<AdminProgrammingQuestionsDto> getAllProgrammingQuestionsByDifficulty(String difficulty) throws InvalidValueException {
 
         try {
             Difficulty difficultyE = Difficulty.valueOf(difficulty);
-            return programmingQuestionsRepository.findAllByDifficulty(difficultyE);
+            return convertToAdminProgrammingQuestionsDtoList(programmingQuestionsRepository.findAllByDifficulty(difficultyE));
         }catch (IllegalArgumentException e){
             throw new InvalidValueException("Invalid difficulty!");
         }
     }
 
     @Override
-    public List<ProgrammingQuestions> getAllProgrammingQuestionsByDifficultyAndCategory(String difficulty, int category_id) throws InvalidValueException, ResourceNotFoundException {
+    public List<AdminProgrammingQuestionsDto> getAllProgrammingQuestionsByDifficultyAndCategory(String difficulty, int category_id) throws InvalidValueException, ResourceNotFoundException {
         try{
             Difficulty difficultyE = Difficulty.valueOf(difficulty);
             Category category = categoryRepository.findById(category_id).orElseThrow(()-> new ResourceNotFoundException("Category not found!"));
-            return programmingQuestionsRepository.findAllByDifficultyAndCategory(difficultyE, category);
+            return convertToAdminProgrammingQuestionsDtoList(programmingQuestionsRepository.findAllByDifficultyAndCategory(difficultyE, category));
         }catch (IllegalArgumentException e){
             throw new InvalidValueException("Invalid difficulty!");
         }
     }
 
     @Override
-    public List<ProgrammingQuestions> getRandomProgrammingQuestionsByDifficultyAndCategory(String difficulty, int category_id, int number) throws InvalidValueException, ResourceNotFoundException {
+    public List<AdminProgrammingQuestionsDto> getRandomProgrammingQuestionsByDifficultyAndCategory(String difficulty, int category_id, int number) throws InvalidValueException, ResourceNotFoundException {
         try {
             Category category = categoryRepository.findById(category_id).orElseThrow(() -> new ResourceNotFoundException("Category not found!"));
             Difficulty difficultyE = Difficulty.valueOf(difficulty);
@@ -643,7 +613,7 @@ public class QuestionManagementService implements IQuestionManagementService {
 
             Collections.shuffle(programmingQuestions);
 
-            return programmingQuestions.subList(0, number);
+            return convertToAdminProgrammingQuestionsDtoList(programmingQuestions.subList(0, number));
 
 
 
@@ -658,17 +628,17 @@ public class QuestionManagementService implements IQuestionManagementService {
     // --------------------------------------------------Programming Test Case-----------------------------------------------
 
     @Override
-    public ProgrammingTestCase getProgrammingTestCaseById(int id) throws ResourceNotFoundException {
-        return programmingTestCaseRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Programming Test Case not found!"));
+    public AdminProgrammingTestCaseDto getProgrammingTestCaseById(int id) throws ResourceNotFoundException {
+        return convertToDto(programmingTestCaseRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Programming Test Case not found!")));
     }
 
     @Override
-    public List<ProgrammingTestCase> getAllProgrammingTestCasesByProgrammingQuestionsId(int programmingQuestionsId) throws ResourceNotFoundException {
+    public List<AdminProgrammingTestCaseDto> getAllProgrammingTestCasesByProgrammingQuestionsId(int programmingQuestionsId) throws ResourceNotFoundException {
         if(!programmingQuestionsRepository.existsById(programmingQuestionsId)){
             throw new ResourceNotFoundException("Programming Questions not found!");
         }
 
-        return programmingTestCaseRepository.findAllByProgrammingQuestionsId(programmingQuestionsId);
+        return convertToAdminProgrammingTestCaseDtoList( programmingTestCaseRepository.findAllByProgrammingQuestionsId(programmingQuestionsId));
     }
 
     @Override
@@ -819,6 +789,72 @@ public class QuestionManagementService implements IQuestionManagementService {
 
     }
 
+
+
+
+
+    //-----------------------------------Model Mapper---------------------------------------------
+
+
+        // ------------------- MCQ Questions -------------------
+    private List<AdminMcqQuestionDto> getConvertedMcqQuestionsDtoList(List<McqQuestions> mcqQuestions){
+        return mcqQuestions.stream().map(this::convertToDto).toList();
+    }
+
+    private List<McqOptionsDto> getConvertedMcqOptionsDtoList(List<McqOptionsDto> mcqOptionsDtos){
+        return mcqOptionsDtos.stream().map(this::convertToDto).toList();
+    }
+
+
+
+    private AdminMcqQuestionDto convertToDto(McqQuestions mcqQuestions){
+        AdminMcqQuestionDto dto = modelMapper.map(mcqQuestions,AdminMcqQuestionDto.class);
+        if(dto.getImage()!=null){
+            dto.setImage(fileManagementUtil.getLiveImagePath(dto.getImage()));
+        }
+        dto.setMcqOptions(getConvertedMcqOptionsDtoList(dto.getMcqOptions()));
+        return dto;
+    }
+
+    private McqOptionsDto convertToDto(McqOptionsDto mcqOptions){
+        if(mcqOptions.getImage()!=null){
+            mcqOptions.setImage(fileManagementUtil.getLiveImagePath(mcqOptions.getImage()));
+        }
+        return mcqOptions;
+    }
+
+
+    private McqOptionsDto convertToDto(McqOptions mcqOptions){
+        McqOptionsDto dto = modelMapper.map(mcqOptions,McqOptionsDto.class);
+        if(mcqOptions.getImage()!=null){
+            dto.setImage(fileManagementUtil.getLiveImagePath(mcqOptions.getImage()));
+        }
+        return dto;
+    }
+
+
+
+    //------------------- Programming Questions ----------------------
+
+    private List<AdminProgrammingQuestionsDto> convertToAdminProgrammingQuestionsDtoList(List<ProgrammingQuestions> programmingQuestionsList){
+        return programmingQuestionsList.stream().map(this::convertToDto).toList();
+    }
+
+    private AdminProgrammingQuestionsDto convertToDto(ProgrammingQuestions programmingQuestions){
+        return modelMapper.map(programmingQuestions, AdminProgrammingQuestionsDto.class);
+    }
+
+
+    //------------------- Programming Test Case ----------------------
+    private AdminProgrammingTestCaseDto convertToDto(ProgrammingTestCase testCase){
+        return modelMapper.map(testCase, AdminProgrammingTestCaseDto.class);
+    }
+
+    private List<AdminProgrammingTestCaseDto> convertToAdminProgrammingTestCaseDtoList(List<ProgrammingTestCase> testCaseList){
+        return testCaseList.stream().map(this::convertToDto).toList();
+    }
+
+    //----------------- Languages -----------------------
     private List<LanguageDto> convertToDtoList(List<Language> languages){
         return languages.stream().map(this::convertToDto).toList();
     }
@@ -826,5 +862,7 @@ public class QuestionManagementService implements IQuestionManagementService {
     private LanguageDto convertToDto(Language language){
         return modelMapper.map(language, LanguageDto.class);
     }
+
+
 
 }
